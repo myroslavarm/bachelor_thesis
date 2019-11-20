@@ -67,7 +67,7 @@ headsepline, % Uncomment to get a line under the header
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 
-\thesistitle{AutoCompletion} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\thesistitle{Improving AutoCompletion in Pharo with an N-gram Model} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
 \supervisor{Dr. James \textsc{Smith}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{Bachelor of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
@@ -180,11 +180,33 @@ headsepline, % Uncomment to get a line under the header
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 1. Context\\
+Autocompletion is one of the most essential features of any IDE.
+Normally taken for granted, it becomes an obvious nuisance if not working correctly.
+Thus, as a tool that facilitates the experience of computer programming, 
+it must always be improved.\\
 2. Problem\\
+In particular, in the case of Pharo, autocompletion has always been a weak spot.
+The old implementation was in place for years and while everyone wanted it improved,
+no one wanted to get their hands dirty and fix whatever was wrong.\\
 3. Why this is a problem?\\
+The problem was, autocompletion in Pharo just wasn't accurate enough
+and would often incorrectly propose things. While false negatives (not making suggestions
+when needed) are still mostly tolerated, then false positives (proposing abundant or incorrect
+options) -- hinder the development process more than aid it and so are rarely well-received.
+Therefore, things needed to change.\\
 4. Proposed solution\\
+A year ago we first started working on this problem, and have since implemented and ported
+the new autocompletion implementation to the latest version of Pharo. Being AST-based, it is
+now easier to infer information from source code. However, in terms of showing the most relevant
+results first, there's still a lot of work to be done. Hence the idea to implement an n-gram based
+sorting strategy.\\
 5. Why this solution solves the problem?\\
-6. Validation\\
+Now, the default sorting strategy is alphabetic and even though it's not incorrect or inadequate
+in any way, it completely ignores the potential of suggesting completion results based on code history
+and analysis, therefore suggesting the most pertinent results first and ever so slightly reducing the
+time it takes to get to the desired completion suggestion. Which in turn would improve the developer experience.\\
+6. Proposed validation\\
+For the most part, feedback received from developers.\\
 7. Results
 \end{abstract}
 
