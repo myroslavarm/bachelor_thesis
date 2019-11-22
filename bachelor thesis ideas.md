@@ -1,3 +1,9 @@
+#### main idea:
+
+In this work, I study how machine learning and statistical language models can be used to improve code completion in Pharo.
+
+
+
 The previous section discussed the problem of words whose bigram probability is
 zero. But what about words we simply have never seen before?
 Sometimes we have a language task in which this can’t happen because we know
