@@ -20,6 +20,7 @@
 *.kate-swp
 *.~*
 *.tps
+*.zip
 target
 .classpath
 .project
