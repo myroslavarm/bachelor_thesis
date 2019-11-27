@@ -22,12 +22,12 @@ research questions:
 - (potentially) figure out a way to compare accuracies of completion sorting strategies?
 
 
-#### oleks' ideas for research questions
-RQ1: Can we improve code completion in Pharo by sorting candidate completions with an n-gram language model?
-RQ2: Can we build a tool based on a trained n-gram model that would propose completion fast enough to be used in an IDE? (user can not wait 30 seconds for a completion to appear)
-RQ3: How can we numerically evaluate the results of code completion produced by different completion strategies?
+### oleks' ideas for research questions:
+1. Can we improve code completion in Pharo by sorting candidate completions with an n-gram language model?
+2. Can we build a tool based on a trained n-gram model that would propose completion fast enough to be used in an IDE? (user can not wait 30 seconds for a completion to appear)
+3. How can we numerically evaluate the results of code completion produced by different completion strategies?
 ------------
-RQ4: How is source code different from natural human languages (English, French) in the context of building statistical language models? Can we effectively model source code with n-gram language models that were designed for natural language? How different is the process of training those models on source code (preprocessing steps, vocabulary size, repetitiveness, predictability, etc.)?
+4. How is source code different from natural human languages (English, French) in the context of building statistical language models? Can we effectively model source code with n-gram language models that were designed for natural language? How different is the process of training those models on source code (preprocessing steps, vocabulary size, repetitiveness, predictability, etc.)?
 
 Я раджу зосередитись на питаннях 1-3.
 Це виглядає як хороша основа для бакалаврської роботи і для статті.
