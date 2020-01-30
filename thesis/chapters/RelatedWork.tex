@@ -1,11 +1,18 @@
 \chapter{RelatedWork}
 \label{chap:RelatedWork}
 
-\section{Context}
-
-context of the work
-
-\section{Problem}
-\label{sec:Introduction-Problem}
-
-research problems
+\section{Overview of papers}
+1. When Code Completion Fails: Case Study on
+Real-World Completions
+\begin{itemize}
+	\item case study of 15k completions (completion events) for VisualStudio
+	\item synthetic benchmarks misrepresent real-world completions
+	\item state-of-the-art code completion models, including structured recommenders, Recurrent Neural Networks, and dynamic n-gram models
+    \item We outline promising factors and outstanding challenges; e.g., models that dynamically integrate local data fare much better than static ones, but intraproject queries remain the hardest category.
+    \item Benchmarks should first and foremost aim to address completions following their frequency of use, which we characterize, showing for example that intra-project API completions are surprisingly relevant.
+    \item Finally, real-world efficacy is increased precisely by focusing on the least accurate predictions in synthetic data: these are far more common and time-consuming in realworld data.
+    \item A static vocabulary is estimated on the training data and all events seen less than 10 times are treated as a generic "unknown" token, to produce a vocabulary of 75,913.
+    \item trained ngrams
+    \item interested in understanding how the discrepancies between real and artificial completion data impact real code completion models and tools
+    \item Approaches to perform code completions span a wide spectrum of techniques, but, virtually, all intelligent code completion models attempt to relate the context at the site of a required completion to a context that has been observed in some large training corpus.
+\end{itemize}
