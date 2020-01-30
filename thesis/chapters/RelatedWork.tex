@@ -3,7 +3,7 @@
 
 \section{Overview of papers}
 1. When Code Completion Fails: Case Study on
-Real-World Completions
+Real-World Completions (\href{https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8812116}{link})
 \begin{itemize}
 	\item case study of 15k completions (completion events) for VisualStudio
 	\item synthetic benchmarks misrepresent real-world completions
@@ -19,4 +19,5 @@ Real-World Completions
     \item "naturalness" of source code, source code is somewhat like text and follows logical patterns/structure
     \item tried both n-grams and deep learning (RNN)... Even though RNNs often outperform n-gram models in typical natural language settings, we include both, because n-gram models are sometimes a better choice for modeling source code
     \item API recommendation tools that only recommend public APIs would thus fail to address over half of the real-world queries
+    \item The deep learner is better at core method invocations but loses on third-party library calls; the n-gram model naturally outperforms it on internal API calls but loses out on the other categories.
 \end{itemize}
