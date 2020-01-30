@@ -15,4 +15,8 @@ Real-World Completions
     \item trained ngrams
     \item interested in understanding how the discrepancies between real and artificial completion data impact real code completion models and tools
     \item Approaches to perform code completions span a wide spectrum of techniques, but, virtually, all intelligent code completion models attempt to relate the context at the site of a required completion to a context that has been observed in some large training corpus.
+    \item split into two categories: Structural Feature Selection (domain knowledge of source code) and Linguistic Models of Code (ML/statistical models)
+    \item "naturalness" of source code, source code is somewhat like text and follows logical patterns/structure
+    \item tried both n-grams and deep learning (RNN)... Even though RNNs often outperform n-gram models in typical natural language settings, we include both, because n-gram models are sometimes a better choice for modeling source code
+    \item API recommendation tools that only recommend public APIs would thus fail to address over half of the real-world queries
 \end{itemize}
