@@ -1,37 +1,87 @@
 \chapter{RelatedWork}
 \label{chap:RelatedWork}
 
-\section{Overview of papers}
-1. When Code Completion Fails: Case Study on
-Real-World Completions (\href{https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8812116}{link})
-\begin{itemize}
-	\item case study of 15k completions (completion events) for VisualStudio
-	\item synthetic benchmarks misrepresent real-world completions
-	\item state-of-the-art code completion models, including structured recommenders, Recurrent Neural Networks, and dynamic n-gram models
-    \item We outline promising factors and outstanding challenges; e.g., models that dynamically integrate local data fare much better than static ones, but intraproject queries remain the hardest category.
-    \item Benchmarks should first and foremost aim to address completions following their frequency of use, which we characterize, showing for example that intra-project API completions are surprisingly relevant.
-    \item Finally, real-world efficacy is increased precisely by focusing on the least accurate predictions in synthetic data: these are far more common and time-consuming in realworld data.
-    \item A static vocabulary is estimated on the training data and all events seen less than 10 times are treated as a generic "unknown" token, to produce a vocabulary of 75,913.
-    \item trained ngrams
-    \item interested in understanding how the discrepancies between real and artificial completion data impact real code completion models and tools
-    \item Approaches to perform code completions span a wide spectrum of techniques, but, virtually, all intelligent code completion models attempt to relate the context at the site of a required completion to a context that has been observed in some large training corpus.
-    \item split into two categories: Structural Feature Selection (domain knowledge of source code) and Linguistic Models of Code (ML/statistical models)
-    \item "naturalness" of source code, source code is somewhat like text and follows logical patterns/structure
-    \item tried both n-grams and deep learning (RNN)... Even though RNNs often outperform n-gram models in typical natural language settings, we include both, because n-gram models are sometimes a better choice for modeling source code
-    \item API recommendation tools that only recommend public APIs would thus fail to address over half of the real-world queries
-    \item The deep learner is better at core method invocations but loses on third-party library calls; the n-gram model naturally outperforms it on internal API calls but loses out on the other categories.
-\end{itemize}
+\section{Software Naturalness}
+The primary research in the field started with a presumption that software is natural.
+The foreleading paper on the topic (Hindle, Abram, et al. "On the naturalness of software", 2012)[1],
+explains it like this: "software is natural, in the sense that it is created by humans at work,
+with all the attendant constraints and limitations — and thus, like natural language, it is also
+likely to be repetitive and predictable". Not only that, further research revealed that code is
+even more predictable and full of patterns than human languages. In the paper, they also go as far
+as to prove that (a) code can be usefully modelled by statistical language models and (b) such models
+can be leveraged to support software engineers.
 
-2. Intelligent Code Completion with Bayesian Networks (\href{https://dl.acm.org/doi/pdf/10.1145/2744200}{link})
+Allamanis et al. in their paper "A survey of machine learning for big code and naturalness"[2]
+say the following: "software engineering and programming languages (SE/PL) should make the same
+transition [as natural language processing (NLP) research], augmenting traditional methods that
+consider only the formal structure of programs with information about the statistical properties
+of code", also exploiting recurring and predictable patterns in code.
+
+First, such tries were made by Hindle et al. [1]. Their solution was capturing high-level statistical
+regularity at the n-gram level (probabilistic chains of tokens), by taking n-1 previous tokens that
+are already entered into the text buffer, and attempting to guess the next token. The model built
+from the corpus gives maximum likelihood estimates of the probability of a specific choice of next token;
+this probability can be used to rank order the likely next tokens.
+
+A fair share of the research following the n-gram model approach has been built on top of that.
+For instance, Tu et al. [4] also "noticed that code has a high degree of localness, where identifiers
+(e.g. variable names) are repeated often within close distance" [2]. Thus, they applied a cache mechanism
+that assigns higher probability to tokens that have been observed most recently.
+
+After that, researches have turned to deep learning, more particularly using RNNs (deep recurrent
+neural networks) to outperform n-grams. These models predict each token sequentially, but loosen
+the fixed context-size assumption, instead representing the context using a distributed vector
+representation [2]. Karpathy et al. [5] used character-level LSTMs, however it was mostly to explore
+the accuracy of predictions LSTMs make of the code patterns in general.
+
+\section{Overview of other papers}
+Hellendoorn, Vincent J., et al. in their paper "When code completion fails: A case study on real-world
+completions" recorded the results of a case study of 15,000 completions (completion events) for VisualStudio.
+The conclusions they've reached based on their analysis are as follows:
 \begin{itemize}
-    \item main work is an extensible inference engine for intelligent code completion systems, called PatternBased Bayesian Network (PBN) -- Eclipse Code Recommenders6 project adapted the PBN approach for their intelligent call completion
-    \item Best Matching Neighbour algorithm -- We introduce Bayesian networks as an alternative underlying model, use additional context information for more precise recommendations, and apply clustering techniques to improve model sizes. 
-    \item Showing the developer hundreds of recommendations (e.g., the type Text in the SWT framework of Eclipse1 lists 168 methods and field declarations) may be as ineffective as showing none.
-    \item Intelligent code completions better target the needs of developers that are unfamiliar with an API. The FrUiT tool [Bruch et al. 2006] and its successor using the BestMatching Neighbor (BMN) algorithm [Bruch et al. 2009], which resulted in Eclipse Code Recommenders2, are examples of intelligent code completion systems.
-    \item two further important quality dimensions that need to be considered for code completion engines to effectively support developers: inference speed and model size.
-    \item evaluating quality, speed and model size
-    \item it is possible to see saturation effects starting at about 1,000 object usages, that is, every tripling of the input size leads to a smaller increase in prediction quality.
-    \item The system proposed by Heinemann et al. (2012) recommends methods to a developer that are relevant in the class currently under development.
-    \item This article showed that parameter call sites and the enclosing class context do not contribute much to prediction quality. However, this information could be crucial to find the right proposals for some types.
-    \item For example, the machine learning algorithm could detect and remove outliers in the dataset to further improve prediction quality. 
+	\item synthetic benchmarks misrepresent real-world completions
+    \item models that dynamically integrate local data fare much better than static ones, but intraproject queries remain the hardest category
+    \item benchmarks should address completions following their frequency of use, showing that intra-project API completions are surprisingly relevant
+    \item real-world efficacy is increased by focusing on the least accurate predictions in synthetic data: these are far more common and time-consuming IRL
+    \item even though RNNs often outperform n-gram models in typical natural language settings, n-gram models are sometimes a better choice for modeling source code. For example, the deep learner is better at core method invocations but loses on third-party library calls, whereas the n-gram model naturally outperforms it on internal API calls but loses out on the other categories
+    \item API recommendation tools that only recommend public APIs fail to address over half of the real-world queries
 \end{itemize}
+Their approach for the case study was: a static vocabulary is estimated on the training data and
+all events seen less than 10 times are treated as a generic "unknown" token, to produce a vocabulary
+of 75,913. Conclustions: approaches to perform code completions span a wide spectrum of techniques,
+but, virtually, all intelligent code completion models attempt to relate the context at the site of a
+required completion to a context that has been observed in some large training corpus. And completions
+can be split into two categories: Structural Feature Selection (domain knowledge of source code)
+and Linguistic Models of Code (ML/statistical models).
+
+
+Proksch, et al. in their paper "Intelligent Code Completion with Bayesian Networks" worked on
+an extensible inference engine for intelligent code completion systems, called PatternBased 
+Bayesian Network (PBN) -- Eclipse Code Recommenders6 project adapted the PBN approach for their
+intelligent call completion. They've also tested (evaluating quality, speed and model size)
+Best Matching Neighbour algorithm, saying "We introduce Bayesian networks as an alternative
+underlying model, use additional context information for more precise recommendations, and
+apply clustering techniques to improve model sizes.
+They've reached the following conclusions:
+\begin{itemize}
+    \item showing the developer hundreds of recommendations (e.g., the type Text in the SWT framework of Eclipse1 lists 168 methods and field declarations) may be as ineffective as showing none
+    \item intelligent code completions better target the needs of developers that are unfamiliar with an API (example: The FrUiT tool [Bruch et al. 2006])
+    \item two further important quality dimensions for code completion engines to effectively support developers: inference speed and model size
+    \item it is possible to see saturation effects starting at about 1,000 object usages, i.e. every tripling of the input size leads to a smaller increase in prediction quality
+\end{itemize}
+Check out: the system proposed by Heinemann et al. (2012) recommends methods to a developer that are relevant in the class currently under development.
+This article showed that parameter call sites and the enclosing class context do not contribute
+much to prediction quality. However, this information could be crucial to find the right proposals
+for some types. Machine learning algorithms could detect and remove outliers in the dataset
+to further improve prediction quality.
+
+\section{References}
+\begin{enumerate}
+	\item Hindle, Abram, et al. "On the naturalness of software." 2012 34th International Conference on Software Engineering (ICSE). IEEE, 2012. \href{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.1261&rep=rep1&type=pdf}{link}
+	\item Allamanis, Miltiadis, et al. "A survey of machine learning for big code and naturalness." ACM Computing Surveys (CSUR)51.4 (2018): 81. \href{https://arxiv.org/pdf/1709.06182.pdf}{link}
+	\item Amann, Sven, et al. "A study of visual studio usage in practice." 2016 IEEE 23rd International Conference on Software Analysis, Evolution, and Reengineering (SANER). Vol. 1. IEEE, 2016. \href{https://sarahnadi.org/resources/pubs/Amann_SANER16.pdf}{link}
+	\item Zhaopeng Tu, Zhendong Su, and Premkumar Devanbu. "On the localness of software." Proceedings of the 22nd ACM SIGSOFT International Symposium on Foundations of Software Engineering. ACM, 2014. \href{http://zptu.net/papers/fse2014_localness.pdf}{link}
+	\item Karpathy, Andrej, Justin Johnson, and Li Fei-Fei. "Visualizing and understanding recurrent networks." arXiv preprint arXiv:1506.02078 (2015). \href{https://arxiv.org/pdf/1506.02078.pdf}{link}
+	\item Proksch, Sebastian, Johannes Lerch, and Mira Mezini. "Intelligent code completion with Bayesian networks." ACM Transactions on Software Engineering and Methodology (TOSEM) 25.1 (2015): 1-31. (\href{https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8812116}{link})
+	\item Hellendoorn, Vincent J., et al. "When code completion fails: A case study on real-world completions." 2019 IEEE/ACM 41st International Conference on Software Engineering (ICSE). IEEE, 2019. (\href{https://dl.acm.org/doi/pdf/10.1145/2744200}{link})
+\end{enumerate}
