@@ -77,6 +77,61 @@ much to prediction quality. However, this information could be crucial to find t
 for some types. Machine learning algorithms could detect and remove outliers in the dataset
 to further improve prediction quality.
 
+\section{More Papers}
+"Are Deep Neural Networks the Best Choice for Modeling Source Code?"
+We introduce a dynamically updatable, nested scope, unlimited vocabulary count-based
+N-gram model that significantly outperforms all existing token-level models, including
+very powerful ones based on deep learning. Our work illustrates that traditional
+approaches, with some careful engineering, can beat deep learning models.
+
+"Code Completion with Neural Attention and Pointer Networks"
+In this paper, we apply neural language models on the code completion task, and
+develop an attention mechanism which exploits the parent-children information on
+program’s AST. To deal with the OoV values in code completion, we propose a pointer
+mixture network which learns to either generate a new value through an RNN component,
+or copy an OoV value from local context through a pointer component. Experimental
+results demonstrate the effectiveness of our approaches.
+
+"NEURAL CODE COMPLETION"
+However, existing approaches to intelligent code completion either rely on strong typing
+(e.g., Visual Studio for C++), which limits their applicability to widely used dynamically
+typed languages (e.g., JavaScript and Python), or are based on simple heuristics and term
+frequency statistics which are often brittle and are relatively error-prone.
+Raychev et al. (2014 -- Code completion with statistical language models) and White et al.
+(2015 -- Toward deep learning software repositories) explore how to use recurrent neural networks
+(RNNs) to facilitate the code completion task. However, these works only consider running
+RNNs on top of a token sequence to build a probabilistic model. Although the input sequence
+considered in Raychev et al. (2014) is produced from an abstract object, the structural
+information contained in the abstract syntax tree is not directly leveraged by the RNN structure
+in both of these two works. In contrast, we consider extending LSTM, a RNN structure,
+to leverage the structural information directly for the code prediction task.
+
+"Code Completion with Statistical Language Models"
+In this paper we presented a new approach to code completion based on a novel combination
+of program analysis with statistical language models, and implemented that approach in a tool
+called SLANG. Given a massive codebase, using program analysis, SLANG ﬁrst extracts abstract
+histories from the data. Then, these histories are fed to a language model such as an n-gram
+model or recurrent neural network model, which treats the histories as sentences in a natural
+language and learns probabilities for each sentence.
+
+MYROSLAVA CONCLUSION: seems most of this research hasn't been actually implemented; these are artificial
+studies to check how to improve ML use for code completion without any real implementation.
+This needs to be checked for sure, but if this is indeed the case, we have an advantage with our
+approach, because if we manage to implement it, we will be in the minority. But of course, the
+research for IDEs (current usage) still needs to be explored.
+
+"A Statistical Semantic Language Model for Source Code"
+Eclipse [4] and IntelliJ IDEA [12, 11] support template-based completion for common
+constructs/APIs (for/while, Iterator).
+https://javascript.software.informer.com/download-javascript-code-completion-tool-for-eclipse-plugin/
+and intellisense
+
+"Learning from Examples to Improve Code Completion Systems"
+Actually integrated their implementation (BMN based) into Eclipse, but it's 2009.
+
+to read : "Products, Developers, and Milestones: How Should I Build My N-Gram Language Model"
+
+
 \section{References}
 \begin{enumerate}
 	\item Hindle, Abram, et al. "On the naturalness of software." 2012 34th International Conference on Software Engineering (ICSE). IEEE, 2012. \href{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.1261&rep=rep1&type=pdf}{link}
