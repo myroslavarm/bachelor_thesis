@@ -2,39 +2,22 @@
 \label{chap:RelatedWork}
 
 \section{Software Naturalness}
-The primary research in the field started with a presumption that software is natural.
-The foreleading paper on the topic (Hindle, Abram, et al. "On the naturalness of software", 2012)[1],
-explains it like this: "software is natural, in the sense that it is created by humans at work,
-with all the attendant constraints and limitations — and thus, like natural language, it is also
-likely to be repetitive and predictable". Not only that, further research revealed that code is
-even more predictable and full of patterns than human languages. In the paper, they also go as far
-as to prove that (a) code can be usefully modelled by statistical language models and (b) such models
-can be leveraged to support software engineers.
+In the famous paper "On The Naturalness of Software", Hindle et al. [1] compared source code
+to natural languages. They claim that code is even more repetitive, predictable and full of
+patterns than human languages. In the paper, they also argue that code can be modelled by
+statistical language models, which can be used to support software engineers. Their approach
+was based on capturing high-level statistical regularity at the n-gram level by taking n-1
+previous tokens that are already entered into the text buffer, and attempting to guess the
+next token. Using this model, it is possible to estimate the most probable sequences of tokens
+and suggest the most relevant code completions to developers.
 
-Allamanis et al. in their paper "A survey of machine learning for big code and naturalness"[2]
-say the following: "software engineering and programming languages (SE/PL) should make the same
-transition [as natural language processing (NLP) research], augmenting traditional methods that
-consider only the formal structure of programs with information about the statistical properties
-of code", also exploiting recurring and predictable patterns in code.
-
-First, such tries were made by Hindle et al. [1]. Their solution was capturing high-level statistical
-regularity at the n-gram level (probabilistic chains of tokens), by taking n-1 previous tokens that
-are already entered into the text buffer, and attempting to guess the next token. The model built
-from the corpus gives maximum likelihood estimates of the probability of a specific choice of next token;
-this probability can be used to rank order the likely next tokens.
-
-A fair share of the research following the n-gram model approach has been built on top of that.
-For instance, Tu et al. [4] also "noticed that code has a high degree of localness, where identifiers
-(e.g. variable names) are repeated often within close distance" [2]. Thus, they applied a cache mechanism
-that assigns higher probability to tokens that have been observed most recently.
-
-After that, researches have turned to deep learning, more particularly using RNNs (deep recurrent
-neural networks) to outperform n-grams. These models predict each token sequentially, but loosen
-the fixed context-size assumption, instead representing the context using a distributed vector
-representation [2]. Karpathy et al. [5] used character-level LSTMs, however it was mostly to explore
-the accuracy of predictions LSTMs make of the code patterns in general.
-
-P.S. this section is largely taken from my blog (\href{https://medium.com/@myroslavarm/machine-learning-for-code-completion-2583792997e3}{link}).
+The work by Hindle et al. [1] served as a sort of catalyst for the following research. For
+instance, Tu et al. [4] also learnt that code "has a high degree of localness, where identifiers
+(e.g. variable names) are repeated often within close distance" [2]. Thus, they applied a cache
+mechanism that assigns higher probability to tokens that have been observed most recently. In the
+more recent years, researches started applying deep learning models such as deep recurrent
+neural networks. These models predict each token sequentially, but loosen the fixed context-size
+assumption, instead representing the context using a distributed vector representation [2].
 
 \section{Overview of other papers}
 Hellendoorn, Vincent J., et al. in their paper "When code completion fails: A case study on real-world
@@ -138,7 +121,6 @@ to read : "Products, Developers, and Milestones: How Should I Build My N-Gram La
 	\item Allamanis, Miltiadis, et al. "A survey of machine learning for big code and naturalness." ACM Computing Surveys (CSUR)51.4 (2018): 81. \href{https://arxiv.org/pdf/1709.06182.pdf}{link}
 	\item Amann, Sven, et al. "A study of visual studio usage in practice." 2016 IEEE 23rd International Conference on Software Analysis, Evolution, and Reengineering (SANER). Vol. 1. IEEE, 2016. \href{https://sarahnadi.org/resources/pubs/Amann_SANER16.pdf}{link}
 	\item Zhaopeng Tu, Zhendong Su, and Premkumar Devanbu. "On the localness of software." Proceedings of the 22nd ACM SIGSOFT International Symposium on Foundations of Software Engineering. ACM, 2014. \href{http://zptu.net/papers/fse2014_localness.pdf}{link}
-	\item Karpathy, Andrej, Justin Johnson, and Li Fei-Fei. "Visualizing and understanding recurrent networks." arXiv preprint arXiv:1506.02078 (2015). \href{https://arxiv.org/pdf/1506.02078.pdf}{link}
 	\item Proksch, Sebastian, Johannes Lerch, and Mira Mezini. "Intelligent code completion with Bayesian networks." ACM Transactions on Software Engineering and Methodology (TOSEM) 25.1 (2015): 1-31. (\href{https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8812116}{link})
 	\item Hellendoorn, Vincent J., et al. "When code completion fails: A case study on real-world completions." 2019 IEEE/ACM 41st International Conference on Software Engineering (ICSE). IEEE, 2019. (\href{https://dl.acm.org/doi/pdf/10.1145/2744200}{link})
 \end{enumerate}
