@@ -1,7 +1,7 @@
 \chapter{RelatedWork}
 \label{chap:RelatedWork}
 
-\section{Software Naturalness}
+\section{Software naturalness}
 In the famous paper "On The Naturalness of Software", Hindle et al. [1] compared source code
 to natural languages. They claim that code is even more repetitive, predictable and full of
 patterns than human languages. In the paper, they also argue that code can be modelled by
@@ -19,46 +19,23 @@ more recent years, researches started applying deep learning models such as deep
 neural networks. These models predict each token sequentially, but loosen the fixed context-size
 assumption, instead representing the context using a distributed vector representation [2].
 
-\section{Overview of other papers}
-Hellendoorn, Vincent J., et al. in their paper "When code completion fails: A case study on real-world
-completions" recorded the results of a case study of 15,000 completions (completion events) for VisualStudio.
-The conclusions they've reached based on their analysis are as follows:
-\begin{itemize}
-	\item synthetic benchmarks misrepresent real-world completions
-    \item models that dynamically integrate local data fare much better than static ones, but intraproject queries remain the hardest category
-    \item benchmarks should address completions following their frequency of use, showing that intra-project API completions are surprisingly relevant
-    \item real-world efficacy is increased by focusing on the least accurate predictions in synthetic data: these are far more common and time-consuming IRL
-    \item even though RNNs often outperform n-gram models in typical natural language settings, n-gram models are sometimes a better choice for modeling source code. For example, the deep learner is better at core method invocations but loses on third-party library calls, whereas the n-gram model naturally outperforms it on internal API calls but loses out on the other categories
-    \item API recommendation tools that only recommend public APIs fail to address over half of the real-world queries
-\end{itemize}
-Their approach for the case study was: a static vocabulary is estimated on the training data and
-all events seen less than 10 times are treated as a generic "unknown" token, to produce a vocabulary
-of 75,913. Conclustions: approaches to perform code completions span a wide spectrum of techniques,
-but, virtually, all intelligent code completion models attempt to relate the context at the site of a
-required completion to a context that has been observed in some large training corpus. And completions
-can be split into two categories: Structural Feature Selection (domain knowledge of source code)
-and Linguistic Models of Code (ML/statistical models).
+\section{Conclusions from further experiments}
+Hellendoorn, Vincent J., et al. [6] recorded the results of a case study of 15,000 completions
+(completion events) for VisualStudio. One of the conclustions they've reached is that even though
+RNNs often outperform n-gram models in typical natural language settings, n-gram models are
+sometimes a better choice for modeling source code. For example, the deep learner is better at
+core method invocations but loses on third-party library calls, whereas the n-gram model
+naturally outperforms it on internal API calls but loses out on the other categories.
 
-
-Proksch, et al. in their paper "Intelligent Code Completion with Bayesian Networks" worked on
-an extensible inference engine for intelligent code completion systems, called PatternBased 
-Bayesian Network (PBN) -- Eclipse Code Recommenders6 project adapted the PBN approach for their
-intelligent call completion. They've also tested (evaluating quality, speed and model size)
-Best Matching Neighbour algorithm, saying "We introduce Bayesian networks as an alternative
-underlying model, use additional context information for more precise recommendations, and
-apply clustering techniques to improve model sizes.
-They've reached the following conclusions:
-\begin{itemize}
-    \item showing the developer hundreds of recommendations (e.g., the type Text in the SWT framework of Eclipse1 lists 168 methods and field declarations) may be as ineffective as showing none
-    \item intelligent code completions better target the needs of developers that are unfamiliar with an API (example: The FrUiT tool [Bruch et al. 2006])
-    \item two further important quality dimensions for code completion engines to effectively support developers: inference speed and model size
-    \item it is possible to see saturation effects starting at about 1,000 object usages, i.e. every tripling of the input size leads to a smaller increase in prediction quality
-\end{itemize}
-Check out: the system proposed by Heinemann et al. (2012) recommends methods to a developer that are relevant in the class currently under development.
-This article showed that parameter call sites and the enclosing class context do not contribute
-much to prediction quality. However, this information could be crucial to find the right proposals
-for some types. Machine learning algorithms could detect and remove outliers in the dataset
-to further improve prediction quality.
+Proksch, et al. [5] worked on an extensible inference engine for intelligent code completion
+systems, called PatternBased Bayesian Network (PBN). Eclipse Code Recommenders6 project adapted
+the PBN approach for their intelligent call completion. They've also tested (evaluating quality,
+speed and model size) Best Matching Neighbour algorithm, using additional context information
+for more precise recommendations, and applying clustering techniques to improve model sizes.
+They've reached the following conclusions: showing the developer hundreds of recommendations
+may be as ineffective as showing none; intelligent code completions better target the needs of
+developers that are unfamiliar with an API; at about 1,000 object usages, i.e. every tripling
+of the input size, they get a smaller increase in prediction quality.
 
 \section{More Papers}
 "Are Deep Neural Networks the Best Choice for Modeling Source Code?"
@@ -111,9 +88,6 @@ and intellisense
 
 "Learning from Examples to Improve Code Completion Systems"
 Actually integrated their implementation (BMN based) into Eclipse, but it's 2009.
-
-to read : "Products, Developers, and Milestones: How Should I Build My N-Gram Language Model"
-
 
 \section{References}
 \begin{enumerate}
