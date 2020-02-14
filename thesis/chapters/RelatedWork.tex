@@ -38,48 +38,39 @@ may be as ineffective as showing none; intelligent code completions better targe
 developers that are unfamiliar with an API; at about 1,000 object usages, i.e. every tripling
 of the input size, they get a smaller increase in prediction quality.
 
+\cite{Hell17a} introduced a dynamically updatable, nested scope, unlimited vocabulary
+count-based N-gram model which outperformed both the traditional N-gram models and the deep
+learning RNN and LSTM models.
+
+\cite{Li17a} developed an attention mechanism which exploits the parent-children information of
+the code AST. As correctly predicting out-of-vocabulary (OoV) values in code completion is largely
+unsuccessful, the authors implemented a pointer mixture network which either generates a new value
+through an RNN component, or copies an OoV value from local context through a pointer component.
+
+\cite{Rayc14a} implemented a tool called SLANG, which ﬁrst extracts abstract histories from the data.
+Then, these histories are fed to a language model such as an n-gram model or recurrent neural network
+model, which treats the histories as sentences in a natural language and learns probabilities for
+each sentence, not at all taking into considering code AST information.
+
 \section{More Papers}
-"Are Deep Neural Networks the Best Choice for Modeling Source Code?"
-We introduce a dynamically updatable, nested scope, unlimited vocabulary count-based
-N-gram model that significantly outperforms all existing token-level models, including
-very powerful ones based on deep learning. Our work illustrates that traditional
-approaches, with some careful engineering, can beat deep learning models.
+"Neural Code Completion"
+Existing approaches to intelligent code completion either rely on strong typing (e.g.,
+Visual Studio for C++), which limits their applicability to widely used dynamically typed
+languages, or are based on simple heuristics and term frequency statistics which are often
+brittle and are relatively error-prone. Raychev et al. (2014, Code completion with statistical
+language models) and White et al. (2015, Toward deep learning software repositories) explore
+how to use recurrent neural networks (RNNs) to facilitate the code completion task. However,
+these works only consider running RNNs on top of a token sequence to build a probabilistic
+model. Although the input sequence considered in Raychev et al. (2014) is produced from an
+abstract object, the structural information contained in the abstract syntax tree is not
+directly leveraged by the RNN structure in both of these two works. In contrast, we consider
+extending LSTM to leverage the structural information directly for the code prediction task.
 
-"Code Completion with Neural Attention and Pointer Networks"
-In this paper, we apply neural language models on the code completion task, and
-develop an attention mechanism which exploits the parent-children information on
-program’s AST. To deal with the OoV values in code completion, we propose a pointer
-mixture network which learns to either generate a new value through an RNN component,
-or copy an OoV value from local context through a pointer component. Experimental
-results demonstrate the effectiveness of our approaches.
-
-"NEURAL CODE COMPLETION"
-However, existing approaches to intelligent code completion either rely on strong typing
-(e.g., Visual Studio for C++), which limits their applicability to widely used dynamically
-typed languages (e.g., JavaScript and Python), or are based on simple heuristics and term
-frequency statistics which are often brittle and are relatively error-prone.
-Raychev et al. (2014 -- Code completion with statistical language models) and White et al.
-(2015 -- Toward deep learning software repositories) explore how to use recurrent neural networks
-(RNNs) to facilitate the code completion task. However, these works only consider running
-RNNs on top of a token sequence to build a probabilistic model. Although the input sequence
-considered in Raychev et al. (2014) is produced from an abstract object, the structural
-information contained in the abstract syntax tree is not directly leveraged by the RNN structure
-in both of these two works. In contrast, we consider extending LSTM, a RNN structure,
-to leverage the structural information directly for the code prediction task.
-
-"Code Completion with Statistical Language Models"
-In this paper we presented a new approach to code completion based on a novel combination
-of program analysis with statistical language models, and implemented that approach in a tool
-called SLANG. Given a massive codebase, using program analysis, SLANG ﬁrst extracts abstract
-histories from the data. Then, these histories are fed to a language model such as an n-gram
-model or recurrent neural network model, which treats the histories as sentences in a natural
-language and learns probabilities for each sentence.
-
-MYROSLAVA CONCLUSION: seems most of this research hasn't been actually implemented; these are artificial
-studies to check how to improve ML use for code completion without any real implementation.
-This needs to be checked for sure, but if this is indeed the case, we have an advantage with our
-approach, because if we manage to implement it, we will be in the minority. But of course, the
-research for IDEs (current usage) still needs to be explored.
+MYROSLAVA CONCLUSION: seems most of this research hasn't been actually implemented; these are
+artificial studies to check how to improve ML use for code completion without any real
+implementation. This needs to be checked for sure, but if this is indeed the case, we have an
+advantage with our approach, because if we manage to implement it, we will be in the minority.
+But of course, the research for IDEs (current usage) still needs to be explored.
 
 "A Statistical Semantic Language Model for Source Code"
 Eclipse [4] and IntelliJ IDEA [12, 11] support template-based completion for common
