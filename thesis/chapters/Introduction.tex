@@ -2,10 +2,40 @@
 \label{chap:Introduction}
 
 \section{Context}
+Code completion, also often referred to as autocompletion, is one of the most
+used features in any IDE. Whether it is being used for improving speed and
+accuracy of typing, or is used as an API guide, it is an essential part of any
+successful IDE and a fair share of code editors. It is one of the first things
+a developer notices as soon as they start coding, and it is something that can
+certainly "make or break" the workflow. Therefore, it is no wonder that it is
+also a somewhat popular research topic, where software engineers try to figure out
+a way to make code completion as effective, as accurate, and as fast as possible.
 
-context of the work
+There are many approaches to handling the process of completing code. The classic
+strategies have been to use lexical models (completing based on the prefix the user
+is typing) or to use semantic models (use code structure analysis information to
+tailor completions). In the latest years statistical, or machine learning, models
+have also gained popularity. For the most part when using ML, source code analysis
+is also often disregared in lieu of simply training the model on the code base and
+inferring all the possible code dependencies from that.
 
 \section{Problem}
 \label{sec:Introduction-Problem}
+In this work we are trying to give an answer to the following questions:
+\begin{itemize}
+    \item Can we improve code completion in Pharo by sorting candidate completions
+    with an n-gram language model?
+    \item Can we build a tool based on a trained n-gram model that would propose
+    completion fast enough to be used in an IDE?
+    \item How can we numerically evaluate the results of code completion produced
+    by different completion strategies?
+\end{itemize}
 
-research problems
+\section{Our Approch}
+\label{sec:Introduction-Approach}
+Use N-gram models for sorting the results in Pharo code completion.
+In particular, implement and have a working completion based on:
+\begin{itemize}
+    \item unigrams (frequencies)
+    \item bigrams
+\end{itemize}
