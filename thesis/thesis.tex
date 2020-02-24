@@ -180,30 +180,15 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 1. Context\\
-Autocompletion is one of the most essential features of any IDE.
-A good autocompletion tool can greatly improve the developer experience,
-whereas poor autocompletion can hinder the progress and discourage developers.
-Thus, it is important to find a way to make it as effective as possible.\\
+Autocompletion is one of the most essential features of any IDE. A good autocompletion tool can greatly improve the developer experience, whereas poor autocompletion can hinder the progress and discourage developers. Thus, it is important to find a way to make it as effective as possible.\\
 2. Problem\\
-Specifically, in the case of Pharo, in the last year and a half
-a lot of work has been carried out to improve autocompletion.
-However, there are more potential improvements from which developers can only benefit:
-saving time and effort spent while coding remains an open question.\\
+Specifically, in the case of Pharo, in the last year and a half a lot of work has been carried out to improve autocompletion. However, there are more potential improvements from which developers can only benefit: saving time and effort spent while coding remains an open question.\\
 3. Why this is a problem?\\
-In Pharo, the existing autocompletion implementation only allows for alphabetical sorting.
-While this approach is mostly usable, it completely ignores the potential of suggesting
-completion results based on code history and analysis,
-which is something that has been successfully adopted by other IDEs.\\
+In Pharo, the existing autocompletion implementation only allows for alphabetical sorting. While this approach is mostly usable, it completely ignores the potential of suggesting completion results based on code history and analysis, which is something that has been successfully adopted by other IDEs.\\
 4. Proposed solution\\
-Thus, in this work I study how autocompletion in Pharo can be improved by using
-machine learning and statistical language models. In particular, the idea is to use
-the N-gram language model, as it has been documented to be used for such a task,
-and, if successfully adapted to Pharo, might help enhance our autocompletion.\\
+Thus, in this work I study how autocompletion in Pharo can be improved by using machine learning and statistical language models. In particular, the idea is to use the N-gram language model, as it has been documented to be used for such a task, and, if successfully adapted to Pharo, might help enhance our autocompletion.\\
 5. Why this solution solves the problem?\\
-With the help of the N-gram implementation, we implement a sorting strategy where
-the most relevant results (based on likelihood analysis of source code) are shown first.
-This approach makes finding a desired suggestion much faster, and can potentially
-not only reduce coding time but also demonstrate correct API usage.\\
+With the help of the N-gram implementation, we implement a sorting strategy where the most relevant results (based on likelihood analysis of source code) are shown first. This approach makes finding a desired suggestion much faster, and can potentially not only reduce coding time but also demonstrate correct API usage.\\
 6. Proposed validation\\
 For the most part, feedback received from developers.\\
 7. Results
