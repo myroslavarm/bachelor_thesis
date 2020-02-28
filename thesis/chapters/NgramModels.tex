@@ -15,7 +15,17 @@ Thus, the idea is, we want to count how many times we encounter \textit{Object} 
 \end{equation}
 
 \section{Unigram Sorting}
-explain approach and results
+To get the source code history data for our research, we used the results of an experiment by \cite{Zait20a}. 
+
+In particular, we used the data contained in the tokens.csv file, as the collected source code was already split into separate tokens for each method. After additional cleaning of the data, which included eliminating erroneously kept double TAB sequences and dealing with the tokens VS tokenTypes mismatch by removing the incorrect entries, we were able to record individual token frequencies (number of occurrences) by counting and writing them to the frequencies.csv file.
+
+In a seperate \textit{FrequencyTable} class we read the data from file and forwarded it to the \textit{FrequencyCompletionSorter} class, to use it for sorting the completion results. Succesfully plugging the implementation into the sorter, we faced a problem: as the number of tokens was around 150k, the lookup was slow enough to be noticeable and break the developer's flow when typing. 
+
+To fix this, several steps were taken. The first thing we did was to refactor some code in the Pharo IDE itself, which had long been considered a possible fix for speed issues. In particular, it involved moving passing completion context to sorter up to the initialisation step, as opposed to passing the context for every keystroke. This, however, did not have much of an effect for our case (but still, we believe, was useful for the completion in general, even if less noticeably so).
+
+The second approach taken was to set up a Singleton implementation of the \textit{FrequencyTable} and \textit{FrequencyCompletionSorter} classes that would enable us to have only one instance of the class, and not have many instances to which we pass our context information. This also did not bring noticeable speed improvement for sorting completions.
+
+In the end, we tried an approach which we had long had in mind, which involved only writing to file the tokens, whose frequency was more or equal to 10. In this way we were able to cut off most of the miscellaneous, rarely encountered in real life tokens, and shorten our dataset from 150k to just 16k entries. This made the lookup of frequencies during completion sorting very fast. As a result, it was now possible to type and use completion information without any delays.
 
 \section{Bigram Sorting}
 explain approach and results
