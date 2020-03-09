@@ -30,3 +30,9 @@ who's the examiner? stef? oles? how many examiners? combine supervisor/examiner?
 2. more extensive problem description - researching materials, aim and objectives
 3. doing the actual work, collecting+analysing data, drawing conclusions from results
 4. first draft, update
+
+Intro/project proposal tip:
+![project proposal](https://github.com/myroslavarm/bachelor_thesis/blob/master/img/photo5418276062414089422.jpg)
+
+Citations:
+![references](https://github.com/myroslavarm/bachelor_thesis/blob/master/img/photo5418260360013655337.jpg)
