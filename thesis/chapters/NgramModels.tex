@@ -28,4 +28,8 @@ The second approach taken was to set up a Singleton implementation of the \texti
 In the end, we tried an approach which we had long had in mind, which involved only writing to file the tokens, whose frequency was more or equal to 10. In this way we were able to cut off most of the miscellaneous, rarely encountered in real life tokens, and shorten our dataset from 150k to just 16k entries. This made the lookup of frequencies during completion sorting very fast. As a result, it was now possible to type and use completion information without any delays.
 
 \section{Bigram Sorting}
-explain approach and results
+\begin{itemize}
+    \item implemented Bigram with the help of the NgramModel Pharo library, which in the process extended by: (1) adding the functionality to filter the table of ngrams (2) adding writing to and reading ngram models from file
+    \item replaced "one-time" tokens with placeholders, in particular added placeholders for strings, comments, symbols, characters, arrays and numbers; which means that both the number of total tokens and subsequent ngram sequences has been greatly reduced even before further filtering
+    \item implemented Bigram-based sorting which can now be used by setting the default sorter as the BigramCompletionSorter. to make it work needed to be able to get a previous word (history in bigrams) from context and calculate the probability of each of the ngram sequences (history word + each completion candidate), and sort based on that
+\end{itemize}
