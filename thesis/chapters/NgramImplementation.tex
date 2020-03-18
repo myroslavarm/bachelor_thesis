@@ -1,18 +1,8 @@
 \chapter{N-gram Implementation}
 \label{chap:N-gram Implementation}
 
-In this chapter we briefly go over the theoretical background for the N-grams model, as well as describe in detail our approach and experiments with it.
-\section{N-gram Language Models}
-Language models are models that assign probabilities to sentences or sequences of words (\cite{Jura09a}). Among them, one of the most common ones is the N-gram model, which is widely used in natural language processing (NLP) and computational biology. N-grams, which use the sequences of \textit{n} words, most commonly 2 (bigrams) or 3 (trigrams), as well as 1 (unigrams), are able to predict the next item in the form of a \textit{(n-1)} Markov model. This means that our prediction is based on \textit{n-1} previous words or, more accurately in relation to source code, tokens.
+\section{}
 
-For example, if we want to know how likely it is that \textit{Object} will be followed by \textit{new} and we use the notation that $P(t|h)$ is probability of a token \textit{t} given history \textit{h} (\cite{Jura09a}), we can present our bigram in the following way:
-\begin{equation}
-    P(new|Object)
-\end{equation}
-Thus, the idea is, we want to count how many times we encounter \textit{Object} and then how many times we see \textit{Object new}, and divide the latter by the former:
-\begin{equation}
-    \frac{\text{Object new}}{\text{Object}}
-\end{equation}
 
 \section{Unigram Sorting}
 To get the source code history data for our research, we used the results of an experiment by \cite{Zait20a}. 

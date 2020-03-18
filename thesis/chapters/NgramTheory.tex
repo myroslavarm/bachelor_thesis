@@ -1,0 +1,48 @@
+\chapter{N-gram Background}
+\label{chap:N-gram Background}
+
+In this chapter we go over the theoretical background for the N-grams models, the challenges in their successful implementation, as well as how they can be evaluated.
+
+\section{N-gram Language Models}
+In Natural Language Processing (NLP) being able to predict upcoming words or assign probabilities to sequences of words, like phrases and sentences, is one of the essential things in at least several areas, such as speech recognition, spelling correction, spam filtering, machine translation and so on. Thus, by assigning probabilities to words or sequences of words you can improve your accuracy, by suggesting things that are more likely to appear in a given context.
+
+Models that assign such probabilities to sentences or sequences of words are called language models (\cite{Jura09a}). Among them, is the n-gram language model, which assigns probabilities to sequences out of \textit{n} words, called the n-grams. Just one word will be a unigram, 2-gram are referred to as bigrams, 3-grams are referred to as trigrams, and so on. An example of a bigram might be "he ate", "ate the", "the whole" and "whole pizza", whereas a trigram would look like "he ate the", "ate the whole", and "the whole pizza". 
+
+The idea of an n-gram language model could therefore be phrased as the following: to estimate the likelihood of a word in a sequence, based on the "history", which is the previous \textit{(n-1)} words. From this point, we will use the term n-gram to mean either the n-gram language model or the sequence of n words such model uses.
+
+\section{N-grams}
+To compute the probability of a word \textit{w} based on history \textit{h}, we use the following formula:
+\begin{equation}
+    P(w|h)
+\end{equation}
+
+To put it into a more concrete example, if we have a sentence "he ate the whole pizza", and want to compute the probability of the word "pizza" given that the previous words are "he ate the whole", we can simply do:
+\begin{equation}
+    P(\text{pizza}|\text{he ate the whole})
+\end{equation}
+
+In order to estimate it, we need to compute the number of occurences of "he ate the whole", as well the number occurences of the sentence "he ate the whole pizza", and divide the latter by the former:
+\begin{equation}
+    P(\text{pizza}|\text{he ate the whole})=\frac{C(\text{he ate the whole pizza})}{C(\text{he ate the whole})}
+\end{equation}
+
+However, in large enough data corpora, it can be a challenge to estimate such large sequences. Hence, the idea behind the n-gram model, is that we don't need a large history, but can approximate it using just the last few words (\cite{Jura09a}). This can be done as per the Markov assumption, which means we can reduce our conditional probabilities to be approximately equal:
+\begin{equation}
+    P(\text{pizza}|\text{he ate the whole}) \sim P(\text{pizza}|\text{whole})
+\end{equation}
+
+add MLE and relative frequence explanations
+
+\section{Evaluating Models}
+\begin{itemize}
+    \item train/test set
+    \item perplexity explanation
+\end{itemize}
+
+\section{Smoothing}
+\begin{itemize}
+    \item potential zero division because of unknown words
+    \item the idea of smoothing and different types
+\end{itemize}
+
+\section{Summary}
