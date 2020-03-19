@@ -1,21 +1,17 @@
-\chapter{N-gram Implementation}
-\label{chap:N-gram Implementation}
+\chapter{Proposed solution}
+\label{chap:Proposed solution}
 
-\section{}
+\section{Background}
+In our case, in code completion, we want to suggest the most likely tokens at every step. The main idea is, however, that we leave the existing, AST-based code completion engine in place, and just enhance the sorting strategy. That is, after we already have a list of completion candidates proposed to us, we sort it based on each ngram's probability and therefore show the most relevant completions first. In order to do that, we figured it would make sense to train our model on source code data, write it to file, and at every point fetch the relevant, pre-processed information from file where it is stored.
 
+The source code history data used for this was retrieved by \cite{Zait20a} for their research regarding characterising Pharo code. In particular, the data comes from 50 projects, which consisted of 824 packages, 13,935 classes, and 151,717 methods. In particular, we used the dataset where the source code was already split into tokens and respective token types for each method. In this dataset, even delimiters and non-alphabetic tokens were included, and comments were considered tokens. For example, tokens could include '"Here is a comment for this method"' and '.', and their respective token types would be 'COM' and 'DOT'.
+
+Due to a large number of tokens in our dataset, we needed to be mindful of potential time constraints, as the lookup of ngram probabilities used for sorting had to be fast enough to not make the developer pause and wait for it. Throughout the course of the experiment, we came up with various ways to additionally reduce the dataset, and each of those attempts will be described in the following sections.
 
 \section{Unigram Sorting}
-To get the source code history data for our research, we used the results of an experiment by \cite{Zait20a}. 
+After additional cleaning of the data, we recorded individual token frequencies (i.e. number of occurrences in the source code history for each token) by counting and writing them to file. However, when using the results to sort code completion candidates, we faced a problem: as the number of tokens was around 150k, the lookup was slow enough to be noticeable and break the developer's flow when typing. 
 
-In particular, we used the data contained in the tokens.csv file, as the collected source code was already split into separate tokens for each method. After additional cleaning of the data, which included eliminating erroneously kept double TAB sequences and dealing with the tokens VS tokenTypes mismatch by removing the incorrect entries, we were able to record individual token frequencies (number of occurrences) by counting and writing them to the frequencies.csv file.
-
-In a seperate \textit{FrequencyTable} class we read the data from file and forwarded it to the \textit{FrequencyCompletionSorter} class, to use it for sorting the completion results. Succesfully plugging the implementation into the sorter, we faced a problem: as the number of tokens was around 150k, the lookup was slow enough to be noticeable and break the developer's flow when typing. 
-
-To fix this, several steps were taken. The first thing we did was to refactor some code in the Pharo IDE itself, which had long been considered a possible fix for speed issues. In particular, it involved moving passing completion context to sorter up to the initialisation step, as opposed to passing the context for every keystroke. This, however, did not have much of an effect for our case (but still, we believe, was useful for the completion in general, even if less noticeably so).
-
-The second approach taken was to set up a Singleton implementation of the \textit{FrequencyTable} and \textit{FrequencyCompletionSorter} classes that would enable us to have only one instance of the class, and not have many instances to which we pass our context information. This also did not bring noticeable speed improvement for sorting completions.
-
-In the end, we tried an approach which we had long had in mind, which involved only writing to file the tokens, whose frequency was more or equal to 10. In this way we were able to cut off most of the miscellaneous, rarely encountered in real life tokens, and shorten our dataset from 150k to just 16k entries. This made the lookup of frequencies during completion sorting very fast. As a result, it was now possible to type and use completion information without any delays.
+Our approach to improve the time efficiency was to set a certain threshold for the number of occurences, and to cut off all the tokens with frequencies below it. We put the threshold equal to 10, meaning if the token occured less than 10 times throughout the whole history, it was irrelevant enough to be discarded. This way, we were able to cut off most of the miscellaneous, rarely encountered tokens, and shortened our dataset from 150k to just 16k entries. This made the frequencies lookup during completion sorting very fast and, as a result, it was now possible to type and use completion information without any delays.
 
 \section{Bigram Sorting}
 \begin{itemize}
