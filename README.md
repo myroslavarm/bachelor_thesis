@@ -6,10 +6,11 @@ my bachelor thesis for UCU
 
 Thesis writing progress:
 
-- [x] introduction (ready for review, mostly complete)
-- [x] related works (ready for review, half complete at best)
+- [ ] introduction (half complete, will be finished at the end)
+- [ ] related works (needs to be mostly rewritten + more materials to read)
 - [ ] pharo completion (not started yet)
-- [x] n-gram models (needs to be reviewed, but only just started)
+- [ ] n-gram theory (2/5 sections, needs more work soon)
+- [ ] n-gram implementation (needs to be mostly rewritten asap)
 - [ ] evaluation (not started yet)
 - [ ] conclusion (not started yet)
 
