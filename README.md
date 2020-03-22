@@ -5,12 +5,13 @@ my bachelor thesis for UCU
 2. proposal - TODO
 
 Thesis writing progress:
+(checked out are the boxes for the chapters that have at least been started)
 
-- [ ] introduction (half complete, will be finished at the end)
-- [ ] related works (needs to be mostly rewritten + more materials to read)
+- [x] introduction (half complete, will be finished at the end)
+- [x] related works (needs to be mostly rewritten + more materials to read)
 - [ ] pharo completion (not started yet)
-- [ ] n-gram theory (2/5 sections, needs more work soon)
-- [ ] n-gram implementation (needs to be mostly rewritten asap)
+- [x] n-gram theory (all sections, needs to be checked and improved)
+- [x] n-gram implementation (mostly done, needs to be checked and improved)
 - [ ] evaluation (not started yet)
 - [ ] conclusion (not started yet)
 
