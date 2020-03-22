@@ -31,12 +31,14 @@ However, in large enough data corpora, it can be a challenge to estimate such la
     P(\text{pizza}|\text{he ate the whole}) \sim P(\text{pizza}|\text{whole})
 \end{equation}
 
+In general, n-gram probabilities can be estimated by counting the occurences in the corpus and normalising them (as per the maximum likelihood estimate, or MLE for short).
+
 need help with adding MLE and relative frequence explanations?
 
 \section{Evaluating Models}
 Now, evaluation is a really important step to take after developing and testing a model. One wants to be able to measure the performance and be able to say if it is an improvement on the current state, and by how much. Essentially, there are two ways of evaluation: extrinsic and intrinsic. Extrinsic means actually using the results of the model in an application and measuring how it works. The intrinsic evaluation, however, can measure the results without testing them out in the application, but simply by running the model on the so called test data. It is important to note, that the test data shouldn't be the same as the data the model was initially trained on, to not skew the accuracy measurements.
 
-include perplexity explanation?
+As raw probability is not used for evaluation language models, when using the intrinsic evaluation something called perplexity is used. Perplexity is the inverse probability of a test set, normalised by the total number of words.
 
 \section{Smoothing}
 There is, however, the problem of incorrectly estimating probabilities of sequences, if they are not known to us (i.e. weren't in the training set). Those might be perfectly valid sequences that will inadvertently have the probability of 0. Not only can this hurt the performance of an application, but it can also lead to division by 0.
@@ -46,3 +48,11 @@ So if the word is entirely unknown, we can convert it to the unknown word token 
 There are several smoothing algorithms, the simplest of which is Laplace smoothing, which we will describe as an example. In this algorithm, one simply needs to add 1 to all the counts, before normalising them (so all the counts will be increased by one, and there will be no 0 counts, and no 0 probabilities). Laplace smoothing doesn't perform well enough to be used in practice. A more useful algorithm based on a similar idea, would be add-k smoothing, which adds a fractional count k (for example, 0.1, 0.5, etc.) to the count, instead of 1.
 
 \section{Summary}
+In short:
+\begin{itemize}
+    \item language models assign probabilities to sentences and sequences of words, and thus predict more likely words
+    \item n-gram language models assign probabilities to sequences of \textit{n} words
+    \item being a Markov model, the probability of an n-gram model can be approximated to depend just on the several last words, instead of the whole history
+    \item n-gram models can be evaluated either extrinsically, by being embedded and tested out in an application, or intrinsically, by testing them on test data and using perplexity
+    \item smoothing is needed in case words appear in an unknown context; that way probability is redistributed among all the sequences to prevent skewing of data
+\end{itemize}
