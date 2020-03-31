@@ -1,8 +1,11 @@
 \chapter{Completion in Pharo}
 \label{chap:Completion in Pharo}
 
-\begin{itemize}
-    \item overview of the pharo ide and how completion works in general
-    \item overview of the old completion (pre-AST)
-    \item overview of the AST alphabetical completion and the role the sorter plays
-\end{itemize}
+\section{Code Completion Background}
+overview of how code completion works in general and specifically how does it function in the Pharo IDE (challenges, i.e. dynamic language etc)
+
+\section{Existing Pharo Completion}
+description of the completion we had pre-AST and what was wrong with it, and how/why we decided to go to AST completion but it's just alphabetical
+
+\section{Sorter Plugin}
+explain the role the sorter plays and that it's exactly the part of the existing completion that allows us to experiment with n-gram sorting and so on
