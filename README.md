@@ -9,10 +9,10 @@ Thesis writing progress:
 
 - [x] introduction (half complete, will be finished at the end)
 - [x] related works (mostly ready but needs more examples of research implemented in IDEs)
-- [ ] pharo completion (sections overview)
+- [x] pharo completion (sections overview)
 - [x] n-gram theory (all sections, needs to be checked and improved)
 - [x] n-gram implementation (mostly done, needs to be checked and improved)
-- [ ] evaluation (sections overview)
+- [x] evaluation (sections overview)
 - [ ] conclusion (not started yet)
 
 
