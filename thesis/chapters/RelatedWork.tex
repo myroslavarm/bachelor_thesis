@@ -9,7 +9,9 @@ According to \cite{Bruc09a}, up until 10 years ago code completions were exclusi
 \section{Software naturalness}
 In the famous paper "On The Naturalness of Software", \cite{Hind12a} compared source code to natural languages. They claim that code is even more repetitive, predictable and full of patterns than human languages. In the paper, they also argue that code can be modelled by statistical language models, which can be used to support software engineers. Their approach was based on capturing high-level statistical regularity at the n-gram level by taking n-1 previous tokens that are already entered into the text buffer, and attempting to guess the next token. Using this model, it is possible to estimate the most probable sequences of tokens and suggest the most relevant code completions to developers.
 
-The work by \cite{Hind12a} served as a sort of catalyst for the following research. For instance, \cite{Tu14a} also learnt that code "has a high degree of localness, where identifiers (e.g. variable names) are repeated often within close distance" (\cite{Alla18a}). Thus, they applied a cache mechanism that assigns higher probability to tokens that have been observed most recently, and were able to improve the results even further. 
+The work by \cite{Hind12a} served as a sort of catalyst for the following research. For instance, \cite{Tu14a} also learnt that code "has a high degree of localness, where identifiers (e.g. variable names) are repeated often within close distance" (\cite{Alla18a}). Thus, they applied a cache mechanism that assigns higher probability to tokens that have been observed most recently, and were able to improve the results even further.
+
+\cite{Nguy13a} improved the state-of-the-art n-gram approach by incorporating semantic information into code tokens, rather than treating them as text -- i.e. annotating each token with its data type and semantic role if available, which allowed them to even further increase predictability. However, of course, the experiment was only configured for Java and C\#, and is not quite as applicable to dynamically typed programming languages.
 
 \section{Deep Learning for Code Completion}
 In the more recent years, researches started applying deep learning models such as deep recurrent neural networks.
@@ -23,11 +25,3 @@ For instance, \cite{Hell19a} recorded the results of a case study of 15,000 comp
 \cite{Li17a} developed an attention mechanism which exploits the parent-children information of the code AST. As correctly predicting out-of-vocabulary (OoV) values in code completion is largely unsuccessful, the authors implemented a pointer mixture network which either generates a new value through an RNN component, or copies an OoV value from local context through a pointer component.
 
 \cite{Rayc14a} implemented a tool called SLANG, which ﬁrst extracts abstract histories from the data. Then, these histories are fed to a language model such as an n-gram model or recurrent neural network model, which treats the histories as sentences in a natural language and learns probabilities for each sentence, not at all taking into considering code AST information.
-
-\section{More Papers}
-MYROSLAVA CONCLUSION: seems most of this research hasn't been actually implemented; these are artificial studies to check how to improve ML use for code completion without any real implementation. This needs to be checked for sure, but if this is indeed the case, we have an advantage with our approach, because if we manage to implement it, we will be in the minority. But of course, the research for IDEs (current usage) still needs to be explored.
-
-"A Statistical Semantic Language Model for Source Code"
-Eclipse [4] and IntelliJ IDEA [12, 11] support template-based completion for common constructs/APIs (for/while, Iterator).
-https://javascript.software.informer.com/download-javascript-code-completion-tool-for-eclipse-plugin/
-and intellisense
