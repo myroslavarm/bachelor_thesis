@@ -11,12 +11,11 @@
 
 2. **Related Works**
 
-   *a work in progress, needs to be mostly rewritten + a lot to read*; existing sections:
-   - 2.1 Code Completion Before Machine Learning
+   *a work in progress, still needs some enhancement regarding practical IDE completion research*; existing sections:
+   - 2.1 Earlier Code Completion Systems
    - 2.2 Software Naturalness
-   - 2.3 Conclusions from Further Experiments
-   - 2.4 More Papers (name WIP)
-
+   - 2.3 Deep Learning for Code Completion
+   
 3. **Completion in Pharo**
    
    *not started yet*; ideas:
