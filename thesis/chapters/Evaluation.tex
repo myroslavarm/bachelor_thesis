@@ -20,7 +20,16 @@ However, a proper qualitative evalution requires an extensive set-up, such as in
 (Remark: we will, however, record our own impressions we have from coding using different completion and sorting implementations.)
 
 \section{The Experiment Itself}
-describing what we did and how we set it up exactly
+The quantitative evaluation approach we decided to take is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
+
+In particular, the idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, our completion gets triggered for every token with the cursor between the 2nd and the 8th position (this range also taken from the \cite{Robb08a} paper). This means that starting with every second symbol of an alphabetic token, we invoke the completion and compare whether the result suggested at that step matches the one that followed in real history. This creates an illusion of it being a qualitative evalution setup, except with no human participation and instead with strict mathematical metrics.
+
+In order for this to work, we have a dataset of methods from the Pharo IDE source code, and for each of them we repeat this process of calling the completion at each step and recording:
+\begin{itemize}
+    \item whether the correct completion was present among the suggestions at all
+    \item if it was, what was its position
+    \item additionally, how many times did we have the correct suggestion appearing within the first 10 resulting candidates
+\end{itemize}
 
 \section{Results}
-demonstrate what we got as the result of evaluating and comparing different sorting strategies
+demonstrate what we got as the result of evaluating and comparing different sorting strategies (different completion engines?)
