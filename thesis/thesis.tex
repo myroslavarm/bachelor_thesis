@@ -179,19 +179,15 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-1. Context\\
-Autocompletion is one of the most essential features of any IDE. A good autocompletion tool can greatly improve the developer experience, whereas poor autocompletion can hinder the progress and discourage developers. Thus, it is important to find a way to make it as effective as possible.\\
-2. Problem\\
-Specifically, in the case of Pharo, in the last year and a half a lot of work has been carried out to improve autocompletion. However, there are more potential improvements from which developers can only benefit: saving time and effort spent while coding remains an open question.\\
-3. Why this is a problem?\\
-In Pharo, the existing autocompletion implementation only allows for alphabetical sorting. While this approach is mostly usable, it completely ignores the potential of suggesting completion results based on code history and analysis, which is something that has been successfully adopted by other IDEs.\\
-4. Proposed solution\\
-Thus, in this work I study how autocompletion in Pharo can be improved by using machine learning and statistical language models. In particular, the idea is to use the N-gram language model, as it has been documented to be used for such a task, and, if successfully adapted to Pharo, might help enhance our autocompletion.\\
-5. Why this solution solves the problem?\\
-With the help of the N-gram implementation, we implement a sorting strategy where the most relevant results (based on likelihood analysis of source code) are shown first. This approach makes finding a desired suggestion much faster, and can potentially not only reduce coding time but also demonstrate correct API usage.\\
-6. Proposed validation\\
-For the most part, feedback received from developers.\\
-7. Results
+Code completion is one of the essential features of any IDE that greatly improves the developer experience and productivity. Good code completion can both speed up the development process, as well as aid the developer in API exploration. On the other hand, having a slow or inaccurate completion can be very cumbersome. Thus, it is important to find a way to make it as effective as possible.
+
+The current implementation of code completion in the Pharo IDE is based on abstract syntax tree (AST) information of source code. This allows us to know the semantic role and, where possible, even the type of tokens. Hence, at every point in the completion, contextually relevant results are suggested.
+
+However, the completion candidates that are proposed are sorted alphabetically. We believe, this approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs.
+
+Therefore, in this work we study how code completion can be improved using statistical language models for sorting completion results. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram implementation, we implement a sorting strategy where the most relevant results (based on likelihood analysis of source code) are shown first. This allows us to propose more accurate suggestions even without knowing the exact type of the token, and makes finding a desired suggestion much faster.
+
+In the end, we also quantitatively evaluate the various sorting strategies implemented to be able to gauge performance accuracy for each one. 
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
