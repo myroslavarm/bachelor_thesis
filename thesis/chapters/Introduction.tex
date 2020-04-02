@@ -2,24 +2,36 @@
 \label{chap:Introduction}
 
 \section{Context}
-Code completion, also often referred to as autocompletion, is one of the most used features in any IDE. Whether it is being used for improving speed and accuracy of typing, or is used as an API guide, it is an essential part of any successful IDE and a fair share of code editors. It is one of the first things a developer notices as soon as they start coding, and it is something that can certainly "make or break" the workflow. Therefore, it is no wonder that it is also a somewhat popular research topic, where software engineers try to figure out a way to make code completion as effective, as accurate, and as fast as possible.
+Code completion, also often referred to as autocompletion, is one of the most used features in any IDE. Whether it is being used for improving speed and accuracy of typing, or is used as an API guide, helping developers find their way around native libraries, code completion is an essential part of any successful IDE and a fair share of code editors.
 
-There are many approaches to handling the process of completing code. The classic strategies have been to use lexical models (completing based on the prefix the user is typing) or to use semantic models (use code structure analysis information to tailor completions). In the latest years statistical and machine learning (ML) models have also gained popularity. For the most part when using ML, source code analysis is also often disregarded, and the results of simply training the model on the code base and inferring all the possible code dependencies are used instead.
+Code completion is basically used as a major productivity tool, and is one of the first things a developer notices as soon as they start coding. The speed with which the results are suggested, as well as their accuracy is very important, and it is something that can certainly "make or break" the workflow of the developer. Therefore, it is no wonder that improving code completion quality is also a somewhat popular research topic, where software engineers try to figure out a way to make code completion as effective, as accurate, and as fast as possible.
+
+There are many approaches to handling the process of completing code. The classic strategies have been to use lexical models or to use semantic models. Lexical in this case essentially means completing words, or tokens, as they are called in source code, based on the prefix the user is typing, only relying on the text itself. Semantic models mean using code structure analysis to tailor completions (for instance, type or semantic role).
+
+In the latest years statistical and machine learning (ML) models have also gained popularity. For the most part when using ML, source code analysis is also often disregarded, and the results of simply training the model on the code base and inferring all the possible code dependencies are used instead.
 
 \section{Problem}
 \label{sec:Introduction-Problem}
-Specifically, in the case of Pharo (the same name refers to a dynamically-typed programming language based on Smalltalk, as well as an IDE for it; throughout the work it should be clear from context which meaning is used) in the last year and a half a lot of work has been carried out to improve code completion. However, there are more potential improvements from which developers can only benefit, such as improving the relevance of suggestions and hence reducing time and effort the developer spends to go through the list of completions.
+For example, in the last couple of years there has been a lot of work carried out to improve code completion quality in the Pharo IDE.
 
-The current implementation of code completion in Pharo is based on parsing and analysing abstract syntax tree (AST) information of source code, where we are able to determine the structure of the code and infer the type information where possible. Once we have a list of semantically suitable completion candidates, they are sorted alphabetically. However, this approach ignores the potential of suggesting completion results based on code history, which is something that has been successfully adopted by other IDEs.
+(Note: the name Pharo refers both to the dynamically-typed programming language that is a dialect of Smalltalk, as well as the interactive IDE where this language is used; from now on when referring to the language itself we will simply say \textit{Pharo}, whereas when referring to the IDE we will say \textit{the Pharo IDE}).
 
-\section{Our Approch}
+Among the approaches taken is replacing the old completion engine with an abstract syntax tree (AST) based one, that makes more use of the semantic information, and, more recently, adding a heuristics approach. However, there are more potential improvements from which developers can only benefit, such as improving the relevance of suggestions, which should also allow us to reduce the time and effort the developer spends to go through the list of completions.
+
+As mentioned above, the current main implementation of code completion in the Pharo IDE is based on parsing and analysing AST information of source code, where we are able to determine the structure of the code, get the semantic role of tokens, as well as infer the type information where possible. The objective being to only suggest completions that are correct in the given context.
+
+Therefore, once we have a list of semantically suitable completion candidates, they are sorted alphabetically. Unfortunately, this way the process of finding the desired completion candidate can be a bit cumbersome: the correct suggestions can be buried much lower than expected, which would prompt the developer to either scroll through the list, or to type even more characters, taking up valuable time and effort. Now, we believe this approach can be greatly improved by taking into account the relevance of suggestions, by analysing their use throughout source code history, and sorting the results based on that.
+
+\section{Our Approach in a Nutshell}
 \label{sec:Introduction-Approach}
- In this work we intend to study how code completion in Pharo can be improved using statistical language models. In particular, the idea is to use the N-gram model, as it has been documented to be used for such a task (\cite{Hind12a}), and, if successfully adapted to Pharo, might help enhance the quality of code completion.
+Hence, in this work we intend to study how code completion can be improved using statistical language models for sorting the results, on top of an already existing semantic completion. In particular, the idea is to use the N-gram language model, as it has been documented to be used for such a task (\cite{Hind12a}). And specifically, we intend to implement it in the Pharo IDE and evaluate whether this approach indeed enhances the quality of code completion. In short, over the course of this work we intend to answer the following questions:
+\begin{itemize}
+    \item Can we improve code completion in the Pharo IDE by sorting candidate completions with an N-gram language model?
+    \item Can we build a tool based on a trained N-gram model that would propose completion fast enough to be actually suitable for developer use?
+    \item How can we best numerically evaluate the results of code completion produced by different completion strategies?
+\end{itemize}
 
- In short, in the course of this work we intend to answer the following questions:
- \begin{itemize}
-     \item Can we improve code completion in Pharo by sorting candidate completions with an n-gram language model?
-     \item Can we build a tool based on a trained n-gram model that would propose completion fast enough to be used in an IDE?
-     \item How can we numerically evaluate the results of code completion produced by different completion strategies?
- \end{itemize}
+\section{Contributions}
+
+\section{Structure of the Thesis}
  
