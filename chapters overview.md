@@ -49,7 +49,7 @@
    - 6.1 Evaluation Overview
    - 6.2 Challenges in Evaluating Completion
    - 6.3 The Experiment Itself
-- 6.4 Results
+   - 6.4 Results
    
 7. **Conclusion**
 
