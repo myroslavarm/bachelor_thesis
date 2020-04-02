@@ -32,6 +32,26 @@ Hence, in this work we intend to study how code completion can be improved using
 \end{itemize}
 
 \section{Contributions}
+The contributions of this work are as follows:
+\begin{itemize}
+    \item We develop and train N-gram (in particular, uni- (N=1) and bigram (N=2)) language models on the tokenised source code of a dynamically-typed programming language (Pharo)
+    \item We implement the sorting functionality based on the results of the above-mentioned training in an open source IDE
+    \item We test whether the combination of semantic-based completion and statistical-based sorting can indeed improve the performance of a code completion engine in an IDE and be effective enough to be used by real developers
+    \item To our knowledge, this exact approach of separately considering these two parts is unique, and in addition nothing of the sort has been implemented in other Smalltalk-specific IDEs
+\end{itemize}
 
 \section{Structure of the Thesis}
- 
+{\hypersetup{linkcolor=black}
+\begin{description}
+	\item [Chapter \ref{chap:Related Works}. \nameref{chap:Related Works}] \hfill \\
+	Here we give a detailed overview of the research done around code completion in the last decade and a half. It includes both the solely software engineering approaches predating the use of machine learning for this task, as well as exclusively machine learning experiments of the recent years.
+	\item [Chapter \ref{chap:Completion in Pharo}. \nameref{chap:Completion in Pharo}] \hfill \\
+	In this chapter, we give a detailed overview of what is code completion, challenges of having one for a dynamically-typed language, how does the completion function in the Pharo IDE specifically, and the implementation details behind the current completion engine in the IDE.
+	\item [Chapter \ref{chap:N-gram Background}. \nameref{chap:N-gram Background}] \hfill \\
+    Here we provide a theoretical background needed to understand this work, which includes the introduction to the concept of language models in general and N-grams in particular, as well as examples and associated challenges.
+    \item [Chapter \ref{chap:Proposed solution}. \nameref{chap:Proposed solution}] \hfill \\
+	In this chapter, we take a more detailed look at the idea of our solution, as well as give an extended description of the experiment.
+	\item [Chapter \ref{chap:Evaluation}. \nameref{chap:Evaluation}] \hfill \\
+	In this chapter, we go into depth about evaluation techniques and challenges, as well as detail the evaluation approach taken and the results of this work.
+\end{description}
+}
