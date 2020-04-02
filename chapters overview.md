@@ -1,13 +1,16 @@
 0. **Abstract**
 
-   *needs to be updated*
+   *rewritten*
 
 1. **Introduction**
 
-   *half done, will be finished close to last*; existing sections:
+   *mostly done*; existing sections:
+
    - 1.1 Context
    - 1.2 Problem
-   - 1.3 Our Approach
+   - 1.3 Our Approach in a Nutshell
+   - 1.4 Contributions
+   - 1.5 Structure of the Thesis
 
 2. **Related Works**
 
@@ -41,12 +44,13 @@
 
 6. **Evaluation**
    
-   *not started yet*; ideas:
-   - 6.1 overview of evaluation strategies and why it's important
-   - 6.2 description of the evaluation approach we are using
-   - 6.3 description of the experiment
-   - 6.4 results
-
+   *half done, needs feedback*; existing sections:
+   
+   - 6.1 Evaluation Overview
+   - 6.2 Challenges in Evaluating Completion
+   - 6.3 The Experiment Itself
+- 6.4 Results
+   
 7. **Conclusion**
 
    *not started yet, will be done when other chapters (besides introduction) are fully completed*

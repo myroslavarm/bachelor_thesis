@@ -12,7 +12,7 @@ Thesis writing progress:
 - [x] pharo completion (sections overview)
 - [x] n-gram theory (all sections, needs to be checked and improved)
 - [x] n-gram implementation (mostly done, needs to be checked and improved)
-- [x] evaluation (sections overview)
+- [x] evaluation (half done, needs feedback)
 - [ ] conclusion (not started yet)
 
 
