@@ -10,6 +10,7 @@
 *.bib~
 *.dvi
 *.bbl
+*-blx.bib
 *.log
 *.out
 *.pdf
