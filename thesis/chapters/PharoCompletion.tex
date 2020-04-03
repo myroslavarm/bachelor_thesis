@@ -1,11 +1,18 @@
 \chapter{Completion in Pharo}
 \label{chap:Completion in Pharo}
 
-\section{Code Completion Background}
-overview of how code completion works in general and specifically how does it function in the Pharo IDE (challenges, i.e. dynamic language etc)
+In this chapter, we give a detailed overview of the implementation details behind the current completion engine in the Pharo IDE, challenges of code completion for a dynamically typed language, as well as describe the idea behind the sorter plugin.
 
-\section{Existing Pharo Completion}
-description of the completion we had pre-AST and what was wrong with it, and how/why we decided to go to AST completion but it's just alphabetical
+\section{Code Completion Background}
+So, first things first. The Pharo programming language is an object-oriented dynamically typed programming language with a Smalltalk-like syntax. The Pharo IDE is a programming environment meant specifically for developing in Pharo. You have a virtual machine (VM), on top of which an image can be run, which, referencing other IDEs, sort of serves as the current IDE workspace.
+
+The interesting thing here is that the Pharo IDE itself is written in Pharo, and can be extended from within. This means, for example, that when implementing code completion, you can be testing it live in the very environment where you are developing it, which, of course, if not done carefully, can lead you to breaking the image. However, it still is an immense advantage with a project like this.
+
+Going deeper into how the completion in the Pharo IDE works, we will explain several important details that are needed to understand the rest of this work. Firstly, code completion is called at every keystroke after we have two and more alphabetic characters in a token. We create a completion context for all the text typed up until then, be it in the Playground or in the method text area. (Essentially, the Playground is a tool for generating small scripts and sketching out some code, whereas the method body of each class is where you write all your code for that method, i.e. the place to implement the functionality of your classes).
+
+The completion context parses the text and transforms it into the AST representation, such as a sequence of AST nodes. In the process all the information needed for further actions is extracted: for example, we get the currect position of the cursor (i.e. where we want to get the completion) and the class where we are currently operating (or information that it's in the Playground). Doing the semantic analysis, we get the most fitting type of node for each part of code, and then go to each node to get the correct completion behaviour. For instance, this means that for a Global node, we want to be suggested all the globals, such as class names, for a Message node we only want to get message sends to a variable (in other words, method calls applicable to a certain class instance), and so on.
+
+Therefore, combining the available 2+ symbol prefix that we have, as well as relevant semantic information, we are able to give a list of fitting completion suggestions that are then passed into a sorter and, in the default Pharo IDE completion, are sorted alphabetically. The list itself is displayed in a completion menu that pops up once the completion is called and then is updated with every new keystroke, unless the developer cancels it by pressing \textit{Esc} or clicking to the side of the text area. The completion window can also disappear once we've entered the error node, i.e. the developer mistyped something and there are no valid suggestions to give anymore.
 
 \section{Sorter Plugin}
-explain the role the sorter plays and that it's exactly the part of the existing completion that allows us to experiment with n-gram sorting and so on
+With Pharo being a dynamically-typed language, however, the semantic analysis of source code is a little tricky. Mainly because more often than not, we are unable to extract type information, as very often it is not yet known at the moment of typing. This makes the completion suggestions that are given for something like message sends appear too general, and often the specific completion the developer has in mind can be too far down the list of suggestions. In the end, this is ineffective, as it requires scrolling through the suggestions list, or typing more characters. But there is one silver lining: even at the beginning knowing that the alphabetic sort would not be accurate enough, we implemented a sorter plugin.
