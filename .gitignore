@@ -1,3 +1,5 @@
+**/*.DS_Store
+
 *.synctex.gz
 *.orig
 *.aux
@@ -8,6 +10,7 @@
 *.bib~
 *.dvi
 *.bbl
+*-blx.bib
 *.log
 *.out
 *.pdf
