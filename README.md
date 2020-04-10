@@ -5,14 +5,14 @@ my bachelor thesis for UCU
 2. proposal - TODO
 
 Thesis writing progress:
-(checked out are the boxes for the chapters that have at least been started)
+(checked out are the boxes for the chapters that are ready & might only be slightly rewritten when everything is ready)
 
-- [x] introduction (half complete, will be finished at the end)
-- [x] related works (mostly ready but needs more examples of research implemented in IDEs)
-- [x] pharo completion (sections overview)
-- [x] n-gram theory (all sections, needs to be checked and improved)
-- [x] n-gram implementation (mostly done, needs to be checked and improved)
-- [x] evaluation (half done, needs feedback)
+- [ ] introduction (needs to be rewritten based on feedback from oleks)
+- [ ] related works (mostly ready but needs more examples of research implemented in IDEs)
+- [x] pharo completion (completed but needs a final review at the end)
+- [ ] n-gram theory (all sections, needs to be checked and improved)
+- [ ] n-gram implementation (mostly done, needs to be checked and improved)
+- [ ] evaluation (half done, needs feedback)
 - [ ] conclusion (not started yet)
 
 
@@ -23,6 +23,6 @@ Thesis writing progress:
 - 13 квітня здано чорновик (принаймні 3 розділи).
 - 1 травня фінальна тема.
 - 11 травня здача фінальної версії диплому.
-- 1-12 червня захисти дипломів.
+- 9-13 червня захисти дипломів.
 
 Щотижня у другому семестрі буде проходити бакалаврський семінар.
