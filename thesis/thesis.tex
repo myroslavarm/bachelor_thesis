@@ -194,7 +194,7 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 
 \noindent\enquote{Please do not be cynical. I hate cynicism. For the record, it's my least favorite quality. It's doesn't lead anywhere. No one in life gets exactly what they thought they were going to get. But if you work really hard and you're kind, amazing things will happen.}\bigbreak
 
-\hfill CONAN O'BRIEN
+\hfill Conan O'Brien
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE
@@ -206,11 +206,11 @@ Code completion is one of the essential features of any IDE that greatly improve
 
 The current implementation of code completion in the Pharo IDE is based on abstract syntax tree (AST) information of source code. This allows us to know the semantic role and, where possible, even the type of tokens. Hence, at every point in the completion, contextually relevant results are suggested.
 
-However, the completion candidates that are proposed are sorted alphabetically. We believe, this approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs. \oz{Problem statement is not convincing (see Section~\ref{sec:Introduction-Problem})}
+However, the completion candidates that are proposed are sorted alphabetically. We believe, this approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs.
 
-Therefore, in this work we study how code completion can be improved \oz{by sorting completion results} using statistical language models \oz{\st{for sorting completion results}}. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram implementation, we implement a sorting strategy where the most relevant results \oz{This makes little sense: \st{(based on likelihood analysis of source code)}} are shown first. This allows us to propose more accurate suggestions \oz{\st{even without knowing the exact type of the token} But you use the information about the type of token (e.g. the list of candidate completions that are passed to sorter were already selected based on their types)}, and makes finding a desired suggestion much faster.
+Therefore, in this work we study how code completion can be improved by sorting completion results using statistical language models. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram implementation, we implement a sorting strategy where the most relevant results are shown first. This allows us to propose more accurate suggestions even when we don't know the exact type of the token, and makes finding a desired suggestion much faster.
 
-\oz{\st{In the end, w}W}e \oz{\st{also quantitatively}} evaluate the various sorting strategies \oz{\st{implemented}} to be able to gauge performance accuracy for each one. \oz{I'm not sure I understand this sentence} 
+Finally, we evaluate the various sorting strategies to measure how effective they are in practice (i.e. we want to have relevance in addition to accuracy and speed).
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
