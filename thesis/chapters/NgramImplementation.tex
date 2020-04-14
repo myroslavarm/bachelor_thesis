@@ -33,4 +33,17 @@ The bigram model trained on source code data was implemented with the help of th
 \begin{itemize}
     \item functionality to filter the table of ngrams (cut off ngram sequences with counts below a certain threshold)
     \item adding writing to and reading ngram models from file
-\end{itemize} 
+\end{itemize}
+
+\section{Summary}
+\label{sec:ProposedSolution-Summary}
+A short summary of the implementation, along with data preparation and engineering details:
+\begin{itemize}
+    \item the data used to train the models came from 50 projects implemented in Pharo; in the dataset the source code was already split into tokens and token types
+    \item in the data, delimiters and non-alphabetic tokens, as well as comments, were all considered to be separate tokens
+    \item for unigram sorting, individual token frequencies were extracted; the sorting of completion candidates was based on the number of occurences of each token by itself
+    \item for bigram sorting, completion candidates were added to the previous token to form sequences of bigrams, whose probability was later calculated and recorded to file; the sorting was based on the sequence probability but it was only applied to individually displayed completion candidates
+    \item both sorting strategies can be enabled to be used in the Pharo IDE
+    \item different approaches were taken to reduce the sizes of models and speed up lookup and sorting time; among them: cleaning up tokens and sequences with occurences below a certain threshold, and replacing irrelevant "one-time" tokens (such as specific strings, numbers, characters, and so on) with general placeholders (such as <str>, <num>, etc.)
+    \item in the process of working on the bigram sorting strategy, the NgramModel Pharo library that was used for this approach was addiitionally extended with new functionality
+\end{itemize}
