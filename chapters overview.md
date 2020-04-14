@@ -1,18 +1,16 @@
 0. **Abstract**
 
-   rewrite based on the feedback from oleks
+   *rewritten*
 
 1. **Introduction**
 
-   *mostly done*; existing sections:
+   *rewritten*; existing sections:
 
    - 1.1 Context
    - 1.2 Problem
    - 1.3 Our Approach in a Nutshell
    - 1.4 Contributions
    - 1.5 Structure of the Thesis
-
-   rewrite based on the feedback from oleks
 
 2. **Related Works**
 
@@ -45,11 +43,13 @@
 
 5. **Proposed solution**
 
-   *halfway done*; existing sections:
+   *rewritten*; existing sections:
 
    - 5.1 Background
-   - 5.2 Unigram Sorting
-   - 5.3 Bigram Sorting
+   - 5.2 Solution Overview
+   - 5.3 Implementation Details
+   - 5.4 Implementation Details: Library Extension
+   - 5.5 Summary
 
 6. **Evaluation**
 

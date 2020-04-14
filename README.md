@@ -7,11 +7,11 @@ my bachelor thesis for UCU
 Thesis writing progress:
 (checked out are the boxes for the chapters that are ready & might only be slightly rewritten when everything is ready)
 
-- [ ] introduction (needs to be rewritten based on feedback from oleks)
+- [ ] introduction (rewritten)
 - [ ] related works (mostly ready but needs more examples of research implemented in IDEs)
 - [x] pharo completion (completed but needs a final review at the end)
-- [ ] n-gram theory (all sections, needs to be checked and improved)
-- [ ] n-gram implementation (mostly done, needs to be checked and improved)
+- [ ] n-gram theory (all sections, needs feedback)
+- [ ] n-gram implementation (rewritten)
 - [ ] evaluation (half done, needs feedback)
 - [ ] conclusion (not started yet)
 
