@@ -1,7 +1,8 @@
-\chapter{Proposed solution}
-\label{chap:Proposed solution}
+\chapter{Proposed Solution}
+\label{chap:ProposedSolution}
 
 \section{Background}
+\label{sec:ProposedSolution-Background}
 In our case, in code completion, we want to suggest the most likely tokens at every step. The main idea is, however, that we leave the existing, AST-based code completion engine in place, and just enhance the sorting strategy. That is, after we already have a list of completion candidates proposed to us, we sort it based on each ngram's probability and therefore show the most relevant completions first. In order to do that, we figured it would make sense to train our model on source code data, write it to file, and at every point fetch the relevant, pre-processed information from file where it is stored.
 
 The source code history data used for this was retrieved by \cite{Zait20a} for their research regarding characterising Pharo code. Specifically, the data comes from 50 projects, which consisted of 824 packages, 13,935 classes, and 151,717 methods. In particular, we used the dataset where the source code was already split into tokens and respective token types for each method. In this dataset, even delimiters and non-alphabetic tokens were included, and comments were considered tokens. For example, tokens could include '"Here is a comment for this method"' and '.', and their respective token types would be 'COM' and 'DOT'.
@@ -9,6 +10,7 @@ The source code history data used for this was retrieved by \cite{Zait20a} for t
 Due to a large number of tokens in our dataset, we needed to be mindful of potential time constraints, as the lookup of ngram probabilities used for sorting had to be fast enough to not make the developer pause and wait for it. Throughout the course of the experiment, we came up with various ways to additionally reduce the dataset, and each of those attempts will be described in the following sections.
 
 \section{Solution Overview}
+\label{sec:ProposedSolution-Overview}
 We implemented two separate sorting strategies based on the N-gram approach.
 
 The first one, unigram sorting, is based on 1-gram analysis, which means that only the token we are trying to complete is being taken into consideration. The implementation of the unigram model itself comes down to calculating individual token frequencies, i.e. the number of occurrences of each token in the source code history. Then the sorting strategy is implemented by utilising the frequency information and sorting the completion candidates we are given based on each one's number of occurences.
@@ -18,6 +20,7 @@ The second, more advanced one, is the bigram sorting strategy. Being an N-gram m
 The unigram-based sorter is available in the Pharo IDE as the FrequencyCompletionSorter, and the bigram-based as the BigramCompltionSorter -- i.e. they can already be used by enabling the respective sorting option in the Settings. \mr{add screenshot}
 
 \section{Implementation Details}
+\label{sec:ProposedSolution-Implementation}
 Before training our models, we took some data preparation steps, additionally cleaning the data, such as deleting some rows with token and token type mismatch, eliminating double tabs and replacing them with placeholders, and splitting token and token types into separate columns. After that, when recording token frequencies for the unigram model, we decided we would write the results to file, for faster lookup for the sorting. However, even with that approach, we faced a problem: as the initial number of tokens was around 150k, the lookup was slow enough to be noticeable and break the developer's flow when typing. 
 
 Our approach to improve the time efficiency was to set a certain threshold for the number of occurences, and to cut off all the tokens with frequencies below it. We put the threshold equal to 10, meaning if the token occured less than 10 times throughout the whole history, it was irrelevant enough to be discarded. This way, we were able to cut off most of the miscellaneous, rarely encountered tokens, and shortened our dataset from 150k to just 16k entries. This made the frequencies lookup during completion sorting very fast and, as a result, it was now possible to type and use completion information without any delays.
@@ -25,6 +28,7 @@ Our approach to improve the time efficiency was to set a certain threshold for t
 The one-time tokens, such as custom strings and comments, were not as relevant to us during implementing the unigram sorting strategy, however when we moved on to implementing the bigram sorter, the bigram model became "too heavy" due to many combinations of such tokens, and needed to be additionally reduced. Our solution was to go back to the data processing step and replace those "one-time" tokens with placeholders. In particular, we added placeholders for strings, comments, symbols, characters, arrays and numbers (such as all strings being written as <str> and all numbers as <num>). This allowed us to greatly reduce both the number of total tokens and subsequent ngram sequences, which helped both the bigram and the unigram model, as well as the lookup speed.
 
 \section{Implementation Details: Library Extension}
+\label{sec:ProposedSolution-LibraryExtension}
 The bigram model trained on source code data was implemented with the help of the NgramModel library \footnote{\url{https://github.com/pharo-ai/NgramModel}}. In the process of working on implementing the model, we extended the existing library with the following functionality:
 \begin{itemize}
     \item functionality to filter the table of ngrams (cut off ngram sequences with counts below a certain threshold)

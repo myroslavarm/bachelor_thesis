@@ -1,9 +1,10 @@
 \chapter{N-gram Background}
-\label{chap:N-gram Background}
+\label{chap:NgramBackground}
 
 In this chapter we go over the theoretical background for the N-grams models, the challenges in their successful implementation, as well as how they can be evaluated.
 
 \section{N-gram Language Models}
+\label{sec:NgramBackground-LanguageModels}
 In Natural Language Processing (NLP) being able to predict upcoming words or assign probabilities to sequences of words, like phrases and sentences, is one of the essential things in at least several areas, such as speech recognition, spelling correction, spam filtering, machine translation and so on. Thus, by assigning probabilities to words or sequences of words you can improve your accuracy, by suggesting things that are more likely to appear in a given context.
 
 Models that assign such probabilities to sentences or sequences of words are called language models (\cite{Jura09a}). Among them, is the n-gram language model, which assigns probabilities to sequences out of \textit{n} words, called the n-grams. Just one word will be a unigram, 2-gram are referred to as bigrams, 3-grams are referred to as trigrams, and so on. An example of a bigram might be "he ate", "ate the", "the whole" and "whole pizza", whereas a trigram would look like "he ate the", "ate the whole", and "the whole pizza". 
@@ -11,6 +12,7 @@ Models that assign such probabilities to sentences or sequences of words are cal
 The idea of an n-gram language model could therefore be phrased as the following: to estimate the likelihood of a word in a sequence, based on the "history", which is the previous \textit{(n-1)} words. From this point, we will use the term n-gram to mean either the n-gram language model or the sequence of n words such model uses.
 
 \section{N-grams}
+\label{sec:NgramBackground-Ngrams}
 To compute the probability of a word \textit{w} based on history \textit{h}, we use the following formula:
 \begin{equation}
     P(w|h)
@@ -36,11 +38,13 @@ In general, n-gram probabilities can be estimated by counting the occurences in 
 need help with adding MLE and relative frequence explanations?
 
 \section{Evaluating Models}
+\label{sec:NgramBackground-EvaluatingModels}
 Now, evaluation is a really important step to take after developing and testing a model. One wants to be able to measure the performance and be able to say if it is an improvement on the current state, and by how much. Essentially, there are two ways of evaluation: extrinsic and intrinsic. Extrinsic means actually using the results of the model in an application and measuring how it works. The intrinsic evaluation, however, can measure the results without testing them out in the application, but simply by running the model on the so called test data. It is important to note, that the test data shouldn't be the same as the data the model was initially trained on, to not skew the accuracy measurements.
 
 As raw probability is not used for evaluation language models, when using the intrinsic evaluation something called perplexity is used. Perplexity is the inverse probability of a test set, normalised by the total number of words.
 
 \section{Smoothing}
+\label{sec:NgramBackground-Smoothing}
 There is, however, the problem of incorrectly estimating probabilities of sequences, if they are not known to us (i.e. weren't in the training set). Those might be perfectly valid sequences that will inadvertently have the probability of 0. Not only can this hurt the performance of an application, but it can also lead to division by 0.
 
 So if the word is entirely unknown, we can convert it to the unknown word token <UNK> and count it as any other word in the dataset. However, if the word we are dealing with is generally known (does exist in the vocabulary) but appears in an unknown context, i.e. after or before a word they never appeared before, we can use a procedure called smoothing, which means we redistibute the general probability a little bit, to not have any sequences with probability equal to 0.
@@ -48,6 +52,7 @@ So if the word is entirely unknown, we can convert it to the unknown word token 
 There are several smoothing algorithms, the simplest of which is Laplace smoothing, which we will describe as an example. In this algorithm, one simply needs to add 1 to all the counts, before normalising them (so all the counts will be increased by one, and there will be no 0 counts, and no 0 probabilities). Laplace smoothing doesn't perform well enough to be used in practice. A more useful algorithm based on a similar idea, would be add-k smoothing, which adds a fractional count k (for example, 0.1, 0.5, etc.) to the count, instead of 1.
 
 \section{Summary}
+\label{sec:NgramBackground-Summary}
 In short:
 \begin{itemize}
     \item language models assign probabilities to sentences and sequences of words, and thus predict more likely words

@@ -4,6 +4,7 @@
 In this chapter we'll go over different approaches and challenges for evaluating code completion, and what results we got from our experiments.
 
 \section{Evaluation Overview}
+\label{sec:Evaluation-Overview}
 Having code evalution is extremely important. One has to have clear benchmarks and measurement metrics, to be able to say exactly how good is the program, and whether it actually meets the expected result -- mainly, if there is indeed some improvement over the state-of-the-art implementation. If yes, the goal was achieved; if no -- you now know what parts you have to improve (for instance, speed, accuracy, or the general design of your system).
 
 There are two types of evaluation you can do in software research: quantitative and qualitative.
@@ -13,6 +14,7 @@ In this case, quantitative, which can also be referred to as automatic, evaluati
 In qualitative evaluation, which is more appropriate for evaluating software tooling rather than statisctical models, researches essentially try to gauge the quality of the system by evaluating the human interaction experience. With something like code completion in mind, it could mean involving developers to use it, and record the impressions. In this case, the accuracy of the system would be based more on how it "feels" to use it, rather than what the numbers show.
 
 \section{Challenges in Evaluating Completion}
+\label{sec:Evaluation-Challenges}
 For our use case both the quantitative and qualitative evaluations are fitting. The quantitative approach can be used for evaluating model accuracy itself, and qualitative can be utilised to test how the subsequent implementation feels and how exactly various sorting strategies influence the coding experience, and how well they "seem" to perform in comparison to previous implementations.
 
 However, a proper qualitative evalution requires an extensive set-up, such as inolving multiple people, recording their coding process, conducting interviews, and so on. Unfortunately, we do not have the resources for that, and will be relying on the results of the quantitative evalution only.
@@ -20,6 +22,7 @@ However, a proper qualitative evalution requires an extensive set-up, such as in
 (Remark: we will, however, record our own impressions we have from coding using different completion and sorting implementations.)
 
 \section{The Experiment Itself}
+\label{sec:Evaluation-Experiment}
 The quantitative evaluation approach we decided to take is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
 
 In particular, the idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, our completion gets triggered for every token with the cursor between the 2nd and the 8th position (this range also taken from the \cite{Robb08a} paper). This means that starting with every second symbol of an alphabetic token, we invoke the completion and compare whether the result suggested at that step matches the one that followed in real history. This creates an illusion of it being a qualitative evalution setup, except with no human participation and instead with strict mathematical metrics.
@@ -32,4 +35,5 @@ In order for this to work, we have a dataset of methods from the Pharo IDE sourc
 \end{itemize}
 
 \section{Results}
+\label{sec:Evaluation-Results}
 demonstrate what we got as the result of evaluating and comparing different sorting strategies (different completion engines?)
