@@ -19,19 +19,40 @@ For our use case both the quantitative and qualitative evaluations are fitting. 
 
 Normally, a proper qualitative evalution requires an extensive set-up, such as inolving multiple people, recording their coding process, conducting interviews, and so on. Unfortunately, we do not have the resources for that, and will be conducting a more minimalist version of qualitative evaluation: in particular, we will manually test a selected number of cases and compare the results across various sorting strategies ourselves.
 
-\section{The Experiment Itself}
-\label{sec:Evaluation-Experiment}
+\section{Quantitative Evaluation}
+\label{sec:Evaluation-Quantitative}
+\subsection{Experiment}
 The quantitative evaluation approach we decided to take is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
 
 In particular, the idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, our completion gets triggered for every token with the cursor between the 2nd and the 8th position (this range also taken from the \cite{Robb08a} paper). This means that starting with every second symbol of an alphabetic token, we invoke the completion and compare whether the result suggested at that step matches the one that followed in real history. This creates an illusion of it being a qualitative evalution setup, except with no human participation and instead with strict mathematical metrics.
 
-In order for this to work, we have a dataset of methods from the Pharo IDE source code, and for each of them we repeat this process of calling the completion at each step and recording:
+In order for this to work, we have a dataset of methods from the Pharo IDE source code, and for each of them we repeat this process of calling the completion at each step and performing the following:
 \begin{itemize}
-    \item whether the correct completion was present among the suggestions at all
-    \item if it was, what was its position
-    \item additionally, how many times did we have the correct suggestion appearing within the first 10 resulting candidates
+    \item check whether the correct completion was present among the suggestions at all
+    \item if it was, we only consider the results successful if the correct completion was also present in the top-10 suggestions
+    \item for those cases we record the current sequence (i.e. what has been "typed in" up to that point), prefix length, the actual correct match, and its position in the list of suggestions
+    \item we also calculate an average success rate for all the methods evaluated (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results)
 \end{itemize}
 
-\section{Results}
-\label{sec:Evaluation-Results}
-demonstrate what we got as the result of evaluating and comparing different sorting strategies (different completion engines?)
+\subsection{Results}
+demonstrate what we got as the result of evaluating and comparing different sorting strategies
+\begin{itemize}
+    \item alphabetic/frequency/bigram sorters for OrderedCollection methods results (avg success rate)
+    \item alphabetic/frequency/bigram sorters for one of the implementation classes (avg success rate)
+    \item the idea being, one class on which the model was trained, and one on which it was not?
+\end{itemize}
+
+\section{Qualitative Evaluation}
+\label{sec:Evaluation-Qualitative}
+\subsection{Experiment}
+describe the qualitative setup
+\begin{itemize}
+    \item essentially brainstorm 10 cases where completion is lacking
+    \item manually test those 10 cases on alphebtic/frequency/bigram and record the results
+\end{itemize}
+\subsection{Results}
+describe the results of the qualitative setup
+
+\section{Summary}
+\label{sec:Evaluation-Summary}
+Briefly sum up the results of the experiment and whether the problem is "solved".
