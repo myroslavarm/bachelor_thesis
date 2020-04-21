@@ -5,7 +5,7 @@ In this chapter we'll go over different approaches and challenges for evaluating
 
 \section{Evaluation Overview}
 \label{sec:Evaluation-Overview}
-Having code evalution is extremely important. One has to have clear benchmarks and measurement metrics, to be able to say exactly how good is the program, and whether it actually meets the expected result -- mainly, if there is indeed some improvement over the state-of-the-art implementation. If yes, the goal was achieved; if no -- you now know what parts you have to improve (for instance, speed, accuracy, or the general design of your system).
+Evaluating results of an experiment is extremely important. To quote Richard Feynman, "It doesn't matter how beautiful your theory is, it doesn't matter how smart you are. If it doesn't agree with experiment, it's wrong". In computer science, one has to have clear benchmarks and measurement metrics, to be able to say whether the results were satisfactory and the initial hypothesis was confirmed. The goal is to improve the existing implementation, whether it's to come up with an algorithm that solves the problem faster, or gives more precise results. In evaluation, both success and failure are important: success means you achieved the goal, but the failure to improve a system just means more work might be needed and one is closer to the goal than previously. Therefore, whatever the results, any experiment outcome is valuable, and evaluation is an essential part of the research process.
 
 There are two types of evaluation you can do in software research: quantitative and qualitative.
 
@@ -17,9 +17,7 @@ In qualitative evaluation, which is more appropriate for evaluating software too
 \label{sec:Evaluation-Challenges}
 For our use case both the quantitative and qualitative evaluations are fitting. The quantitative approach can be used for evaluating model accuracy itself, and qualitative can be utilised to test how the subsequent implementation feels and how exactly various sorting strategies influence the coding experience, and how well they "seem" to perform in comparison to previous implementations.
 
-However, a proper qualitative evalution requires an extensive set-up, such as inolving multiple people, recording their coding process, conducting interviews, and so on. Unfortunately, we do not have the resources for that, and will be relying on the results of the quantitative evalution only.
-
-(Remark: we will, however, record our own impressions we have from coding using different completion and sorting implementations.)
+Normally, a proper qualitative evalution requires an extensive set-up, such as inolving multiple people, recording their coding process, conducting interviews, and so on. Unfortunately, we do not have the resources for that, and will be conducting a more minimalist version of qualitative evaluation: in particular, we will manually test a selected number of cases and compare the results across various sorting strategies ourselves.
 
 \section{The Experiment Itself}
 \label{sec:Evaluation-Experiment}
