@@ -51,6 +51,146 @@ describe the qualitative setup
     \item manually test those 10 cases on alphebtic/frequency/bigram and record the results
 \end{itemize}
 \subsection{Results}
+Code 1.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & - & - \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}add:\\ addAll:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    bigram & - & - \\ \hline
+    \end{tabular}
+\caption{Table1}
+\label{table:1}
+\end{table}
+
+Code 2.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & - & - \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}ifTrue:\\ ifTrue:ifFalse:\\ ifFalse:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    bigram & ifTrue: & 5 \\ \hline
+    \end{tabular}
+\caption{Table2}
+\label{table:2}
+\end{table}
+
+Code 3.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & readFile & 3 \\ \hline
+    unigram & - & - \\ \hline
+    bigram & \begin{tabular}[c]{@{}l@{}}rejectInvalidTokens\\ replaceWithPlaceholders\\ readFile\end{tabular} & \begin{tabular}[c]{@{}l@{}}7\\ 8\\ 9\end{tabular} \\ \hline
+    \end{tabular}
+\caption{Table3}
+\label{table:3}
+\end{table}
+
+Code 4.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & \begin{tabular}[c]{@{}l@{}}tokenTypes\\ tokens\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    bigram & \begin{tabular}[c]{@{}l@{}}token\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    \end{tabular}
+\caption{Table4}
+\label{table:4}
+\end{table}
+
+Code 5.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & \begin{tabular}[c]{@{}l@{}}tokenTypes\\ tokens\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    bigram & \begin{tabular}[c]{@{}l@{}}token\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    \end{tabular}
+\caption{Table5}
+\label{table:5}
+\end{table}
+
+Code 6.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & init & 1 \\ \hline
+    unigram & initialize & 1 \\ \hline
+    bigram & - & - \\ \hline
+    \end{tabular}
+\caption{Table6}
+\label{table:6}
+\end{table}
+
+Code 7.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & - & - \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}assert:\\ assert:equals:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    bigram & assert:equals: & 1 \\ \hline
+    \end{tabular}
+\caption{Table7}
+\label{table:7}
+\end{table}
+
+Code 8.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & \begin{tabular}[c]{@{}l@{}}sumA\\ sumS\\ super\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    bigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    \end{tabular}
+\caption{Table8}
+\label{table:8}
+\end{table}
+
+Code 9.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    bigram & \begin{tabular}[c]{@{}l@{}}scanTokens:\\ scanTokenObjects:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    \end{tabular}
+\caption{Table9}
+\label{table:9}
+\end{table}
+
+Code 10.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
+    alphabetic & - & - \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
+    bigram & next & 1 \\ \hline
+    \end{tabular}
+\caption{Table10}
+\label{table:10}
+\end{table}
+
 describe the results of the qualitative setup
 
 \section{Summary}
