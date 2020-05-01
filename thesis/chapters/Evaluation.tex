@@ -42,6 +42,20 @@ demonstrate what we got as the result of evaluating and comparing different sort
     \item the idea being, one class on which the model was trained, and one on which it was not?
 \end{itemize}
 
+Blabla results.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{CLASS} & \textbf{ALPHABETIC} & \textbf{UNIGRAM} & \textbf{BIGRAM} \\ \hline
+    OrderedCollection & 0.31859756097560976 & 0.3827743902439024 & 0.29771341463414636 \\ \hline
+    CompletionEvaluation & 0.24436363636363637 & 0.24581818181818182 & 0.22181818181818183 \\ \hline
+    FrequencyCompletionSorter & 0.48314606741573035 & 0.5842696629213483 & 0.47191011235955055 \\ \hline
+    \end{tabular}
+\caption{Table Quantitative}
+\label{table:quan1}
+\end{table}
+
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
 \subsection{Experiment}
@@ -61,8 +75,8 @@ Code 1.
     unigram & \begin{tabular}[c]{@{}l@{}}add:\\ addAll:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & - & - \\ \hline
     \end{tabular}
-\caption{Table1}
-\label{table:1}
+\caption{Table Qualitative 1}
+\label{table:qual1}
 \end{table}
 
 Code 2.
@@ -75,8 +89,8 @@ Code 2.
     unigram & \begin{tabular}[c]{@{}l@{}}ifTrue:\\ ifTrue:ifFalse:\\ ifFalse:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     bigram & ifTrue: & 5 \\ \hline
     \end{tabular}
-\caption{Table2}
-\label{table:2}
+\caption{Table Qualitative 2}
+\label{table:qual2}
 \end{table}
 
 Code 3.
@@ -89,8 +103,8 @@ Code 3.
     unigram & - & - \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}rejectInvalidTokens\\ replaceWithPlaceholders\\ readFile\end{tabular} & \begin{tabular}[c]{@{}l@{}}7\\ 8\\ 9\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table3}
-\label{table:3}
+\caption{Table Qualitative 3}
+\label{table:qual3}
 \end{table}
 
 Code 4.
@@ -103,8 +117,8 @@ Code 4.
     unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}token\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table4}
-\label{table:4}
+\caption{Table Qualitative 4}
+\label{table:qual4}
 \end{table}
 
 Code 5.
@@ -113,12 +127,12 @@ Code 5.
     \begin{tabular}{|l|l|l|}
     \hline
     \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & \begin{tabular}[c]{@{}l@{}}tokenTypes\\ tokens\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    bigram & \begin{tabular}[c]{@{}l@{}}token\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    alphabetic & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
+    unigram & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    bigram & \begin{tabular}[c]{@{}l@{}}new:\\ new\end{tabular} & \begin{tabular}[c]{@{}l@{}}4\\ 8\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table5}
-\label{table:5}
+\caption{Table Qualitative 5}
+\label{table:qual5}
 \end{table}
 
 Code 6.
@@ -131,8 +145,8 @@ Code 6.
     unigram & initialize & 1 \\ \hline
     bigram & - & - \\ \hline
     \end{tabular}
-\caption{Table6}
-\label{table:6}
+\caption{Table Qualitative 6}
+\label{table:qual6}
 \end{table}
 
 Code 7.
@@ -145,8 +159,8 @@ Code 7.
     unigram & \begin{tabular}[c]{@{}l@{}}assert:\\ assert:equals:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & assert:equals: & 1 \\ \hline
     \end{tabular}
-\caption{Table7}
-\label{table:7}
+\caption{Table Qualitative 7}
+\label{table:qual7}
 \end{table}
 
 Code 8.
@@ -159,8 +173,8 @@ Code 8.
     unigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table8}
-\label{table:8}
+\caption{Table Qualitative 8}
+\label{table:qual8}
 \end{table}
 
 Code 9.
@@ -173,8 +187,8 @@ Code 9.
     unigram & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}scanTokens:\\ scanTokenObjects:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table9}
-\label{table:9}
+\caption{Table Qualitative 9}
+\label{table:qual9}
 \end{table}
 
 Code 10.
@@ -187,8 +201,8 @@ Code 10.
     unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
     bigram & next & 1 \\ \hline
     \end{tabular}
-\caption{Table10}
-\label{table:10}
+\caption{Table Qualitative 10}
+\label{table:qual10}
 \end{table}
 
 describe the results of the qualitative setup
