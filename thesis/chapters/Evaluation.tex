@@ -65,7 +65,11 @@ describe the qualitative setup
     \item manually test those 10 cases on alphebtic/frequency/bigram and record the results
 \end{itemize}
 \subsection{Results}
-Code 1.
+In Playground:
+\begin{lstlisting}
+    col := OrderedCollection new.
+    col ad
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -79,7 +83,11 @@ Code 1.
 \label{table:qual1}
 \end{table}
 
-Code 2.
+In Playground:
+\begin{lstlisting}
+    something := 1.
+    (something = 1) if
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -93,7 +101,11 @@ Code 2.
 \label{table:qual2}
 \end{table}
 
-Code 3.
+\begin{lstlisting}
+    TokenProcessing >> returnProcessedData
+        | tokensDataFrame |
+        tokensDataFrame := self re
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -107,7 +119,12 @@ Code 3.
 \label{table:qual3}
 \end{table}
 
-Code 4.
+\begin{lstlisting}
+    TokenProcessing >> replaceWithPlaceholders
+        | data tokens tokenTypes arr |
+        data := self returnProcessedData.
+        to
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -121,7 +138,10 @@ Code 4.
 \label{table:qual4}
 \end{table}
 
-Code 5.
+In Playground:
+\begin{lstlisting}
+    UnigramTableCreator ne
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -135,7 +155,10 @@ Code 5.
 \label{table:qual5}
 \end{table}
 
-Code 6.
+Creathing a method on the instance side of any class:
+\begin{lstlisting}
+    ini
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -149,7 +172,15 @@ Code 6.
 \label{table:qual6}
 \end{table}
 
-Code 7.
+In a test method:
+\begin{lstlisting}
+    ExperimentalNgramTest >> testMostLikelyContinuations
+    | expected actual word |
+    word := 'lorem'.
+    actual := model mostLikelyContinuations: word asNgram top: 3.
+    expected := #('ipsum' 'dolor' 'lorem').
+    self as
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -163,7 +194,14 @@ Code 7.
 \label{table:qual7}
 \end{table}
 
-Code 8.
+\begin{lstlisting}
+    CompletionEvaluation >> averageSuccessRatio
+    | sumS sumA |
+	sumS := 0.
+	sumA := 0.
+	countSuccess do: [ :each | su ]
+\end{lstlisting}
+(Cursor after su before the block closure)
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -177,7 +215,10 @@ Code 8.
 \label{table:qual8}
 \end{table}
 
-Code 9.
+In Playground:
+\begin{lstlisting}
+    RBScanner sc
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -191,7 +232,15 @@ Code 9.
 \label{table:qual9}
 \end{table}
 
-Code 10.
+\begin{lstlisting}
+    UnigramTableCreator >> writeToFile
+    | data stream |
+    data := self frequencies.
+    stream := TokenProcessing frequenciesFile writeStream.
+    (NeoCSVWriter on: stream)
+        nextPut: #(key value);
+        ne
+\end{lstlisting}
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
