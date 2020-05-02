@@ -35,14 +35,7 @@ In order for this to work, we have a dataset of methods from the Pharo IDE sourc
 \end{itemize}
 
 \subsection{Results}
-demonstrate what we got as the result of evaluating and comparing different sorting strategies
-\begin{itemize}
-    \item alphabetic/frequency/bigram sorters for OrderedCollection methods results (avg success rate)
-    \item alphabetic/frequency/bigram sorters for one of the implementation classes (avg success rate)
-    \item the idea being, one class on which the model was trained, and one on which it was not?
-\end{itemize}
-
-Blabla results.
+Now, here are the average success rates for each of the classes and sorting strategies we've tested. \textit{OrderedCollection} has 64 methods, \textit{CompletionEvaluation} has 9, \textit{FrequencyCompletionSorter} has just 2, and \textit{NgramModel} 21.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|l|}
@@ -51,25 +44,31 @@ Blabla results.
     OrderedCollection & 0.31859756097560976 & 0.3827743902439024 & 0.29771341463414636 \\ \hline
     CompletionEvaluation & 0.24436363636363637 & 0.24581818181818182 & 0.22181818181818183 \\ \hline
     FrequencyCompletionSorter & 0.48314606741573035 & 0.5842696629213483 & 0.47191011235955055 \\ \hline
+    NgramModel & 0.3246268656716418 & 0.36268656716417913 & 0.291044776119403 \\ \hline
     \end{tabular}
-\caption{Table Quantitative}
+\caption{Quantitative evaluation results: average success ratio for each class and sorting strategy}
 \label{table:quan1}
 \end{table}
+
+From this, we can see that on average the unigram sorter performs much better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter not only does not perform better than the unigram strategy, it also performs just a little worse than the alphabetic sorter, which was not expected at all. One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.
 
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
 \subsection{Experiment}
-describe the qualitative setup
-\begin{itemize}
-    \item essentially brainstorm 10 cases where completion is lacking
-    \item manually test those 10 cases on alphebtic/frequency/bigram and record the results
-\end{itemize}
+Even though the hard numbers seem to show that the bigram strategy is not any good, it really does feel as if it is actually better than the alphabetic approach when used during a regular coding process. To demonstrate this, with no bias towards any of the sorting strategies, we preselected 10 cases for which we were interested to see completion suggestions and how accurate they were, and manually tested each of them. Below are the explanations and results for each of the 10 cases.
+
 \subsection{Results}
-In Playground:
+Note: if the \textit{completion suggestion} and \textit{position} columns contain '-' for any sorting strategy, it means that in the first 10 suggestions we did not see the results we were expecting to see, based on the context at hand.
+
+It should be taken into consideration, however, that all the results are only recorded after two symbols were typed in, and having correct suggestions with such a short prefix can be considered best-case scenario (as the correct suggestions would definitely be more likely to appear with a longer prefix). Ergo, the absence of correct suggestions at this point does not signal a complete failure of the completion engine or a sorting strategy used, but rather hints that there is more work required to get to the correct suggestions. It is unideal, and is exactly the reason for trying to improve the completion tool.
+
+\begin{description}
+\item [Example 1:] \hfill
 \begin{lstlisting}
     col := OrderedCollection new.
     col ad
 \end{lstlisting}
+This was typed into the Playground and the results we were interested in were recorded with the cursor directly after \textit{ad}. For this context, the completion suggestions we were expecting as developers were \textit{add:} and, following, \textit{addAll:}. Here's what we got:
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -79,15 +78,17 @@ In Playground:
     unigram & \begin{tabular}[c]{@{}l@{}}add:\\ addAll:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & - & - \\ \hline
     \end{tabular}
-\caption{Table Qualitative 1}
+\caption{Qualitative evaluation, example 1}
 \label{table:qual1}
 \end{table}
+Both alphabetic and bigram sorters didn't manage to provide any relevant results in the top 10 suggestions, whereas the result from the unigram was exactly what we wanted.
 
-In Playground:
+\item [Example 2:] \hfill
 \begin{lstlisting}
     something := 1.
     (something = 1) if
 \end{lstlisting}
+Another example coded in the Playground, with the cursor at \textit{if}. The expected results would be \textit{ifTrue:}, \textit{ifTrue:ifFalse:}, and \textit{ifFalse:}.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -97,15 +98,18 @@ In Playground:
     unigram & \begin{tabular}[c]{@{}l@{}}ifTrue:\\ ifTrue:ifFalse:\\ ifFalse:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     bigram & ifTrue: & 5 \\ \hline
     \end{tabular}
-\caption{Table Qualitative 2}
+\caption{Qualitative evaluation, example 2}
 \label{table:qual2}
 \end{table}
+The alphabetic sorter once again did not suggest anything of interest right away, the unigram demonstrated an exemplary performance, and bigram, while less than ideal, still suggested one of the correct options in the top 10 position (albeit a bit lower, which would require either typing more symbols or pressing the down arrow key).
 
+\item [Example 3:] \hfill
 \begin{lstlisting}
     TokenProcessing >> returnProcessedData
         | tokensDataFrame |
         tokensDataFrame := self re
 \end{lstlisting}
+This was typed in the Editor, in the method \textit{returnProcessedData} of class \textit{TokenProcessing}. This is done to try out some more elaborate examples where the local context can play a role. Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \textit{readFile} are also methods on the instance side of the \textit{TokenProcessing} class, we expect to get their names as suggestions after typing \textit{self}. Particularly, as the cursor is positioned after \textit{re}, we expect to get only these 3 methods, as they are the ones starting with \textit{re}.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -115,10 +119,12 @@ In Playground:
     unigram & - & - \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}rejectInvalidTokens\\ replaceWithPlaceholders\\ readFile\end{tabular} & \begin{tabular}[c]{@{}l@{}}7\\ 8\\ 9\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table Qualitative 3}
+\caption{Qualitative evaluation, example 3}
 \label{table:qual3}
 \end{table}
+It seems that here the unigram approach fell short, whereas the bigram approach, trained on prioriting local method name after \textit{self}, has performed quite well. In the alphabetic approach, the other two method suggestions seem to be buried below the first 10, whereas \textit{readFile} gets a better position.
 
+\item [Example 4:] \hfill
 \begin{lstlisting}
     TokenProcessing >> replaceWithPlaceholders
         | data tokens tokenTypes arr |
@@ -134,11 +140,11 @@ In Playground:
     unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}token\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table Qualitative 4}
+\caption{Qualitative evaluation, example 4}
 \label{table:qual4}
 \end{table}
 
-In Playground:
+\item [Example 5:] \hfill
 \begin{lstlisting}
     UnigramTableCreator ne
 \end{lstlisting}
@@ -151,14 +157,15 @@ In Playground:
     unigram & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}new:\\ new\end{tabular} & \begin{tabular}[c]{@{}l@{}}4\\ 8\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table Qualitative 5}
+\caption{Qualitative evaluation, example 5}
 \label{table:qual5}
 \end{table}
 
-Creathing a method on the instance side of any class:
+\item [Example 6:] \hfill
 \begin{lstlisting}
     ini
 \end{lstlisting}
+Creathing a method on the instance side of any class
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -168,11 +175,11 @@ Creathing a method on the instance side of any class:
     unigram & initialize & 1 \\ \hline
     bigram & - & - \\ \hline
     \end{tabular}
-\caption{Table Qualitative 6}
+\caption{Qualitative evaluation, example 6}
 \label{table:qual6}
 \end{table}
 
-In a test method:
+\item [Example 7:] \hfill
 \begin{lstlisting}
     ExperimentalNgramTest >> testMostLikelyContinuations
     | expected actual word |
@@ -181,6 +188,7 @@ In a test method:
     expected := #('ipsum' 'dolor' 'lorem').
     self as
 \end{lstlisting}
+In a test method
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -190,10 +198,11 @@ In a test method:
     unigram & \begin{tabular}[c]{@{}l@{}}assert:\\ assert:equals:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & assert:equals: & 1 \\ \hline
     \end{tabular}
-\caption{Table Qualitative 7}
+\caption{Qualitative evaluation, example 7}
 \label{table:qual7}
 \end{table}
 
+\item [Example 8:] \hfill
 \begin{lstlisting}
     CompletionEvaluation >> averageSuccessRatio
     | sumS sumA |
@@ -211,11 +220,11 @@ In a test method:
     unigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table Qualitative 8}
+\caption{Qualitative evaluation, example 8}
 \label{table:qual8}
 \end{table}
 
-In Playground:
+\item [Example 9:] \hfill
 \begin{lstlisting}
     RBScanner sc
 \end{lstlisting}
@@ -228,10 +237,11 @@ In Playground:
     unigram & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     bigram & \begin{tabular}[c]{@{}l@{}}scanTokens:\\ scanTokenObjects:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
-\caption{Table Qualitative 9}
+\caption{Qualitative evaluation, example 9}
 \label{table:qual9}
 \end{table}
 
+\item [Example 10:] \hfill
 \begin{lstlisting}
     UnigramTableCreator >> writeToFile
     | data stream |
@@ -250,11 +260,10 @@ In Playground:
     unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
     bigram & next & 1 \\ \hline
     \end{tabular}
-\caption{Table Qualitative 10}
+\caption{Qualitative evaluation, example 10}
 \label{table:qual10}
 \end{table}
-
-describe the results of the qualitative setup
+\end{description}
 
 \section{Summary}
 \label{sec:Evaluation-Summary}
