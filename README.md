@@ -8,7 +8,7 @@ Thesis writing progress:
 (checked out are the boxes for the chapters that are ready & might only be slightly rewritten when everything is ready)
 
 - [ ] introduction (completed; for review)
-- [ ] related works (mostly ready but needs more examples of research implemented in IDEs)
+- [ ] related works (completed; for review)
 - [x] pharo completion (completed; for review)
 - [ ] n-gram theory (completed; for review)
 - [ ] n-gram implementation (needs images and code snippets)

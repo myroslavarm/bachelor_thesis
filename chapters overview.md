@@ -14,12 +14,13 @@
 
 2. **Related Works**
 
-   *mostly done, still needs some enhancement regarding practical IDE completion research*; existing sections:
+   *done*; existing sections:
 
    - 2.1 Earlier Code Completion Systems
    - 2.2 Software Naturalness
    - 2.3 Deep Learning for Code Completion
    - 2.4 Existing Code Completion Systems in IDEs
+   - 2.5 Summary
 
 3. **Completion in Pharo**
 
@@ -33,7 +34,7 @@
 
 4. **N-gram Background**
 
-   *mostly done*; existing sections:
+   *done*; existing sections:
 
    - 4.1 N-gram Language Models
    - 4.2 N-grams
@@ -53,7 +54,7 @@
 
 6. **Evaluation**
 
-   *mostly done*; existing sections:
+   *done*; existing sections:
 
    - 6.1 Evaluation Overview
    - 6.2 Challenges in Evaluating Completion
