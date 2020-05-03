@@ -39,3 +39,11 @@ CACHECA is a cache language model-based code completion tool for Eclipse's Java 
 
 \section{Summary}
 \label{sec:RelatedWorks-Summary}
+Here is a brief overview of the progress made in the area of code completion research and development in recent years:
+\begin{itemize}
+    \item code completion tools used to only rely on language-specific pattern matching (i.e. by prefix), but around 10 years ago the idea of "intelligent" code completion that can learn from examples was popularised
+    \item the software engineering approaches following this idea relied on frequency of use of code, contextual association, and hierarchical proximity
+    \item from another perspective, source code was likened to natural languages because of its repetitiveness and patterns; the idea that source code can be modelled by statistical language models attracted more machine learning approaches for the task of improving code completion
+    \item following that, a lot of code completion implementations using machine learning ignored such information as type and semantic meaning, and treated it as regular text, trying to infer relevant predictions from source code history alone
+    \item these days, code completion systems that are actually being used by developers (such as plugins for IDEs) mostly combine both software engineering approaches taking advantage of semantic and contextual information and machine learning approaches taking advantage of source code patterns
+\end{itemize}
