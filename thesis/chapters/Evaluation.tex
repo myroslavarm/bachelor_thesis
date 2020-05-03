@@ -131,6 +131,7 @@ It seems that here the unigram approach fell short, whereas the bigram approach,
         data := self returnProcessedData.
         to
 \end{lstlisting}
+Typing \textit{to} we are expecting to have \textit{tokens} and \textit{tokenTypes}, as those are temporary variables we have declared and we might want to initialise them with some value. Here is what we got suggested:
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -143,11 +144,13 @@ It seems that here the unigram approach fell short, whereas the bigram approach,
 \caption{Qualitative evaluation, example 4}
 \label{table:qual4}
 \end{table}
+The order in the unigram and bigram cases is a bit better, as having a shorter word suggested first is preferable, but in general all three methods worked well in this one.
 
 \item [Example 5:] \hfill
 \begin{lstlisting}
     UnigramTableCreator ne
 \end{lstlisting}
+Typing this in the Playground, we expect \textit{new} and maybe even \textit{new:}, depending on the context.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -160,24 +163,26 @@ It seems that here the unigram approach fell short, whereas the bigram approach,
 \caption{Qualitative evaluation, example 5}
 \label{table:qual5}
 \end{table}
+The best positions are for the unigram sorter, but in general all the sorters suggested the desired options in the top 10.
 
 \item [Example 6:] \hfill
 \begin{lstlisting}
-    ini
+    in
 \end{lstlisting}
-Creathing a method on the instance side of any class
+In the Pharo IDE it is also possible to get completion suggestions even when creating a new method, and in this case we went to the instance side of a class and started typing \textit{in} as method name, wanting to get \textit{initialize}, as it is a very common method one might want to create in a class.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
     \hline
     \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & init & 1 \\ \hline
-    unigram & initialize & 1 \\ \hline
+    alphabetic & - & - \\ \hline
+    unigram & initialize & 2 \\ \hline
     bigram & - & - \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 6}
 \label{table:qual6}
 \end{table}
+The unigram sorter is the only that was able to suggest \textit{initialize} from only 2 characters typed in, and at the 2 position!
 
 \item [Example 7:] \hfill
 \begin{lstlisting}
@@ -188,7 +193,7 @@ Creathing a method on the instance side of any class
     expected := #('ipsum' 'dolor' 'lorem').
     self as
 \end{lstlisting}
-In a test method
+In test methods having an \textit{assert:equals:} call is quite common, and as there are a lot of tests being written, we are interested in having a completion suggestion that is as accurate as possible after \textit{as}.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -201,6 +206,7 @@ In a test method
 \caption{Qualitative evaluation, example 7}
 \label{table:qual7}
 \end{table}
+Both the unigram and bigram sorters showed good results.
 
 \item [Example 8:] \hfill
 \begin{lstlisting}
@@ -210,7 +216,7 @@ In a test method
 	sumA := 0.
 	countSuccess do: [ :each | su ]
 \end{lstlisting}
-(Cursor after su before the block closure)
+Here we are interested in completion inside the block, so our cursor is after \textit{su} before the bracket \textit{]}. Since inside the block we want to do assignment for the temporary variables, we are expecting \textit{sumA} and \textit{sumS} as suggestions.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -228,6 +234,7 @@ In a test method
 \begin{lstlisting}
     RBScanner sc
 \end{lstlisting}
+In the Playground we want to get suggested method names on the class side of \textit{RBScanner} that begin with \textit{sc}. There are two: \textit{scanTokens:} and \textit{scanTokenObjects:}.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -240,6 +247,7 @@ In a test method
 \caption{Qualitative evaluation, example 9}
 \label{table:qual9}
 \end{table}
+On the one hand, all sorters showed essentially the same result; however, on the other hand, \textit{scanTokens:} is more likely to be used next to \textit{RBscanner} and it is a shorter token, so the bigram result is slightly superior.
 
 \item [Example 10:] \hfill
 \begin{lstlisting}
@@ -251,6 +259,9 @@ In a test method
         nextPut: #(key value);
         ne
 \end{lstlisting}
+Now, for an even more creative example, in Pharo there can be multiple messages sent to a receiver, as long as they are all separated by a semicolon \textit{;}. Hence, having a cursor after \textit{ne}, we know we are sending a message to \textit{NeoCSVWriter on: stream} and want to get suitable suggestions, which are \textit{nextPut:} and \textit{nextPutAll:}.
+
+In the table of results below we see that the unigram sorter got the best result.
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|}
@@ -258,7 +269,7 @@ In a test method
     \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
     alphabetic & - & - \\ \hline
     unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
-    bigram & next & 1 \\ \hline
+    bigram & - & - \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 10}
 \label{table:qual10}
