@@ -53,13 +53,18 @@
 
 6. **Evaluation**
 
-   *half done, needs more practical work*; existing sections:
+   *mostly done*; existing sections:
 
    - 6.1 Evaluation Overview
    - 6.2 Challenges in Evaluating Completion
-   - 6.3 The Experiment Itself
-   - 6.4 Results
+   - 6.3 Quantitative Evaluation
+     - 6.3.1 Experiment
+     - 6.3.2 Results
+   - 6.4 Qualitative Evaluation
+     - 6.4.1 Experiment
+     - 6.4.2 Results
+   - 6.5 Summary
 
 7. **Conclusion**
 
-   *not started yet, will be done when other chapters are fully completed*
+   *created, needs to be written*
