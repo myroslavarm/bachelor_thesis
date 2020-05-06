@@ -7,9 +7,9 @@ In this chapter, we go over different approaches and challenges for evaluating c
 
 \section{Evaluation Overview}
 \label{sec:Evaluation-Overview}
-Evaluation is an essential part of any research process. In the Richard Feynman quote above, the evaluation \textit{is} the experiment he refers to. To paraphrase and make it more relevant to software engineering, it does not matter what kind of tool you implemented and how well do you think it works, unless there are clear metrics the implementation had been measured on. Now, there are two main types of evaluation you can perform: quantitative and qualitative.
+Evaluation is an essential part of any research process. In the Richard Feynman quote above, the evaluation \textit{is} the experiment he is referring to. To paraphrase and make it more relevant to software engineering, it does not matter what kind of tool you implemented and how well do you think it works, unless there are clear metrics the implementation had been measured on. Now, there are two main types of evaluation you can perform: quantitative and qualitative.
 
-Quantitative, as can be guessed from its name, refers to the type of an evaluation experiment that is based on quantifiable data and uses objective metrics. This is the predominant evaluation approach in the natural sciences and computer science, i.e. measuring physical parameters in the case of the former, or testing performance score in the latter.
+Quantitative, as can be guessed from its name, refers to the type of an evaluation experiment that is based on quantifiable data and uses objective metrics. This is the predominant evaluation approach in the natural sciences and computer science, i.e. measuring physical parameters in the case of the former, or testing performance scores in the latter.
 
 Qualitative methods, more native to fields such as sociology or psychology, are now being increasingly used in evaluation of computer systems and software tooling. The main objective is to get the "feel" for the system and deeper explore the human interaction experience, with the data gathered primarily from observations and interviews and subsequently analysed.
 
@@ -17,7 +17,13 @@ Conventionally, a proper qualitative evaluation requires an extensive set-up, in
 
 \section{Challenges in Evaluating Completion}
 \label{sec:Evaluation-Challenges}
-\oz{This section does not discuss the challenges of evaluating completion. There is no useful information about quantitative evaluation, and no information about completion and the complexity of telling if it's good or bad.}
+Coming up with a way to most accurately evaluate code completion is not trivial. One needs to have an idea how best to reproduce the process and what the metrics should be, as well as have an access to the resources needed.
+
+As per the qualitative approach, one can devise a user study, where developers would use the tool as is, and the experiment will be recorded. As has been mentioned already, the obvious drawbacks of this approach are that it is difficult to set it up due to resource constraints (time, money, etc.).
+
+Following the quantitative approach, code completion evaluation can be done via means of benchmarking, i.e. automatically evaluating the performance on test data. In this case, there are a few data-related constraints. One will have to prepare a dataset if it is not already available, and gathering enough test data can be tricky. On the other hand, the test dataset can be just too big, requiring either a monetary investment into more GPUs or a time investment into developing a complex evaluation tool, which will both deal with a large quantity of data, and accurately reproduce the process of completing code.
+
+Finally, at the end of the evaluation the goal is to be able to say whether the completion performs well or badly, and just \textit{how} well or \textit{how} badly. So another challenge, which applies to both the qualitative and the quantitative evaluation, comes in devising suitable metrics.
 
 \section{Quantitative Evaluation}
 \label{sec:Evaluation-Quantitative}
