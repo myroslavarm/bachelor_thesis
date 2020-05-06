@@ -1,41 +1,46 @@
 \chapter{Evaluation}
 \label{chap:Evaluation}
 
-In this chapter we'll go over different approaches and challenges for evaluating code completion, and what results we got from our experiments.
+In this chapter\insertion{,} \badstyle{we'll} go over different approaches and challenges for evaluating code completion, and what results we got from our experiments.
 
 \section{Evaluation Overview}
 \label{sec:Evaluation-Overview}
-Evaluating results of an experiment is extremely important. To quote Richard Feynman, "It doesn't matter how beautiful your theory is, it doesn't matter how smart you are. If it doesn't agree with experiment, it's wrong". In computer science, one has to have clear benchmarks and measurement metrics, to be able to say whether the results were satisfactory and the initial hypothesis was confirmed. The goal is to improve the existing implementation, whether it's to come up with an algorithm that solves the problem faster, or gives more precise results. In evaluation, both success and failure are important: success means you achieved the goal, but the failure to improve a system just means more work might be needed and one is closer to the goal than previously. Therefore, whatever the results, any experiment outcome is valuable, and evaluation is an essential part of the research process.
+\remove{Evaluating results of an experiment is extremely important.} \oz{You don't say...} \oz{Strictly speaking, your evaluation = your experiment. And to rephrase Feynman, "we must always do a proper evaluation"} To quote Richard Feynman, "It doesn't matter how beautiful your theory is, it doesn't matter how smart you are. If it doesn't agree with experiment, it's wrong". \oz{I think you should turn this quote into an epigraph for this chapter} \repetition{In computer science, one has to have clear benchmarks and measurement metrics, to be able to say whether the results were satisfactory and the initial hypothesis was confirmed. The goal is to improve the existing implementation, whether it's to come up with an algorithm that solves the problem faster, or gives more precise results. In evaluation, both success and failure are important: success means you achieved the goal, but the failure to improve a system just means more work might be needed and one is closer to the goal than previously. Therefore, whatever the results, any experiment outcome is valuable, and evaluation is an essential part of the research process.} \oz{It's up to you but I would remove this paragraph... it makes generally-accepted statements about the integrity of experimental research and contains no meaningful information about your problem area}
 
 There are two types of evaluation you can do in software research: quantitative and qualitative.
 
-In this case, quantitative, which can also be referred to as automatic, evaluation means creating metrics that can be evaluated without any additional resources or human participation. That means evaluating the accuracy of the model on some benchmarks, i.e. testing the model on test corpora and seeing how well it performs.
+\notclear{In this case, quantitative, which can also be referred to as automatic, evaluation means creating metrics that can be evaluated without any additional resources or human participation. That means evaluating the accuracy of the model on some benchmarks, i.e. testing the model on test corpora and seeing how well it performs.}
 
-In qualitative evaluation, which is more appropriate for evaluating software tooling rather than statisctical models, researches essentially try to gauge the quality of the system by evaluating the human interaction experience. With something like code completion in mind, it could mean involving developers to use it, and record the impressions. In this case, the accuracy of the system would be based more on how it "feels" to use it, rather than what the numbers show.
+\notclear{In qualitative evaluation, which is more appropriate for evaluating software tooling rather than statis\remove{c}tical models, researches \remove{essentially} try to gauge the quality of the system by evaluating the human interaction experience. With something like code completion in mind, it could mean involving developers to use it, and record the impressions. In this case, the accuracy of the system would be based more on how it "feels" to use it, rather than what the numbers show.}
 
 \section{Challenges in Evaluating Completion}
 \label{sec:Evaluation-Challenges}
-For our use case both the quantitative and qualitative evaluations are fitting. The quantitative approach can be used for evaluating model accuracy itself, and qualitative can be utilised to test how the subsequent implementation feels and how exactly various sorting strategies influence the coding experience, and how well they "seem" to perform in comparison to previous implementations.
+\oz{This chapter does not discuss the challenges of evaluating completion. It only mentions that you will be performing qualitative evaluation yourself. There is no useful information about quantitative evaluation, and no information about completion and the complexity of telling if it's good or bad}
 
-Normally, a proper qualitative evalution requires an extensive set-up, such as inolving multiple people, recording their coding process, conducting interviews, and so on. Unfortunately, we do not have the resources for that, and will be conducting a more minimalist version of qualitative evaluation: in particular, we will manually test a selected number of cases and compare the results across various sorting strategies ourselves.
+For our use case both the quantitative and qualitative evaluations are fitting. The quantitative approach can be used for evaluating model accuracy \remove{itself}, and qualitative can be utilised to test \wrong{how the subsequent implementation feels} and how exactly various sorting strategies influence the coding experience, and how well they \badstyle{"seem"} to perform in comparison to previous implementations.
+
+\remove{Normally,} a proper qualitative evalu\insertion{a}tion requires an extensive set-up, \remove{such as} in\insertion{v}olving multiple people, recording their coding process, conducting interviews, and so on. Unfortunately, we do not have the resources for that \oz{We do}, and will be conducting a more minimalist version of qualitative evaluation: in particular, we will manually test a selected number of cases and compare the results across various sorting strategies ourselves.
 
 \section{Quantitative Evaluation}
 \label{sec:Evaluation-Quantitative}
 \subsection{Experiment}
-The quantitative evaluation approach we decided to take is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
+The quantitative evaluation approach \badstyle{we decided to take} is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
 
-In particular, the idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, our completion gets triggered for every token with the cursor between the 2nd and the 8th position (this range also taken from the \cite{Robb08a} paper). This means that starting with every second symbol of an alphabetic token, we invoke the completion and compare whether the result suggested at that step matches the one that followed in real history. This creates an illusion of it being a qualitative evalution setup, except with no human participation and instead with strict mathematical metrics.
+\remove{In particular,} the idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, \repetition{our completion gets triggered for every token with the cursor between the 2nd and the 8th position} (this range also taken from the \cite{Robb08a} paper). \remove{This means that} \repetition{starting with every second symbol of an alphabetic token, we invoke the completion} and compare whether the result suggested at that step matches the one that followed in real history. \remove{This creates an illusion of it being a qualitative evaluation setup, except with no human participation and instead with strict mathematical metrics.}
 
-In order for this to work, we have a dataset of methods from the Pharo IDE source code, and for each of them we repeat this process of calling the completion at each step and performing the following:
+\remove{In order for this to work,} we \replace{have}{used} a dataset of methods from the Pharo IDE source code \insertion{collected by \cite{Zait20a}} \oz{you must put a reference, otherwise it's impossible for your readers to know what is this dataset, where did it come from, how many methods does it contain, etc.}, and for each of them we repeat this process of calling the completion at each step and performing the following:
 \begin{itemize}
-    \item check whether the correct completion was present among the suggestions at all
+    \item check whether the correct completion was present \replace{among the}{in the list of} suggestions \remove{at all}
     \item if it was, we only consider the results successful if the correct completion was also present in the top-10 suggestions
     \item for those cases we record the current sequence (i.e. what has been "typed in" up to that point), prefix length, the actual correct match, and its position in the list of suggestions
     \item we also calculate an average success rate for all the methods evaluated (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results)
 \end{itemize}
 
 \subsection{Results}
-Now, here are the average success rates for each of the classes and sorting strategies we've tested. \textit{OrderedCollection} has 64 methods, \textit{CompletionEvaluation} has 9, \textit{FrequencyCompletionSorter} has just 2, and \textit{NgramModel} 21.
+\remove{Now,} \replace{here are}{In Table~\ref{table:quan1}, we present} the \notclear{average success rates} \oz{What is an "average success rate"?? And where is "accuracy" that you were talking about in the previous chapters?} for each of the classes and sorting strategies \badstyle{we've} tested. \remove{\textit{OrderedCollection} has 64 methods,\textit{CompletionEvaluation} has 9, \textit{FrequencyCompletionSorter} has just 2, and \textit{NgramModel} 21.} \oz{You can add it as a column to your table}
+
+\oz{Explain what are the three models that you are comparing: unigram, bigram, and alphabetic. Why did you choose those three, why not 3-gram and 4-gram models? This is the first time when alphabetic sorting should be mentioned (as a "random baseline")}
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|l|}
@@ -50,7 +55,25 @@ Now, here are the average success rates for each of the classes and sorting stra
 \label{table:quan1}
 \end{table}
 
-From this, we can see that on average the unigram sorter performs much better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter not only does not perform better than the unigram strategy, it also performs just a little worse than the alphabetic sorter, which was not expected at all. One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.
+\oz{How to make your tables cleaner: (1) Round your numbers to 1-3 decimal places; (2) Align text to the left and numbers to the right; (3) Don't use CAPS; (4) Don't use vertical lines; (5) Use less horizontal lines. If you like it, apply those changes to every table}
+
+\oz{And general rules of using tables: (1) Every table must be referenced in text, for example, "In Table~\ref{table:quan1} you can see..."; (2) The text around that reference must be sufficient to understand the table (describe every column, discuss the values); (3) Caption of every table must be sufficient to understand that table without searching for its reference in the main text (captions such as "Qualitative evaluation, example 1" are not enough). Same rules apply to all figures.}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lrrr}
+    \hline
+    \textbf{Class} & \textbf{Alphabetic} & \textbf{Unigram} & \textbf{Bigram} \\ \hline
+    OrderedCollection & 0.32 & 0.38 & 0.30 \\ 
+    CompletionEvaluation & 0.24 & 0.25 & 0.22 \\ 
+    FrequencyCompletionSorter & 0.48 & 0.58 & 0.47 \\ 
+    NgramModel & 0.33 & 0.36 & 0.29 \\ \hline
+    \end{tabular}
+\caption{Quantitative evaluation, average success ratio}
+\label{table:quan1}
+\end{table}
+
+\remove{From this,} we can see that \remove{on average} the unigram sorter performs \remove{much} better than the alphabetic sorter, as expected. \oz{It doesn't look like "much"} However, surprisingly the bigram sorter \remove{not only does not perform better than the unigram strategy, it also} performs \remove{just a little} worse than the alphabetic sorter\remove{, which was not expected at all}. \oz{It's not "just a little". In fact, it's the same magnitude as the improvement of unigram over alphabetic (you can say that one is "much better" and the other is "slightly worse")} \oz{And it's not that surprising considering that you are testing it on very small classes. Also, if bigram model is still applied to the code without replacing numbers and strings with <num> and <str>, then those results are simply incorrect (and there's nothing surprising about that)} \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean}
 
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
@@ -280,11 +303,11 @@ To briefly sum up the results of the manual qualitative evaluation, the unigram 
 
 \section{Summary}
 \label{sec:Evaluation-Summary}
-In short, the most relevant things you know about evaluation practices in general, as well as the evaluation results of our experiment in particular are the following:
+\remove{In short, the most relevant things you know about evaluation practices in general, as well as the evaluation results of our experiment in particular are the following:}
 \begin{itemize}
-    \item quantitative (automatic) evaluation involves evaluating the model on some benchmarks, whereas the qualitative (manual) approach involves evaluating the results on the go, as the program is being normally executed
-    \item there are some challenges when properly setting up the qualitative approach, as it involves a lot of resources; we didn't have them and so conducted a minimalist version of the approach
-    \item based on the evaluation tool that we created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed much better than the alphabetic sorter but, surprisingly, the bigram one performed worse
-    \item for the qualitative evaluation, we picked 10 interesting completion cases (with no bias towards any strategy) and tested them in the real environment and recorded the positions of completion suggestions we were interested in; based on this, the unigram approach was once again the best, but this time the bigram approach followed not far behind, and the alphabetic was worse
-    \item hence we can officially state that the unigram sorter is a clear improvement on the alphabetic approach, whereas the bigram sorter seems to lack the accuracy
+    \item quantitative (automatic) evaluation involves evaluating the model on \badstyle{some benchmarks}, whereas the qualitative (manual) approach involves evaluating the results \badstyle{on the go}, as the program is being normally executed
+    \item \remove{there are some challenges when properly setting up the qualitative approach, as it involves a lot of resources; we didn't have them and so conducted a minimalist version of the approach} \oz{It's not true. We had them. You were doing internship in a team with over 20 experienced researchers and developers. And a highly responsive Pharo community with hundreds of developers willing to participate in experiments for free. So it is unfair to say that we don't have resources. You didn't have time to use those resources. So just remove this statement}
+    \item based on the evaluation tool that we created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed \remove{much} better than the alphabetic sorter but, surprisingly, the bigram one performed worse
+    \item for the qualitative evaluation, we picked 10 interesting completion cases (with no bias towards any strategy) and tested them in the real environment and recorded the positions of completion suggestions we were interested in; based on this, the unigram approach was once again the best, but this time the bigram approach \badstyle{followed not far behind}, and the alphabetic was worse
+    \item \remove{hence we can officially state that} \remove{the unigram sorter is a clear improvement on the alphabetic approach, whereas the bigram sorter seems to lack the accuracy} \oz{Move this to the Conclusion. But don't say "clear improvement". How do you define "clear"? For me it's not clear at all}
 \end{itemize}

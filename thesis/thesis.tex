@@ -55,7 +55,7 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
-\usepackage{xcolor} %%% for comments
+%\usepackage[dvipsnames]{xcolor} %%% for comments
 \usepackage{ifthen} %%% for comments
 \usepackage{amssymb} %%% for comments
 \usepackage{soul} %%% for strikethrough
@@ -70,9 +70,23 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
      \newcommand{\version}{\emph{\scriptsize$-$Id$-$}}}
     {\newcommand{\nb}[3]{}
      \newcommand{\version}{}}
-\newcommand{\oz}[1]{\nb{Oleks}{red}{#1}}
-\newcommand{\md}[1]{\nb{Marcus}{blue}{#1}}
+\newcommand{\oz}[1]{\nb{Oleks}{blue}{#1}}
+\newcommand{\md}[1]{\nb{Marcus}{red}{#1}}
 \newcommand{\mr}[1]{\nb{Myroslava}{olive}{#1}}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\green}[1]{\textcolor{OliveGreen}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\yellow}[1]{\textcolor{orange}{#1}}
+\newcommand{\purple}[1]{\textcolor{Plum}{#1}}
+
+\newcommand{\notclear}[1]{\yellow{#1}}
+\newcommand{\wrong}[1]{\red{#1}}
+\newcommand{\remove}[1]{\red{\st{#1}}}
+\newcommand{\replace}[2]{\red{\st{#1} [#2]}}
+\newcommand{\insertion}[1]{\red{[#1]}}
+\newcommand{\badstyle}[1]{\purple{#1}}
+\newcommand{\repetition}[1]{\green{#1}}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -194,7 +208,7 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 
 \vspace*{0.2\textheight}
 
-\noindent\enquote{Please do not be cynical. I hate cynicism. For the record, it's my least favorite quality. It's doesn't lead anywhere. No one in life gets exactly what they thought they were going to get. But if you work really hard and you're kind, amazing things will happen.}\bigbreak
+\noindent\enquote{Please do not be cynical. I hate cynicism. For the record, it's my least favorite quality. It\remove{'s} doesn't lead anywhere. No one in life gets exactly what they thought they were going to get. But if you work really hard and you're kind, amazing things will happen.}\bigbreak
 
 \hfill Conan O'Brien
 
@@ -204,15 +218,19 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-Code completion is one of the essential features of any IDE that greatly improves the developer experience and productivity. Good code completion can both speed up the development process, as well as aid the developer in API exploration. On the other hand, having a slow or inaccurate completion can be very cumbersome. Thus, it is important to find a way to make it as effective as possible.
+Code completion is one of the essential features of any IDE that greatly improves the developer experience and productivity. Good code completion can both speed up the development process, as well as aid the developer in API exploration. On the other hand, having a slow or inaccurate completion can be very cumbersome. Thus, \repetition{it} is important to find a way to make \repetition{it} as effective as possible.
 
-The current implementation of code completion in the Pharo IDE is based on abstract syntax tree (AST) information of source code. This allows us to know the semantic role and, where possible, even the type of tokens. Hence, at every point in the completion, contextually relevant results are suggested.
+The current implementation of code completion in the Pharo IDE is based on abstract syntax tree (AST) \remove{information} of source code. This allows us to know the semantic role and\remove{, where possible, even} the type of tokens. Hence, at every point in the completion, contextually relevant results \badstyle{are suggested}.
 
-However, the completion candidates that are proposed are sorted alphabetically. We believe, this approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs.
+However, the completion candidates that \badstyle{are proposed are sorted} alphabetically. \remove{We believe, }\notclear{this approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs.}
 
-Therefore, in this work we study how code completion can be improved by sorting completion results using statistical language models. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram implementation, we implement a sorting strategy where the most relevant results are shown first. This allows us to propose more accurate suggestions even when we don't know the exact type of the token, and makes finding a desired suggestion much faster.
+\remove{Therefore, }in this work we study how code completion can be improved by sorting completion results using statistical language models. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram \badstyle{implementation, we implement} a sorting strategy where the \repetition{most relevant results are shown first}. This allows us to propose \repetition{more accurate suggestions} even when we don't know the exact type of the token, and \repetition{makes finding a desired suggestion much faster}.
 
-Finally, we evaluate the various sorting strategies to measure how effective they are in practice (i.e. we want to have relevance in addition to accuracy and speed).
+Finally, we evaluate the \notclear{various sorting strategies} to measure how effective they are in practice \remove{(i.e. we want to have relevance in addition to accuracy and speed)}.
+
+\oz{A few more words about evaluation: What did you evaluate? (e.g. "we evaluated strategy A by comparing it to strategy B") How did you evaluate? (e.g. "we measured precision expressed as... probability that the correct completion will be in top 5?") What was the result of evaluation? (e.g. "strategy A proposed by us in this paper has precision 90\% while strategy B has only 40\%")}
+
+\oz{And about your contribution: part of your work was already accepted as a pull request to Pharo 9, the rest of it (latest updates to code completion) you have submitted to be reviewed by the community}
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
@@ -221,7 +239,7 @@ Finally, we evaluate the various sorting strategies to measure how effective the
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-I would like to express my endless gratitude to Oleksandr Zaitsev and Dr. Marcus Denker from the RMoD team at INRIA Lille for supervising this work, providing me with valuable feedback, and patiently answering my questions. I also want to thank Dr. Stéphane Ducasse for helping me arrange my internship at INRIA and my stay in Lille, as well as introducing me to Pharo all these years ago. I am also grateful to INRIA Lille and the European Smalltalk User Group (ESUG) for the opportunity and for financing this internship.
+I would like to express my endless gratitude to Oleksandr Zaitsev and Dr. Marcus Denker from the RMoD team at INRIA Lille for supervising this work, providing me with valuable feedback, and patiently answering my questions. I also want to thank Dr. Stéphane Ducasse for helping me arrange my internship at INRIA and my stay in Lille, as well as \badstyle{introducing me to Pharo all these years ago}. I am also grateful to INRIA Lille and the European Smalltalk User Group (ESUG) for the opportunity and for financing this internship.
 
 I would also like to thank Yuriy Tymchuk for helping me make my first steps in Pharo during Google Summer of Code (GSoC) 2017, Guillermo Polito for providing me with advice throughout my work on code completion, Oles Hodych for \LaTeX\  tips and thesis recommendations, as well as my mum and dad for supporting me throughout my Bachelor journey, my best friends Martin and Ryan for motivating me and keeping me grounded, and Conan O'Brien and Tina Fey for providing endless comedic relief when it was most needed -- such as writing this thesis in social isolation during the Covid-19 quarantine in a student room in France.
 
@@ -235,6 +253,45 @@ Finally, I want to thank the Ukrainian Catholic University and the Faculty of Ap
 \tableofcontents % Prints the main table of contents
 
 \listoffigures % Prints the list of figures
+\oz{It's up to you, but I would remove List of Figures and List of Tables. This is not a 500-page book, so they are pretty useless, they only take space and paper. You can ask UCU if those pages are required (I think I removed them from my thesis and Oleksiy was OK with that)}
+
+
+\oz{Here is a list of your parasite words:}
+
+\begin{itemize}
+  \item essentially
+  \item specifically
+  \item in particular
+  \item sort of
+  \item really
+  \item of course (never write "of course"!)
+  \item Now, ...
+  \item Hence..., Therefore...
+\end{itemize}
+
+\oz{Also:}
+
+\begin{itemize}
+  \item in order to $\rightarrow$ to
+  \item are able to $\rightarrow$ can
+  \item as well as $\rightarrow$ and
+\end{itemize}
+
+\oz{Avoid short forms (they are informal)}:
+
+\begin{itemize}
+  \item don't $\rightarrow$ do not
+  \item there's $\rightarrow$ there is
+  \item they've $\rightarrow$ they have
+\end{itemize}
+
+\oz{Try to avoid passive voice:}
+
+\begin{itemize}
+  \item are suggested (WHO suggests?) $\rightarrow$ we suggest / our model suggests
+  \item evaluation of approach taken (taken BY WHOM?) $\rightarrow$ evaluation of our approach / evaluation of approach that we took
+\end{itemize}
+
 
 \listoftables % Prints the list of tables
 
