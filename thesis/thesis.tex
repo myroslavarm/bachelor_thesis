@@ -63,6 +63,10 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 \usepackage{amssymb} %%% for comments
 \usepackage{soul} %%% for strikethrough
 
+\usepackage{enumitem}
+\newlist{RQ}{enumerate}{1}
+\setlist[RQ]{label=RQ\arabic*:}
+
 % comments \nb{label}{color}{text}
 \newboolean{showcomments}
 \setboolean{showcomments}{true}
@@ -223,13 +227,13 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 Code completion is one of the essential features of any IDE that greatly improves the developer experience and productivity. Good code completion can both speed up the development process, as well as aid the developer in API exploration. On the other hand, having a slow or inaccurate completion can be very cumbersome. Thus, \repetition{it} is important to find a way to make \repetition{it} as effective as possible.
 
-The current implementation of code completion in the Pharo IDE is based on abstract syntax tree (AST) \remove{information} of source code. This allows us to know the semantic role and\remove{, where possible, even} the type of tokens. Hence, at every point in the completion, contextually relevant results \badstyle{are suggested}.
+The current implementation of code completion in the Pharo IDE is based on the abstract syntax tree (AST) of source code. This allows us to know the semantic role and the type of tokens. Hence, at every point in the completion, contextually relevant results \badstyle{are suggested}.
 
-However, the completion candidates that \badstyle{are proposed are sorted} alphabetically. \remove{We believe, }\notclear{this approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs.}
+However, the completion candidates that \badstyle{are proposed are sorted} alphabetically. \notclear{This approach ignores the potential of suggesting more relevant completion results based on their occurence in code history, which is something that has been successfully adopted by other IDEs.}
 
-\remove{Therefore, }in this work we study how code completion can be improved by sorting completion results using statistical language models. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram \badstyle{implementation, we implement} a sorting strategy where the \repetition{most relevant results are shown first}. This allows us to propose \repetition{more accurate suggestions} even when we don't know the exact type of the token, and \repetition{makes finding a desired suggestion much faster}.
+In this work we study how code completion can be improved by sorting completion results using statistical language models. In particular, for our experiment we chose the n-gram language model. With the help of the n-gram \badstyle{implementation, we implement} a sorting strategy where the \repetition{most relevant results are shown first}. This allows us to propose \repetition{more accurate suggestions} even when we don't know the exact type of the token, and \repetition{makes finding a desired suggestion much faster}.
 
-Finally, we evaluate the \notclear{various sorting strategies} to measure how effective they are in practice \remove{(i.e. we want to have relevance in addition to accuracy and speed)}.
+Finally, we evaluate the \notclear{various sorting strategies} to measure how effective they are in practice.
 
 \oz{A few more words about evaluation: What did you evaluate? (e.g. "we evaluated strategy A by comparing it to strategy B") How did you evaluate? (e.g. "we measured precision expressed as... probability that the correct completion will be in top 5?") What was the result of evaluation? (e.g. "strategy A proposed by us in this paper has precision 90\% while strategy B has only 40\%")}
 
