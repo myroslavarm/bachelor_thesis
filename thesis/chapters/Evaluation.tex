@@ -53,11 +53,9 @@ Table~\ref{table:quan1} presents the accuracy for each of the classes and sortin
 \label{table:quan1}
 \end{table}
 
-\oz{How to make your tables cleaner: (1) Round your numbers to 1-3 decimal places; (2) Align text to the left and numbers to the right; (3) Don't use CAPS; (4) Don't use vertical lines; (5) Use less horizontal lines. If you like it, apply those changes to every table}
-
 \oz{And general rules of using tables: (1) Every table must be referenced in text, for example, "In Table~\ref{table:quan1} you can see..."; (2) The text around that reference must be sufficient to understand the table (describe every column, discuss the values); (3) Caption of every table must be sufficient to understand that table without searching for its reference in the main text (captions such as "Qualitative evaluation, example 1" are not enough). Same rules apply to all figures.}
 
-We can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter performs worse than the alphabetic sorter. \oz{And it's not that surprising considering that you are testing it on very small classes.} \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
+We can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter performs worse than the alphabetic sorter. \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
 
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
@@ -78,12 +76,12 @@ It should be taken into consideration, however, that all the results are only re
 This was typed into the Playground and the results we were interested in were recorded with the cursor directly after \textit{ad}. For this context, the completion suggestions we were expecting as developers were \textit{add:} and, following, \textit{addAll:}. Here's what we got:
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & - & - \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}add:\\ addAll:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    bigram & - & - \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & - & - \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}add:\\ addAll:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Bigram & - & - \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 1}
 \label{table:qual1}
@@ -98,12 +96,12 @@ Both alphabetic and bigram sorters didn't manage to provide any relevant results
 Another example coded in the Playground, with the cursor at \textit{if}. The expected results would be \textit{ifTrue:}, \textit{ifTrue:ifFalse:}, and \textit{ifFalse:}.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & - & - \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}ifTrue:\\ ifTrue:ifFalse:\\ ifFalse:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
-    bigram & ifTrue: & 5 \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & - & - \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}ifTrue:\\ ifTrue:ifFalse:\\ ifFalse:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    Bigram & ifTrue: & 5 \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 2}
 \label{table:qual2}
@@ -119,12 +117,12 @@ The alphabetic sorter once again did not suggest anything of interest right away
 This was typed in the Editor, in the method \textit{returnProcessedData} of class \textit{TokenProcessing}. This is done to try out some more elaborate examples where the local context can play a role. Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \textit{readFile} are also methods on the instance side of the \textit{TokenProcessing} class, we expect to get their names as suggestions after typing \textit{self}. Particularly, as the cursor is positioned after \textit{re}, we expect to get only these 3 methods, as they are the ones starting with \textit{re}.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & readFile & 3 \\ \hline
-    unigram & - & - \\ \hline
-    bigram & \begin{tabular}[c]{@{}l@{}}rejectInvalidTokens\\ replaceWithPlaceholders\\ readFile\end{tabular} & \begin{tabular}[c]{@{}l@{}}7\\ 8\\ 9\end{tabular} \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & readFile & 3 \\ \hline
+    Unigram & - & - \\ \hline
+    Bigram & \begin{tabular}[c]{@{}l@{}}rejectInvalidTokens\\ replaceWithPlaceholders\\ readFile\end{tabular} & \begin{tabular}[c]{@{}r@{}}7\\ 8\\ 9\end{tabular} \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 3}
 \label{table:qual3}
@@ -141,12 +139,12 @@ It seems that here the unigram approach fell short, whereas the bigram approach,
 Typing \textit{to} we are expecting to have \textit{tokens} and \textit{tokenTypes}, as those are temporary variables we have declared and we might want to initialise them with some value. Here is what we got suggested:
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & \begin{tabular}[c]{@{}l@{}}tokenTypes\\ tokens\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    bigram & \begin{tabular}[c]{@{}l@{}}token\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & \begin{tabular}[c]{@{}l@{}}tokenTypes\\ tokens\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Bigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 4}
 \label{table:qual4}
@@ -160,12 +158,12 @@ The order in the unigram and bigram cases is a bit better, as having a shorter w
 Typing this in the Playground, we expect \textit{new} and maybe even \textit{new:}, depending on the context.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    bigram & \begin{tabular}[c]{@{}l@{}}new:\\ new\end{tabular} & \begin{tabular}[c]{@{}l@{}}4\\ 8\end{tabular} \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}r@{}}2\\ 3\end{tabular} \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Bigram & \begin{tabular}[c]{@{}l@{}}new:\\ new\end{tabular} & \begin{tabular}[c]{@{}r@{}}4\\ 8\end{tabular} \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 5}
 \label{table:qual5}
@@ -179,12 +177,12 @@ The best positions are for the unigram sorter, but in general all the sorters su
 In the Pharo IDE it is also possible to get completion suggestions even when creating a new method, and in this case we went to the instance side of a class and started typing \textit{in} as method name, wanting to get \textit{initialize}, as it is a very common method one might want to create in a class.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & - & - \\ \hline
-    unigram & initialize & 2 \\ \hline
-    bigram & - & - \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & - & - \\ \hline
+    Unigram & initialize & 2 \\ \hline
+    Bigram & - & - \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 6}
 \label{table:qual6}
@@ -203,12 +201,12 @@ The unigram sorter is the only that was able to suggest \textit{initialize} from
 In test methods having an \textit{assert:equals:} call is quite common, and as there are a lot of tests being written, we are interested in having a completion suggestion that is as accurate as possible after \textit{as}.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & - & - \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}assert:\\ assert:equals:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    bigram & assert:equals: & 1 \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & - & - \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}assert:\\ assert:equals:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Bigram & assert:equals: & 1 \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 7}
 \label{table:qual7}
@@ -226,12 +224,12 @@ Both the unigram and bigram sorters showed good results.
 Here we are interested in completion inside the block, so our cursor is after \textit{su} before the bracket \textit{]}. Since inside the block we want to do assignment for the temporary variables, we are expecting \textit{sumA} and \textit{sumS} as suggestions.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & \begin{tabular}[c]{@{}l@{}}sumA\\ sumS\\ super\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
-    bigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & \begin{tabular}[c]{@{}l@{}}sumA\\ sumS\\ super\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
+    Bigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 8}
 \label{table:qual8}
@@ -244,12 +242,12 @@ Here we are interested in completion inside the block, so our cursor is after \t
 In the Playground we want to get suggested method names on the class side of \textit{RBScanner} that begin with \textit{sc}. There are two: \textit{scanTokens:} and \textit{scanTokenObjects:}.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
-    bigram & \begin{tabular}[c]{@{}l@{}}scanTokens:\\ scanTokenObjects:\end{tabular} & \begin{tabular}[c]{@{}l@{}}1\\ 2\end{tabular} \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
+    Bigram & \begin{tabular}[c]{@{}l@{}}scanTokens:\\ scanTokenObjects:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 9}
 \label{table:qual9}
@@ -271,12 +269,12 @@ Now, for an even more creative example, in Pharo there can be multiple messages 
 In the table of results below we see that the unigram sorter got the best result.
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llr}
     \hline
-    \textbf{SORTER TYPE} & \textbf{COMPLETION SUGGESTION} & \textbf{POSITION} \\ \hline
-    alphabetic & - & - \\ \hline
-    unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}l@{}}2\\ 3\end{tabular} \\ \hline
-    bigram & - & - \\ \hline
+    \textbf{Sorter Type} & \textbf{Completion Suggestion} & \textbf{Position} \\ \hline
+    Alphabetic & - & - \\ \hline
+    Unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}r@{}}2\\ 3\end{tabular} \\ \hline
+    Bigram & - & - \\ \hline
     \end{tabular}
 \caption{Qualitative evaluation, example 10}
 \label{table:qual10}
@@ -289,8 +287,7 @@ To briefly sum up the results of the manual qualitative evaluation, the unigram 
 \label{sec:Evaluation-Summary}
 \begin{itemize}
     \item Quantitative (automatic) evaluation involves evaluating the model on \badstyle{some benchmarks}, whereas the qualitative (manual) approach involves evaluating the results \badstyle{on the go}, as the program is being normally executed.
-    \item \remove{There are some challenges when properly setting up the qualitative approach, as it involves a lot of resources; we didn't have them and so conducted a minimalist version of the approach.} \oz{It's not true. We had them. You were doing internship in a team with over 20 experienced researchers and developers. And a highly responsive Pharo community with hundreds of developers willing to participate in experiments for free. So it is unfair to say that we don't have resources. You didn't have time to use those resources. So just remove this statement}
     \item Based on the evaluation tool that we created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed better than the alphabetic sorter but, surprisingly, the bigram one performed worse.
     \item For the qualitative evaluation, we picked 10 interesting completion cases (with no bias towards any strategy) and tested them in the real environment and recorded the positions of completion suggestions we were interested in. Based on this, the unigram approach was once again the best, but this time the bigram approach \badstyle{followed not far behind}, and the alphabetic was worse.
-    \item \remove{Hence we can officially state that} \remove{the unigram sorter is a clear improvement on the alphabetic approach, whereas the bigram sorter seems to lack the accuracy.} \oz{Move this to the Conclusion. But don't say "clear improvement". How do you define "clear"? For me it's not clear at all}
+    \item \remove{The unigram sorter is a clear improvement on the alphabetic approach, whereas the bigram sorter seems to lack the accuracy.} \oz{Move this to the Conclusion. But don't say "clear improvement". How do you define "clear"?}
 \end{itemize}
