@@ -1,10 +1,10 @@
 0. **Abstract**
 
-   *rewritten*
+   *to fix*
 
 1. **Introduction**
 
-   *rewritten*; existing sections:
+   *to fix*; existing sections:
 
    - 1.1 Context
    - 1.2 Problem
@@ -24,7 +24,7 @@
 
 3. **Completion in Pharo**
 
-   *finished*; existing sections:
+   *done*; existing sections:
 
    - 3.1 Code Completion Background
    - 3.2 Typing for Completion in Dynamic Languages
@@ -34,7 +34,7 @@
 
 4. **N-gram Background**
 
-   *done*; existing sections:
+   *to fix*; existing sections:
 
    - 4.1 N-gram Language Models
    - 4.2 N-grams
@@ -44,7 +44,7 @@
 
 5. **Proposed solution**
 
-   *rewritten*; existing sections:
+   *to fix*; existing sections:
 
    - 5.1 Background
    - 5.2 Solution Overview
@@ -54,7 +54,7 @@
 
 6. **Evaluation**
 
-   *done*; existing sections:
+   *to fix*; existing sections:
 
    - 6.1 Evaluation Overview
    - 6.2 Challenges in Evaluating Completion
@@ -68,4 +68,4 @@
 
 7. **Conclusion**
 
-   *created, needs to be written*
+   *write / to fix*
