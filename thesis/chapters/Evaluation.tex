@@ -3,15 +3,15 @@
 
 \epigraph{"It doesn't matter how beautiful your theory is, it doesn't matter how smart you are. If it doesn't agree with experiment, it's wrong."}{--- \textup{Richard Feynman}}
 
-In this chapter, we go over different approaches and challenges for evaluating code completion, and what results we got from our experiments.
+In this chapter, I go over different approaches and challenges for evaluating code completion, and what results I got from the experiments.
 
 \section{Evaluation Overview}
 \label{sec:Evaluation-Overview}
-Evaluation is an essential part of any research process. In the Richard Feynman quote above, the evaluation \textit{is} the experiment he is referring to. To paraphrase and make it more relevant to software engineering, it does not matter what kind of tool you implemented and how well do you think it works, unless there are clear metrics the implementation had been measured on. Now, there are two main types of evaluation you can perform: quantitative and qualitative.
+Evaluation is an essential part of any research process. In the Richard Feynman quote above, the evaluation \textit{is} the experiment he is referring to. To paraphrase and make it more relevant to software engineering, it does not matter what kind of tool you implemented and how well do you think it works, unless there are clear metrics the implementation had been measured on and you actually have the data to back up your argument with. Now, there are two main types of evaluation one can perform: quantitative and qualitative.
 
 Quantitative, as can be guessed from its name, refers to the type of an evaluation experiment that is based on quantifiable data and uses objective metrics. This is the predominant evaluation approach in the natural sciences and computer science, i.e. measuring physical parameters in the case of the former, or testing performance scores in the latter.
 
-Qualitative methods, more native to fields such as sociology or psychology, are now being increasingly used in evaluation of computer systems and software tooling. The main objective is to get the "feel" for the system and deeper explore the human interaction experience, with the data gathered primarily from observations and interviews and subsequently analysed. (\cite{Hazz06a} discuss the qualitative approach and its relationship to the quantitative research in their paper.)
+Qualitative methods, more native to fields such as sociology or psychology, are now being increasingly used in evaluation of computer systems and software tooling. The main objective is to get the "feel" for the system and deeper explore the human interaction experience, with the data gathered primarily from observations and interviews and subsequently analysed. (\cite{Hazz06a} in their paper discuss the qualitative approach and its relationship to the quantitative one.)
 
 Conventionally, a proper qualitative evaluation requires an extensive set-up, involving multiple people, recording their coding process, conducting feedback interviews, and so on. However, due to lack of time, the qualitative evaluation I conducted for this project is more minimal. It involves manually selecting a number of common use cases and interacting with them as a user normally would, while recording the results and their meaning. (\cite{Kapl05a} describe an extensive qualitative evaluation example and talk about the key benefits and considerations of this approach.)
 
@@ -28,16 +28,16 @@ Finally, at the end of the evaluation the goal is to be able to say whether the 
 \section{Quantitative Evaluation}
 \label{sec:Evaluation-Quantitative}
 \subsection{Experiment}
-The quantitative evaluation approach \badstyle{we decided to take} is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
+The quantitative evaluation approach I performed is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
 
-The idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, \repetition{our completion gets triggered for every token with the cursor between the 2nd and the 8th position} (this range also taken from the \cite{Robb08a} paper). \repetition{Starting with every second symbol of an alphabetic token, we invoke the completion} and compare whether the result suggested at that step matches the one that followed in real history.
+The idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, I trigger the completion for every token with the cursor between the 2nd and the 8th position (this range also taken from the \cite{Robb08a} paper) and compare whether the result suggested at that step matches the one that followed in real history.
 
-We used a dataset of methods from the Pharo IDE source code \insertion{collected by \cite{Zait20a}} \oz{you must put a reference, otherwise it's impossible for your readers to know what is this dataset, where did it come from, how many methods does it contain, etc.}, and for each of them we repeat this process of calling the completion at each step and performing the following:
+For evaluation I took several classes at random, each with many methods, implemented in Pharo. For each of them I repeat this process of calling the completion at each step and perform the following:
 \begin{itemize}
     \item check whether the correct completion was present in the list of suggestions
-    \item if it was, we only consider the results successful if the correct completion was also present in the top-10 suggestions
-    \item for those cases we record the current sequence (i.e. what has been "typed in" up to that point), prefix length, the actual correct match, and its position in the list of suggestions
-    \item we also calculate the accuracy (average success rate) for all the methods evaluated (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results)
+    \item if it was, I only consider the results successful if the correct completion was also present in the top-10 suggestions
+    \item for those cases I record the current sequence (i.e. what has been "typed in" up to that point), prefix length, the actual correct match, and its position in the list of suggestions
+    \item I also calculate the accuracy (average success rate) for all the methods evaluated (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results)
 \end{itemize}
 
 \subsection{Results}
@@ -55,21 +55,21 @@ Table~\ref{table:quan1} presents the accuracy for each of the classes and sortin
     FrequencyCompletionSorter & 2 & 0.48 & 0.58 & 0.47 \\ 
     NgramModel & 21 & 0.32 & 0.36 & 0.29 \\ \hline
     \end{tabular}
-\caption{Quantitative evaluation, average success ratio}
+\caption{Quantitative evaluation: the average success ratio (accuracy) for each class and sorting strategy}
 \label{table:quan1}
 \end{table}
 
 \oz{And general rules of using tables: (1) Every table must be referenced in text, for example, "In Table~\ref{table:quan1} you can see..."; (2) The text around that reference must be sufficient to understand the table (describe every column, discuss the values); (3) Caption of every table must be sufficient to understand that table without searching for its reference in the main text (captions such as "Qualitative evaluation, example 1" are not enough). Same rules apply to all figures.}
 
-We can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter performs worse than the alphabetic sorter. \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
+From the results, we can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter performs worse than the alphabetic sorter. \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
 
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
 \subsection{Experiment}
-Even though the quantitative experiment results seem to show that the bigram strategy is not any good, it really does feel as if it is actually better than the alphabetic approach when used during a regular coding process. To demonstrate this, with no bias towards any of the sorting strategies, we preselected 10 cases for which we were interested to see completion suggestions and how accurate they were, and manually tested each of them. Below are the explanations and results for each of the 10 cases.
+Even though the quantitative experiment results seem to show that the bigram strategy is not any good, it really does feel as if it is actually better than the alphabetic approach when used during a regular coding process. To demonstrate this, with no bias towards any of the sorting strategies, I preselected 10 cases for which we were interested to see completion suggestions and how accurate they were, and manually tested each of them. Below are the explanations and results for each of the 10 cases.
 
 \subsection{Results}
-Note: if the \textit{completion suggestion} and \textit{position} columns contain '-' for any sorting strategy, it means that in the first 10 suggestions we did not see the results we were expecting to see, based on the context at hand.
+Note: if the \textit{completion suggestion} and \textit{position} columns contain '-' for any sorting strategy, it means that the expected results were not present in the top 10 suggestions.
 
 It should be taken into consideration, however, that all the results are only recorded after two symbols were typed in, and having correct suggestions with such a short prefix can be considered best-case scenario (as the correct suggestions would definitely be more likely to appear with a longer prefix). Ergo, the absence of correct suggestions at this point does not signal a complete failure of the completion engine or a sorting strategy used, but rather hints that there is more work required to get to the correct suggestions. It is unideal, and is exactly the reason for trying to improve the completion tool.
 
@@ -79,7 +79,7 @@ It should be taken into consideration, however, that all the results are only re
     col := OrderedCollection new.
     col ad
 \end{lstlisting}
-This was typed into the Playground and the results we were interested in were recorded with the cursor directly after \textit{ad}. For this context, the completion suggestions we were expecting as developers were \textit{add:} and, following, \textit{addAll:}. Here's what we got:
+This was typed into the Playground and the results I was interested in were recorded with the cursor directly after \textit{ad}. For this context, the completion suggestions the developers would expect were \textit{add:} and, following, \textit{addAll:}. Here's what I got:
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -92,7 +92,7 @@ This was typed into the Playground and the results we were interested in were re
 \caption{Qualitative evaluation, example 1}
 \label{table:qual1}
 \end{table}
-Both alphabetic and bigram sorters didn't manage to provide any relevant results in the top 10 suggestions, whereas the result from the unigram was exactly what we wanted.
+Both alphabetic and bigram sorters didn't manage to provide any relevant results in the top 10 suggestions, whereas the result from the unigram was exactly what I was expecting.
 
 \item [Example 2:] \hfill
 \begin{lstlisting}
@@ -120,7 +120,7 @@ The alphabetic sorter once again did not suggest anything of interest right away
         | tokensDataFrame |
         tokensDataFrame := self re
 \end{lstlisting}
-This was typed in the Editor, in the method \textit{returnProcessedData} of class \textit{TokenProcessing}. This is done to try out some more elaborate examples where the local context can play a role. Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \textit{readFile} are also methods on the instance side of the \textit{TokenProcessing} class, we expect to get their names as suggestions after typing \textit{self}. Particularly, as the cursor is positioned after \textit{re}, we expect to get only these 3 methods, as they are the ones starting with \textit{re}.
+This was typed in the Editor, in the method \textit{returnProcessedData} of class \textit{TokenProcessing}. This is done to try out some more elaborate examples where the local context can play a role. Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \textit{readFile} are also methods on the instance side of the \textit{TokenProcessing} class, I expect to get their names as suggestions after typing \textit{self}. Particularly, as the cursor is positioned after \textit{re}, I expect to get only these 3 methods, as they are the ones starting with \textit{re}.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -142,7 +142,7 @@ It seems that here the unigram approach fell short, whereas the bigram approach,
         data := self returnProcessedData.
         to
 \end{lstlisting}
-Typing \textit{to} we are expecting to have \textit{tokens} and \textit{tokenTypes}, as those are temporary variables we have declared and we might want to initialise them with some value. Here is what we got suggested:
+Typing \textit{to} I am expecting to have \textit{tokens} and \textit{tokenTypes}, as those are temporary variables that were declared and a developer might want to initialise them with some value. Here is what the suggestions were:
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -161,7 +161,7 @@ The order in the unigram and bigram cases is a bit better, as having a shorter w
 \begin{lstlisting}
     UnigramTableCreator ne
 \end{lstlisting}
-Typing this in the Playground, we expect \textit{new} and maybe even \textit{new:}, depending on the context.
+Typing this in the Playground, I expect \textit{new} and maybe even \textit{new:}, depending on the context.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -180,7 +180,7 @@ The best positions are for the unigram sorter, but in general all the sorters su
 \begin{lstlisting}
     in
 \end{lstlisting}
-In the Pharo IDE it is also possible to get completion suggestions even when creating a new method, and in this case we went to the instance side of a class and started typing \textit{in} as method name, wanting to get \textit{initialize}, as it is a very common method one might want to create in a class.
+In the Pharo IDE it is also possible to get completion suggestions even when creating a new method, and in this case I went to the instance side of a class and started typing \textit{in} as method name, wanting to get \textit{initialize}, as it is a very common method one might want to create in a class.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -193,7 +193,7 @@ In the Pharo IDE it is also possible to get completion suggestions even when cre
 \caption{Qualitative evaluation, example 6}
 \label{table:qual6}
 \end{table}
-The unigram sorter is the only that was able to suggest \textit{initialize} from only 2 characters typed in, and at the 2 position!
+The unigram sorter is the only that was able to suggest \textit{initialize} from only two characters typed in, and at the 2nd position!
 
 \item [Example 7:] \hfill
 \begin{lstlisting}
@@ -204,7 +204,7 @@ The unigram sorter is the only that was able to suggest \textit{initialize} from
     expected := #('ipsum' 'dolor' 'lorem').
     self as
 \end{lstlisting}
-In test methods having an \textit{assert:equals:} call is quite common, and as there are a lot of tests being written, we are interested in having a completion suggestion that is as accurate as possible after \textit{as}.
+In test methods having an \textit{assert:equals:} call is quite common, and as there are a lot of tests being written, I am interested in having a completion suggestion that is as accurate as possible after \textit{as}.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -227,7 +227,7 @@ Both the unigram and bigram sorters showed good results.
 	sumA := 0.
 	countSuccess do: [ :each | su ]
 \end{lstlisting}
-Here we are interested in completion inside the block, so our cursor is after \textit{su} before the bracket \textit{]}. Since inside the block we want to do assignment for the temporary variables, we are expecting \textit{sumA} and \textit{sumS} as suggestions.
+Here I am interested in completion inside the block, so the cursor is after \textit{su} before the bracket \textit{]}. Since inside the block I want to do assignment for the temporary variables, I am expecting \textit{sumA} and \textit{sumS} as suggestions.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -245,7 +245,7 @@ Here we are interested in completion inside the block, so our cursor is after \t
 \begin{lstlisting}
     RBScanner sc
 \end{lstlisting}
-In the Playground we want to get suggested method names on the class side of \textit{RBScanner} that begin with \textit{sc}. There are two: \textit{scanTokens:} and \textit{scanTokenObjects:}.
+In the Playground I want to get suggested method names on the class side of \textit{RBScanner} that begin with \textit{sc}. There are two: \textit{scanTokens:} and \textit{scanTokenObjects:}.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -270,7 +270,7 @@ On the one hand, all sorters showed essentially the same result; however, on the
         nextPut: #(key value);
         ne
 \end{lstlisting}
-Now, for an even more creative example, in Pharo there can be multiple messages sent to a receiver, as long as they are all separated by a semicolon \textit{;}. Hence, having a cursor after \textit{ne}, we know we are sending a message to \textit{NeoCSVWriter on: stream} and want to get suitable suggestions, which are \textit{nextPut:} and \textit{nextPutAll:}.
+Now, for an even more creative example, in Pharo there can be multiple messages sent to a receiver, as long as they are all separated by a semicolon \textit{;}. Hence, having a cursor after \textit{ne}, I know I am sending a message to \textit{NeoCSVWriter on: stream} and want to get suitable suggestions, which are \textit{nextPut:} and \textit{nextPutAll:}.
 
 In the table of results below we see that the unigram sorter got the best result.
 \begin{table}[H]
@@ -292,8 +292,8 @@ To briefly sum up the results of the manual qualitative evaluation, the unigram 
 \section{Summary}
 \label{sec:Evaluation-Summary}
 \begin{itemize}
-    \item Quantitative (automatic) evaluation involves evaluating the model on \badstyle{some benchmarks}, whereas the qualitative (manual) approach involves evaluating the results \badstyle{on the go}, as the program is being normally executed.
-    \item Based on the evaluation tool that we created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed better than the alphabetic sorter but, surprisingly, the bigram one performed worse.
-    \item For the qualitative evaluation, we picked 10 interesting completion cases (with no bias towards any strategy) and tested them in the real environment and recorded the positions of completion suggestions we were interested in. Based on this, the unigram approach was once again the best, but this time the bigram approach \badstyle{followed not far behind}, and the alphabetic was worse.
+    \item Quantitative evaluation involves benchmarking the model and calculating performance scores, whereas the qualitative approach involves conducting the evaluation via setting up "live" human studies, recording feedback interviews, and so on.
+    \item Based on the evaluation tool that I created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed better than the alphabetic sorter but, surprisingly, the bigram one performed worse.
+    \item For the qualitative evaluation, I picked 10 interesting completion cases (with no bias towards any strategy) and tested them in the real environment and recorded the positions of the desired completion suggestions. Based on this, the unigram approach was once again the best, but this time the bigram approach \badstyle{followed not far behind}, and the alphabetic was worse.
     \item \remove{The unigram sorter is a clear improvement on the alphabetic approach, whereas the bigram sorter seems to lack the accuracy.} \oz{Move this to the Conclusion. But don't say "clear improvement". How do you define "clear"?}
 \end{itemize}
