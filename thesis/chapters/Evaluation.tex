@@ -3,39 +3,42 @@
 
 \epigraph{"It doesn't matter how beautiful your theory is, it doesn't matter how smart you are. If it doesn't agree with experiment, it's wrong."}{--- \textup{Richard Feynman}}
 
-In this chapter, I go over different approaches and challenges for evaluating code completion, and what results I got from the experiments.
+In this chapter, we will go over different approaches and challenges for evaluating code completion, as well as analyse the results from the evaluation experiments for this project.
 
 \section{Evaluation Overview}
 \label{sec:Evaluation-Overview}
-Evaluation is an essential part of any research process. In the Richard Feynman quote above, the evaluation \textit{is} the experiment he is referring to. To paraphrase and make it more relevant to software engineering, it does not matter what kind of tool you implemented and how well do you think it works, unless there are clear metrics the implementation had been measured on and you actually have the data to back up your argument with. Now, there are two main types of evaluation one can perform: quantitative and qualitative.
+Evaluation is an essential part of any research process. In the Richard Feynman quote above, the evaluation \textit{is} the experiment he is referring to. To paraphrase and make it more relevant to software engineering, it does not matter what kind of tool you implemented and how well do you think it works, there need to be clear metrics the implementation is measured on and a clear definition of what is considered to be a successful evaluation.
 
-Quantitative, as can be guessed from its name, refers to the type of an evaluation experiment that is based on quantifiable data and uses objective metrics. This is the predominant evaluation approach in the natural sciences and computer science, i.e. measuring physical parameters in the case of the former, or testing performance scores in the latter.
+When it comes to scientific research, there are two main types of evaluation one can perform: quantitative and qualitative.
 
-Qualitative methods, more native to fields such as sociology or psychology, are now being increasingly used in evaluation of computer systems and software tooling. The main objective is to get the "feel" for the system and deeper explore the human interaction experience, with the data gathered primarily from observations and interviews and subsequently analysed. (\cite{Hazz06a} in their paper discuss the qualitative approach and its relationship to the quantitative one.)
+Quantitative, as can be guessed from its name, refers to the type of an evaluation experiment that is based on quantifiable data and uses objective metrics. This is the predominant evaluation approach in the natural sciences and computer science, i.e. measuring physical parameters in the case of the former, or testing performance scores and accuracy in the latter.
 
-Conventionally, a proper qualitative evaluation requires an extensive set-up, involving multiple people, recording their coding process, conducting feedback interviews, and so on. However, due to lack of time, the qualitative evaluation I conducted for this project is more minimal. It involves manually selecting a number of common use cases and interacting with them as a user normally would, while recording the results and their meaning. (\cite{Kapl05a} describe an extensive qualitative evaluation example and talk about the key benefits and considerations of this approach.)
+Qualitative methods, more native to fields such as sociology or psychology, are now being increasingly used in evaluation of computer systems and software tooling\footnote{\cite{Hazz06a} in their paper discuss the qualitative approach and its relationship to the quantitative one.}. The main objective is to get the "feel" for the system and deeper explore the human interaction experience, with the data gathered primarily from observations and interviews and subsequently analysed.
+
+Conventionally, a proper qualitative evaluation\footnote{\cite{Kapl05a} describe an extensive qualitative evaluation example and talk about the key benefits and considerations of this approach.} requires an extensive set-up, involving multiple people, recording their coding process, conducting feedback interviews, and so on. However, due to lack of time, the qualitative evaluation I conducted for this project is more minimal. Particularly, it involves manually selecting a number of common use cases and interacting with them as a user normally would, while recording the results and their meaning.
 
 \section{Challenges in Evaluating Completion}
 \label{sec:Evaluation-Challenges}
-Coming up with a way to most accurately evaluate code completion is not trivial. One needs to have an idea how best to reproduce the process and what the metrics should be, as well as have an access to the resources needed.
+Coming up with a way to most accurately evaluate code completion is not trivial. One needs to have an idea how best to reproduce the process and what the metrics should be, as well as have an access to the resources needed. Mainly, here are the main challenges that need to be considered:
+\begin{enumerate}
+    \item Resources limitation. For benchmarking, there needs to be a large enough dataset to be able to properly evaluate the performance of the completion tool. It requires time to gather the data if it is not already available. If it already is and it is too big, then monetary and physical resouces come into play: one might then need better and faster hardware, more machines, and so on. Finally, one needs time and people to develop a suitable evaluation tool and set everything up well. For a qualitative evaluation, involving multiple people and managing time and money right are a concern, too. 
+    \item Finding appropriate metrics. Ultimately, the goal of the evaluation is to be able to say whether the completion performs well or badly, and just \textit{how} well or \textit{how} badly. Choosing metrics which will adequately represent the quality of the performance takes a lot of careful analysis and research. Getting this part right considerably influences the validity of the end result of the evaluation.
+    \item Reproducibility. Less a problem for a qualitative approach, where the idea is to let people use the tool as is and report the results, for the quantitative evaluation it is important to come up with a way to make code completion testable, or reproducible. This brings us back to the resources, as a suitable dataset is needed.
+\end{enumerate}
 
-As per the qualitative approach, one can devise a user study, where developers would use the tool as is, and the experiment will be recorded. As has been mentioned already, the obvious drawbacks of this approach are that it is difficult to set it up due to resource constraints (time, money, etc.).
-
-Following the quantitative approach, code completion evaluation can be done via means of benchmarking, i.e. automatically evaluating the performance on test data. In this case, there are a few data-related constraints. One will have to prepare a dataset if it is not already available, and gathering enough test data can be tricky. On the other hand, the test dataset can be just too big, requiring either a monetary investment into more GPUs or a time investment into developing a complex evaluation tool, which will both deal with a large quantity of data, and accurately reproduce the process of completing code.
-
-Finally, at the end of the evaluation the goal is to be able to say whether the completion performs well or badly, and just \textit{how} well or \textit{how} badly. So another challenge, which applies to both the qualitative and the quantitative evaluation, comes in devising suitable metrics.
+Finally, this is all a matter of correctly managing pros and cons of the evaluation. There are multiple ways to perform it, and multiple reasons to do something one way or another. The knowledge, interests, perceptions and skills of the researches will undoubtedly play a role in the evaluation, and the subjective nature of the process is as undeniable part of the experiment and needs to be carefully addressed. In the end, the goal is to represent the process as closely as possible to how it really happens, and report the results that will be suitably meaningful, while exercising a healthy amount of unbiased professional detachment.
 
 \section{Quantitative Evaluation}
 \label{sec:Evaluation-Quantitative}
 \subsection{Experiment}
-The quantitative evaluation approach I performed is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
+The quantitative evaluation approach performed for this project is based on the paper by \cite{Robb08a}, wherein they used the change history data to evaluate the performance of their completion.
 
-The idea with this approach is to recreate the coding process as it would happen naturally, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, I trigger the completion for every token with the cursor between the 2nd and the 8th position (this range also taken from the \cite{Robb08a} paper) and compare whether the result suggested at that step matches the one that followed in real history.
+The idea with this approach is to recreate the coding process as it would happen naturally, i.e. a gradual appearance of new code as if it is being entered at the moment, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, with this approach the completion gets triggered for every token with the cursor between the 2nd and the 8th position (the range taken from the \cite{Robb08a} paper), and we can compare whether the result suggested at that step matches the one that followed in real history.
 
-For evaluation I took several classes at random, each with many methods, implemented in Pharo. For each of them I repeat this process of calling the completion at each step and perform the following:
+For evaluation several Pharo classes were chosen at random, each containing multiple methods. For each of them I repeat this process of calling the completion at each step and perform the following:
 \begin{itemize}
-    \item check whether the correct completion was present in the list of suggestions
-    \item if it was, I only consider the results successful if the correct completion was also present in the top-10 suggestions
+    \item check whether the correct completion is present in the list of suggestions
+    \item if it is, the results are only considered successful if the correct completion is also present in the top-10 suggestions
     \item for those cases I record the current sequence (i.e. what has been "typed in" up to that point), prefix length, the actual correct match, and its position in the list of suggestions
     \item I also calculate the accuracy (average success rate) for all the methods evaluated (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results)
 \end{itemize}
