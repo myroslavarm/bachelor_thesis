@@ -28,6 +28,8 @@ Coming up with a way to most accurately evaluate code completion is not trivial.
 
 Finally, this is all a matter of correctly managing pros and cons of the evaluation. There are multiple ways to perform it, and multiple reasons to do something one way or another. The knowledge, interests, perceptions and skills of the researches will undoubtedly play a role in the evaluation, and the subjective nature of the process is as undeniable part of the experiment and needs to be carefully addressed. In the end, the goal is to represent the process as closely as possible to how it really happens, and report the results that will be suitably meaningful, while exercising a healthy amount of unbiased professional detachment.
 
+For this project both the quantitative and the qualitative approaches were used as the first provides concise numeric results of the completion sorting performance and the second allows to analyse common cases and demonstrates the actual human computer interaction as it would happen with regular users (developers using the Pharo IDE). The next two sections detail the experiments and their results.
+
 \section{Quantitative Evaluation}
 \label{sec:Evaluation-Quantitative}
 \subsection{Experiment}
@@ -44,9 +46,9 @@ For evaluation several Pharo classes were chosen at random, each containing mult
 \end{itemize}
 
 \subsection{Results}
-Table~\ref{table:quan1} presents the accuracy for each of the classes and sorting strategies tested.
+The three models I am comparing are the unigram and bigram sorters that were implemented as part of this work, and the alphabetic sorter, which is the existing default sorter of the Pharo IDE completion. The alphabetic sorter, as can be guessed from its name, simply sorts the completion suggestions alphabetically. Here we use it as a comparison baseline, as the idea is to find out whether indeed the n-gram based sorting performs better and improves the relevancy of code completion suggestions, in comparison to the alphabetic sorter (and the unigram and the bigram strategies tested against each other).
 
-\oz{Explain what are the three models that you are comparing: unigram, bigram, and alphabetic. Why did you choose those three, why not 3-gram and 4-gram models? This is the first time when alphabetic sorting should be mentioned (as a "random baseline")}
+Table~\ref{table:quan1} presents the accuracy (average success rate) for each of the classes and sorting strategies tested.
 
 \begin{table}[H]
     \centering
@@ -62,19 +64,19 @@ Table~\ref{table:quan1} presents the accuracy for each of the classes and sortin
 \label{table:quan1}
 \end{table}
 
-\oz{And general rules of using tables: (1) Every table must be referenced in text, for example, "In Table~\ref{table:quan1} you can see..."; (2) The text around that reference must be sufficient to understand the table (describe every column, discuss the values); (3) Caption of every table must be sufficient to understand that table without searching for its reference in the main text (captions such as "Qualitative evaluation, example 1" are not enough). Same rules apply to all figures.}
-
-From the results, we can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly the bigram sorter performs worse than the alphabetic sorter. \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
+From the results, we can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly, the bigram sorter performs both worse than the unigram sorter and even slightly worse than the alphabetic one. \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
 
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
 \subsection{Experiment}
-Even though the quantitative experiment results seem to show that the bigram strategy is not any good, it really does feel as if it is actually better than the alphabetic approach when used during a regular coding process. To demonstrate this, with no bias towards any of the sorting strategies, I preselected 10 cases for which we were interested to see completion suggestions and how accurate they were, and manually tested each of them. Below are the explanations and results for each of the 10 cases.
+For this evaluation approach, 10 examples were manually preselected. The main idea for each of the examples was to test a completion case which would be commonly encountered by a user while coding in the Pharo IDE. These examples include completion of message sends, method names, variable names, expressions inside a block, expressions in parentheses, muiltiple message sends, and so on. To emphasise: each of those examples is of interest because they are indicative of a common coding process in Pharo, and that is the sole reason they were chosen: none of the examples were chosen with any bias towards the sorting strategies. 
 
 \subsection{Results}
-Note: if the \textit{completion suggestion} and \textit{position} columns contain '-' for any sorting strategy, it means that the expected results were not present in the top 10 suggestions.
+Note: if the \textit{completion suggestion} and \textit{position} columns contain '-' for any sorting strategy, it means that the completion suggestions expected for that code example were not in any of the top 10 positions of the suggestions list.
 
-It should be taken into consideration, however, that all the results are only recorded after two symbols were typed in, and having correct suggestions with such a short prefix can be considered best-case scenario (as the correct suggestions would definitely be more likely to appear with a longer prefix). Ergo, the absence of correct suggestions at this point does not signal a complete failure of the completion engine or a sorting strategy used, but rather hints that there is more work required to get to the correct suggestions. It is unideal, and is exactly the reason for trying to improve the completion tool.
+It is worth noting that all the results are only recorded after two symbols were typed in, and having correct (most relevant) suggestions with such a short prefix appear among the top 10 results can be considered best-case scenario (as the correct suggestions would definitely be more likely to be positioned higher with a longer prefix). Ergo, when the desired suggestion is missing from the top 10, it does not mean a complete failure of the completion engine or a sorting strategy used, but rather hints that there is more work required to get to the correct suggestions, such as scrolling or typing more characters. However, as making the results as effective as possible is the goal of improving code completion in the first place, consistent placement of relevant results in the top 10 even after two symbols is a considerable advantage and does demonstrate which sorting strategy performs better.
+
+Below you can see the 10 examples tested, the results, and their explanations.
 
 \begin{description}
 \item [Example 1:] \hfill
@@ -82,7 +84,7 @@ It should be taken into consideration, however, that all the results are only re
     col := OrderedCollection new.
     col ad
 \end{lstlisting}
-This was typed into the Playground and the results I was interested in were recorded with the cursor directly after \textit{ad}. For this context, the completion suggestions the developers would expect were \textit{add:} and, following, \textit{addAll:}. Here's what I got:
+This was typed into the Playground and the results were recorded with the cursor directly after \textit{ad}. For this context, the completion suggestions a developer would expect would be \textit{add:} and \textit{addAll:}. Here are the actual results:
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -92,10 +94,10 @@ This was typed into the Playground and the results I was interested in were reco
     Unigram & \begin{tabular}[c]{@{}l@{}}add:\\ addAll:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     Bigram & - & - \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 1}
+\caption{Qualitative evaluation: the results of completing a message send in the Playground}
 \label{table:qual1}
 \end{table}
-Both alphabetic and bigram sorters didn't manage to provide any relevant results in the top 10 suggestions, whereas the result from the unigram was exactly what I was expecting.
+As we can see in the Table~\ref{table:qual1}, both the alphabetic and the bigram sorters did not manage to provide any relevant results in the top 10 suggestions, whereas the result from the unigram turned out exactly as expected.
 
 \item [Example 2:] \hfill
 \begin{lstlisting}
@@ -112,10 +114,10 @@ Another example coded in the Playground, with the cursor at \textit{if}. The exp
     Unigram & \begin{tabular}[c]{@{}l@{}}ifTrue:\\ ifTrue:ifFalse:\\ ifFalse:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     Bigram & ifTrue: & 5 \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 2}
+\caption{Qualitative evaluation: completing a message send to an expression in parentheses}
 \label{table:qual2}
 \end{table}
-The alphabetic sorter once again did not suggest anything of interest right away, the unigram demonstrated an exemplary performance, and bigram, while less than ideal, still suggested one of the correct options in the top 10 position (albeit a bit lower, which would require either typing more symbols or pressing the down arrow key).
+In the Table~\ref{table:qual2} we can see that the alphabetic sorter once again did not suggest anything of interest, the unigram demonstrated an exemplary performance, and the bigram, while less than ideal, still suggested one of the correct options in the top 10 position (albeit a bit lower, which would require either typing more symbols or pressing the down arrow key to get to).
 
 \item [Example 3:] \hfill
 \begin{lstlisting}
@@ -123,7 +125,9 @@ The alphabetic sorter once again did not suggest anything of interest right away
         | tokensDataFrame |
         tokensDataFrame := self re
 \end{lstlisting}
-This was typed in the Editor, in the method \textit{returnProcessedData} of class \textit{TokenProcessing}. This is done to try out some more elaborate examples where the local context can play a role. Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \textit{readFile} are also methods on the instance side of the \textit{TokenProcessing} class, I expect to get their names as suggestions after typing \textit{self}. Particularly, as the cursor is positioned after \textit{re}, I expect to get only these 3 methods, as they are the ones starting with \textit{re}.
+This was typed in the Editor, in the method \textit{returnProcessedData} of class \textit{TokenProcessing}. This is done to try out some more elaborate examples where the local context can play a role.
+
+Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \textit{readFile} are also methods on the instance side of the \textit{TokenProcessing} class, we as users would expect to get their names as suggestions after typing \textit{self}.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -133,10 +137,10 @@ This was typed in the Editor, in the method \textit{returnProcessedData} of clas
     Unigram & - & - \\ \hline
     Bigram & \begin{tabular}[c]{@{}l@{}}rejectInvalidTokens\\ replaceWithPlaceholders\\ readFile\end{tabular} & \begin{tabular}[c]{@{}r@{}}7\\ 8\\ 9\end{tabular} \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 3}
+\caption{Qualitative evaluation: completing a message send after self, with awareness of local context}
 \label{table:qual3}
 \end{table}
-It seems that here the unigram approach fell short, whereas the bigram approach, trained on prioriting local method name after \textit{self}, has performed quite well. In the alphabetic approach, the other two method suggestions seem to be buried below the first 10, whereas \textit{readFile} gets a better position.
+Table~\ref{table:qual3}: it seems that the unigram approach fell short, whereas the bigram approach, trained on prioriting local method names after \textit{self}, has performed quite well. In the alphabetic approach, the other two method suggestions seem to be buried below the first 10, whereas \textit{readFile} gets a better position.
 
 \item [Example 4:] \hfill
 \begin{lstlisting}
@@ -145,7 +149,7 @@ It seems that here the unigram approach fell short, whereas the bigram approach,
         data := self returnProcessedData.
         to
 \end{lstlisting}
-Typing \textit{to} I am expecting to have \textit{tokens} and \textit{tokenTypes}, as those are temporary variables that were declared and a developer might want to initialise them with some value. Here is what the suggestions were:
+By typing \textit{to} we are expecting to get \textit{tokens} and \textit{tokenTypes}, as those are temporary variables that we declared and now might want to initialise with some values. Here are the results:
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -155,16 +159,16 @@ Typing \textit{to} I am expecting to have \textit{tokens} and \textit{tokenTypes
     Unigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     Bigram & \begin{tabular}[c]{@{}l@{}}tokens\\ tokenTypes\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 4}
+\caption{Qualitative evaluation: completing temporary variable names, with awareness of local context}
 \label{table:qual4}
 \end{table}
-The order in the unigram and bigram cases is a bit better, as having a shorter word suggested first is preferable, but in general all three methods worked well in this one.
+Here (Table~\ref{table:qual4}) the order in the unigram and bigram cases is slightly better, as having a shorter word suggested first is preferable, but in general all three approaches worked quite well for this example.
 
 \item [Example 5:] \hfill
 \begin{lstlisting}
     UnigramTableCreator ne
 \end{lstlisting}
-Typing this in the Playground, I expect \textit{new} and maybe even \textit{new:}, depending on the context.
+Typing this in the Playground, we expect \textit{new} and maybe even \textit{new:}, depending on the context.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -174,16 +178,16 @@ Typing this in the Playground, I expect \textit{new} and maybe even \textit{new:
     Unigram & \begin{tabular}[c]{@{}l@{}}new\\ new:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     Bigram & \begin{tabular}[c]{@{}l@{}}new:\\ new\end{tabular} & \begin{tabular}[c]{@{}r@{}}4\\ 8\end{tabular} \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 5}
+\caption{Qualitative evaluation: completing message send to a global variable (in this case, trying to create a new instance of a class)}
 \label{table:qual5}
 \end{table}
-The best positions are for the unigram sorter, but in general all the sorters suggested the desired options in the top 10.
+In the Table~\ref{table:qual5} we can see that the best positions are for the unigram sorter, but in general all the sorters suggested the desired options in the top 10.
 
 \item [Example 6:] \hfill
 \begin{lstlisting}
     in
 \end{lstlisting}
-In the Pharo IDE it is also possible to get completion suggestions even when creating a new method, and in this case I went to the instance side of a class and started typing \textit{in} as method name, wanting to get \textit{initialize}, as it is a very common method one might want to create in a class.
+In the Pharo IDE it is possible to get completion suggestions even when creating a new method, by typing in the desired method name in the code editor on the instance side. If it is a common method that users often create in their classes, having a completion suggestion is useful. As this is the case with the method \textit{initialize}, we would like to get the name suggested to us after typing in \textit{in}, as illustrated above.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -193,10 +197,10 @@ In the Pharo IDE it is also possible to get completion suggestions even when cre
     Unigram & initialize & 2 \\ \hline
     Bigram & - & - \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 6}
+\caption{Qualitative evaluation: completing method name during its creation}
 \label{table:qual6}
 \end{table}
-The unigram sorter is the only that was able to suggest \textit{initialize} from only two characters typed in, and at the 2nd position!
+Table~\ref{table:qual6}: the unigram sorter is the only that was able to suggest \textit{initialize} from only two characters typed in, and at the 2nd position!
 
 \item [Example 7:] \hfill
 \begin{lstlisting}
@@ -207,7 +211,7 @@ The unigram sorter is the only that was able to suggest \textit{initialize} from
     expected := #('ipsum' 'dolor' 'lorem').
     self as
 \end{lstlisting}
-In test methods having an \textit{assert:equals:} call is quite common, and as there are a lot of tests being written, I am interested in having a completion suggestion that is as accurate as possible after \textit{as}.
+In test methods having an \textit{assert:equals:} call is quite common, and as there are a lot of tests being written, we would be interested in having a completion suggestion that is as accurate as possible after \textit{as}.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -217,10 +221,10 @@ In test methods having an \textit{assert:equals:} call is quite common, and as t
     Unigram & \begin{tabular}[c]{@{}l@{}}assert:\\ assert:equals:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     Bigram & assert:equals: & 1 \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 7}
+\caption{Qualitative evaluation: completing a message send to self, when self is a test class}
 \label{table:qual7}
 \end{table}
-Both the unigram and bigram sorters showed good results.
+Table~\ref{table:qual7}: both the unigram and the bigram sorters showed good results, but not the alphabetic one.
 
 \item [Example 8:] \hfill
 \begin{lstlisting}
@@ -230,7 +234,9 @@ Both the unigram and bigram sorters showed good results.
 	sumA := 0.
 	countSuccess do: [ :each | su ]
 \end{lstlisting}
-Here I am interested in completion inside the block, so the cursor is after \textit{su} before the bracket \textit{]}. Since inside the block I want to do assignment for the temporary variables, I am expecting \textit{sumA} and \textit{sumS} as suggestions.
+Here we are interested to see how the sorting performs when we are inside a block, so the cursor is after \textit{su} before the bracket \textit{]}. Since inside the block we want to do an assignment for the temporary variables, we would be expecting \textit{sumA} and \textit{sumS} as suggestions.
+
+The following results in the Table~\ref{table:qual8} (below) are quite straightforward: all the sorters seem to perform well, although since one is less likely to want to call \textit{super} directly inside a block, the alphabetic one seems to be most relevant (purely coincidentally, as \textit{p} follows \textit{m}).
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -240,7 +246,7 @@ Here I am interested in completion inside the block, so the cursor is after \tex
     Unigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     Bigram & \begin{tabular}[c]{@{}l@{}}super\\ sumA\\ sumS\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\\ 3\end{tabular} \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 8}
+\caption{Qualitative evaluation: completing inside a block}
 \label{table:qual8}
 \end{table}
 
@@ -248,7 +254,7 @@ Here I am interested in completion inside the block, so the cursor is after \tex
 \begin{lstlisting}
     RBScanner sc
 \end{lstlisting}
-In the Playground I want to get suggested method names on the class side of \textit{RBScanner} that begin with \textit{sc}. There are two: \textit{scanTokens:} and \textit{scanTokenObjects:}.
+Typing the above sequence in the Playground, we want to get method names on the class side of \textit{RBScanner} that begin with \textit{sc}. There are two: \textit{scanTokens:} and \textit{scanTokenObjects:}, so they are the ones we should be suggested.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -258,10 +264,10 @@ In the Playground I want to get suggested method names on the class side of \tex
     Unigram & \begin{tabular}[c]{@{}l@{}}scanTokenObjects:\\ scanTokens:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     Bigram & \begin{tabular}[c]{@{}l@{}}scanTokens:\\ scanTokenObjects:\end{tabular} & \begin{tabular}[c]{@{}r@{}}1\\ 2\end{tabular} \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 9}
+\caption{Qualitative evaluation: completing a message send in the Playground}
 \label{table:qual9}
 \end{table}
-On the one hand, all sorters showed essentially the same result; however, on the other hand, \textit{scanTokens:} is more likely to be used next to \textit{RBscanner} and it is a shorter token, so the bigram result is slightly superior.
+As can be seen in the Table~\ref{table:qual9}, all sorters showed essentially the same result. However, \textit{scanTokens:} is more likely to be used next to \textit{RBscanner} and it is a shorter token, so the bigram result is slightly superior.
 
 \item [Example 10:] \hfill
 \begin{lstlisting}
@@ -273,9 +279,11 @@ On the one hand, all sorters showed essentially the same result; however, on the
         nextPut: #(key value);
         ne
 \end{lstlisting}
-Now, for an even more creative example, in Pharo there can be multiple messages sent to a receiver, as long as they are all separated by a semicolon \textit{;}. Hence, having a cursor after \textit{ne}, I know I am sending a message to \textit{NeoCSVWriter on: stream} and want to get suitable suggestions, which are \textit{nextPut:} and \textit{nextPutAll:}.
+Now, for an even more creative example, in Pharo there can be multiple messages sent to a receiver, as long as they are all separated by a semicolon \textit{;}.
 
-In the table of results below we see that the unigram sorter got the best result.
+So having a cursor after \textit{ne}, we know we are sending a message to \textit{NeoCSVWriter on: stream} and want to get suitable suggestions, which are \textit{nextPut:} and \textit{nextPutAll:}.
+
+In the Table~\ref{table:qual10} below we see that the unigram sorter got the best result.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -285,7 +293,7 @@ In the table of results below we see that the unigram sorter got the best result
     Unigram & \begin{tabular}[c]{@{}l@{}}nextPutAll:\\ nextPut:\end{tabular} & \begin{tabular}[c]{@{}r@{}}2\\ 3\end{tabular} \\ \hline
     Bigram & - & - \\ \hline
     \end{tabular}
-\caption{Qualitative evaluation, example 10}
+\caption{Qualitative evaluation: completing one of multiple message sends, with awareness of local context}
 \label{table:qual10}
 \end{table}
 \end{description}
