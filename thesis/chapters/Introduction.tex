@@ -9,35 +9,35 @@ The main distinction among the many approaches to code completion would be wheth
 
 Throughout this project, I focused on the code completion in Pharo. Pharo is a dynamically typed programming language inspired by Smalltalk, and the Pharo IDE is an interactive IDE intended for developing in Pharo\footnote{\url{http://pharo.org/}}.
 
-The current code completion approach in the Pharo IDE is a semantic one: it is based on analysing the abstract syntax tree (AST) of source code. The parser finds the best suitable node for each part of code, and the completion engine suggests contextually relevant completions for each one (i.e. class names for a global node, method calls for a method node, and so on). The AST-based approach replaced the less accurate completion engine, which used a less sophisticated parsing implementation and tried to infer the type by looking at messages sent to a variable, and so on. Recently, a separate code completion engine that uses \notclear{generators} was ported to Pharo as well \notclear{(the idea is to propose code completion suggestions from pre-generated local contexts using heuristics for optimisation)}\footnote{GitHub repository for the project: \url{https://github.com/guillep/complishon}}.
+The current code completion approach in the Pharo IDE is a semantic one: it is based on analysing the abstract syntax tree (AST) of source code. The parser finds the best suitable node for each part of code, and the completion engine suggests contextually relevant completions for each one (i.e. class names for a global node, method calls for a method node, and so on). The AST-based approach replaced the completion engine that had been the main Pharo IDE implementation since the start; it used a less sophisticated parsing implementation and tried to infer the type by looking at kinds of messages sent to variables, and so on. Recently, a separate code completion engine that uses generators\footnote{Its main idea is to propose code completion suggestions from pre-generated local contexts using heuristics for optimisation. More details can be found at: \url{https://github.com/guillep/complishon}} was ported to Pharo as well.
 
 \section{Problem}
 \label{sec:Introduction-Problem}
-As mentioned above, the current implementation of code completion in the Pharo IDE is based on the AST, which allows us to determine the structure of the code, get the semantic role of tokens, and infer their type where possible, to suggest only those completions that are correct in the given context.
+As mentioned above, the current implementation of code completion in the Pharo IDE is based on the AST, which allows us to determine the structure of the code, get the semantic role of tokens, and infer their type where possible. As a result, only those completions that are correct in the given context are suggested.
 
-\remove{Then, once we have a list of contextually suitable completion candidates, they are sorted alphabetically} \footnote{Implementing AST-based completion in Pharo was the focus of an internship project, and alphabetic sorting was made the default through lack of time to implement a more advanced sorting strategy. However, the possibilities of further extending the tool with other sorting strategies were kept in mind, and this bachelor thesis project serves as a continuation of that task.}. \remove{This is not the most effective approach, as the process of finding the desired completion candidate can be a bit cumbersome: the correct suggestions can be buried much lower than expected, which would prompt the developer to either scroll through the list, or to type even more characters, taking up valuable time and effort.}\oz{I suggest that you don't mention alphabetic sorting at all until you get to the evaluation section. It is obviously ineffective to sort by alphabet. So if your research problem is to find something better then alphabetic sorting, then everything is better. Instead, I would put it this way: (1) currently there is no way to effectively sort the completion candidates; (2) we propose to sort them using n-gram models; (3) we evaluate our approach by comparing alphabetic, unigram, and bigram sorting (in this case, alphabetic sorting acts like a random baseline)} However, \badstyle{as been mentioned} above, the \badstyle{attempts to make code completion more effective are never-ending, and we, too, believe that there are more potential improvements that can be made in the Pharo IDE}. In particular, we think the \badstyle{quality of performance} of the current completion engine can be greatly improved by sorting candidate completions according to how frequently they are used elsewhere in the codebase.
+However, currently there is no way to effectively sort the completion candidates. The order of suggestions is significant because with a wrong sorting strategy desired completions can appear at the bottom of the list, and with a regular completion window UI this means out of view of the developer. This is unproductive as it will require the developer to scroll down or type more symbols. 
 
-\oz{Problem statement is still not clear. Try expressing it with one sentence and writing it in bold}
+In this work the main goal is to come up with an effective sorting strategy that would show relevant results first. Thus, I propose to sort the completion candidates using n-gram models, as I believe this strategy has potential to improve the relevance of sorting in the Pharo IDE. Particularly, I implement the unigram and bigram sorting strategies. In the end, I evaluate the effectiveness of this approach by comparing alphabetic, unigram, and bigram sorting (in this case, with the alphabetic sorting acting as a random baseline).
 
-\section{Our Approach in a Nutshell}
+\section{Proposed Approach in a Nutshell}
 \label{sec:Introduction-Approach}
-In this work we study how code completion can be improved using statistical language models for sorting the results, on top of an existing semantic completion. In particular, we use the N-gram language model, as it has been documented to be used for such a task (\cite{Hind12a}), to find the most relevant completion suggestions based on their occurence in source code. We then implement a sorting strategy based on the \badstyle{counted above relevance of suggestions} \notclear{in the Pharo IDE itself}. We evaluate whether this approach indeed enhances the quality of code completion. We answer the following research questions:
+In this work I study how code completion can be improved using statistical language models for sorting the results, on top of an existing semantic completion. In particular, I use the n-gram language model, as it has been documented to be used for such a task (\cite{Hind12a}), to find the most relevant completion suggestions based on their probability of occurring in source code. I then implement two sorting strategies based on the results of training the unigram and bigram language models on Pharo source code. I then evaluate whether this approach does indeed enhance the quality of code completion in the Pharo IDE. In the process of carrying out this work, I answer the following research questions:
 \begin{RQ}
-    \item Can we improve the accuracy of code completion in the Pharo IDE by sorting candidate completions with an N-gram language model?
-    \item Can we build a tool based on a trained N-gram model that would propose completion fast enough to be actually suitable for developer use? \oz{Do you answer this question in your work?}\oz{Just move it to the next section. This is a contribution, not a research question.}
-    \item How can we best numerically evaluate the results of code completion produced by different completion strategies?
+    \item Can we improve the accuracy of code completion in the Pharo IDE by sorting candidate completions with n-gram language models?
+    \item How can we effectively evaluate the results of code completion enhanced by different sorting strategies?
 \end{RQ}
 
 \section{Contributions}
 \label{sec:Introduction-Contributions}
-The contributions of this work are as follows:
+Throughout the course of this project I made the following contributions:
 \begin{itemize}
-    \item \insertion{We enhanced the open source library that implements N-gram language models in Pharo: \url{https://github.com/pharo-ai/NgramModel} (4 accepted pull requests)}
-    \item We trained several N-gram language models on the tokenised source code of the Pharo programming language.
-    \item We used those trained models to enhance code completion in Pharo IDE by sorting the proposed completion candidates according to their relevance in the given context (X accepted pull requests, Y pull requests under review) \oz{Fill in X and Y}
-    \item We propose a combination of two approaches for evaluating the results of code completion: (1) a quantitative evaluation technique inspired by \cite{Robb08a} and (2) a qualitative evaluation where we perform a case study of  several completion scenarios.
-    \item To our knowledge, this is the first implementation of a code completion engine in Smalltalk family of IDEs that uses machine learning for sorting completion candidates.
-    \item \insertion{Part of this work was accepted at an International Workshop XYZ and will be presented by Myroslava Romaniuk in MONTH 2020}\oz{Fill in XYZ and MONTHx}
+    \item Trained several n-gram language models on the tokenised source code of the Pharo programming language.
+    \item Used those trained models to build a sorting tool that enhances code completion in the Pharo IDE by sorting the proposed suggestions according to their relevance in the given context.
+    \item Made one of the two implemented sorters both effective and fast enough to actually be suitable for developer use (both implementations can be loaded from the \href{https://github.com/myroslavarm/CompletionSorting}{CompletionSorting} GitHub repository and used in the Pharo IDE).
+    \item Proposed a combination of two approaches for evaluating the results of code completion: (1) a quantitative evaluation technique inspired by \cite{Robb08a} and (2) a qualitative evaluation where a case study of several completion scenarios is performed and analysed.
+    \item Enhanced the \href{https://github.com/pharo-ai/NgramModel}{NgramModel} library, which is an open source library that implements n-gram language models in Pharo (4 accepted pull requests).
+    \item Part of this work has been accepted for the Student Research Competition at <Programming> 2020. The conference was supposed to take place in Porto, Portugal in March and was cancelled due to COVID-19. Despite that, the abstract is still up for publication in the ACM Digital Library.
+    \item Finally, to my knowledge this is the first implementation of a code completion engine in Smalltalk family of IDEs that uses machine learning for sorting completion candidates.
 \end{itemize}
 
 \section{Structure of the Thesis}
@@ -45,16 +45,16 @@ The contributions of this work are as follows:
 {\hypersetup{linkcolor=black}
 \begin{description}
 	\item [Chapter \ref{chap:RelatedWorks}. \nameref{chap:RelatedWorks}] \hfill \\
-	Here we give a detailed overview of the research done around code completion in the last decade and a half. It includes both the solely software engineering approaches predating the use of machine learning for this task, as well as exclusively machine learning experiments of the recent years.
+	Here I give a detailed overview of the research done around code completion in the last decade and a half. It includes both the solely software engineering approaches predating the use of machine learning for this task, as well as exclusively machine learning experiments of the recent years.
     \item [Chapter \ref{chap:PharoCompletion}. \nameref{chap:PharoCompletion}] \hfill \\
-	In this chapter, we give a detailed overview of the implementation details behind the current completion engine in the Pharo IDE, challenges of code completion for a dynamically typed language, as well as describe the idea behind the sorter plugin.
+	In this chapter, I give a detailed overview of the implementation details behind the current completion engine in the Pharo IDE, challenges of code completion for a dynamically typed languages, as well as describe the idea behind the sorter plugin.
 	\item [Chapter \ref{chap:NgramBackground}. \nameref{chap:NgramBackground}] \hfill \\
-    Here we provide a theoretical background needed to understand this work, which includes the introduction to language models in general and n-grams in particular.
+    Here I provide a theoretical background needed to understand this work, which includes the introduction to n-gram language models and challenges of their implementation.
     \item [Chapter \ref{chap:ProposedSolution}. \nameref{chap:ProposedSolution}] \hfill \\
-	In this chapter, we take a more detailed look at \badstyle{the idea of our solution} and give an extended description of the experiment.
+	This chapter contains a detailed description of the final solution: data preparation, approaches taken to implement the n-gram sorters, and various engineering details.
 	\item [Chapter \ref{chap:Evaluation}. \nameref{chap:Evaluation}] \hfill \\
-    In this chapter, we go into depth about evaluation techniques and challenges, as well as detail the evaluation \insertion{of} \badstyle{approach taken} and the \repetition{results of this work}.
+    In this chapter, I go into depth about evaluation techniques and challenges, as well as detail the evaluation of the approaches taken.
     \item [Chapter \ref{chap:Conclusion}. \nameref{chap:Conclusion}] \hfill \\
-	In this chapter, we summarise the \repetition{results of this work} and discuss the potential directions in which it \badstyle{can be taken} in the future.
+	This chapter contains a summary of the results of this work and the shape it can take in the future.
 \end{description}
 }
