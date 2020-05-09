@@ -64,7 +64,7 @@ Table~\ref{table:quan1} presents the accuracy (average success rate) for each of
 \label{table:quan1}
 \end{table}
 
-From the results, we can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly, the bigram sorter performs both worse than the unigram sorter and even slightly worse than the alphabetic one. \notclear{One reason might be the problems with training the model in regards to delimiters and other kinds of non-alphabetic tokens, which are plentiful in the code, and yet are difficult to tackle for correct training.} \oz{It's not clear what you mean.}
+From the results, we can see that the unigram sorter performs better than the alphabetic sorter, as expected. However, surprisingly, the bigram sorter performs both worse than the unigram sorter and even slightly worse than the alphabetic one.
 
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
@@ -236,7 +236,6 @@ Table~\ref{table:qual7}: both the unigram and the bigram sorters showed good res
 \end{lstlisting}
 Here we are interested to see how the sorting performs when we are inside a block, so the cursor is after \textit{su} before the bracket \textit{]}. Since inside the block we want to do an assignment for the temporary variables, we would be expecting \textit{sumA} and \textit{sumS} as suggestions.
 
-The following results in the Table~\ref{table:qual8} (below) are quite straightforward: all the sorters seem to perform well, although since one is less likely to want to call \textit{super} directly inside a block, the alphabetic one seems to be most relevant (purely coincidentally, as \textit{p} follows \textit{m}).
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -249,6 +248,7 @@ The following results in the Table~\ref{table:qual8} (below) are quite straightf
 \caption{Qualitative evaluation: completing inside a block}
 \label{table:qual8}
 \end{table}
+The results in the Table~\ref{table:qual8} (above) are quite straightforward: all the sorters seem to perform well, although since one is less likely to want to call \textit{super} directly inside a block, the alphabetic one seems to be most relevant (purely coincidentally, as \textit{p} follows \textit{m}).
 
 \item [Example 9:] \hfill
 \begin{lstlisting}
@@ -303,8 +303,8 @@ To briefly sum up the results of the manual qualitative evaluation, the unigram 
 \section{Summary}
 \label{sec:Evaluation-Summary}
 \begin{itemize}
-    \item Quantitative evaluation involves benchmarking the model and calculating performance scores, whereas the qualitative approach involves conducting the evaluation via setting up "live" human studies, recording feedback interviews, and so on.
+    \item Quantitative evaluation involves benchmarking the model and calculating performance scores, whereas the qualitative approach involves conducting the evaluation via letting people test the tool, observing the human computer interaction, recording feedback interviews, and so on.
+    \item There are certain challenges in evaluating code completion, which can be divided into three main categories: resources limitation, finding appropriate metrics, and reproducibility.
     \item Based on the evaluation tool that I created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed better than the alphabetic sorter but, surprisingly, the bigram one performed worse.
-    \item For the qualitative evaluation, I picked 10 interesting completion cases (with no bias towards any strategy) and tested them in the real environment and recorded the positions of the desired completion suggestions. Based on this, the unigram approach was once again the best, but this time the bigram approach \badstyle{followed not far behind}, and the alphabetic was worse.
-    \item \remove{The unigram sorter is a clear improvement on the alphabetic approach, whereas the bigram sorter seems to lack the accuracy.} \oz{Move this to the Conclusion. But don't say "clear improvement". How do you define "clear"?}
+    \item For the qualitative evaluation, 10 completion cases were preselected for their common occurrence when coding in the Pharo IDE, with no bias towards any sorting strategy. The examples were tested in the real environment, and the positions of the desired completion suggestions were recorded for each of them. Based on this, the unigram approach was once again the best, but this time the bigram approach followed not far behind, and the alphabetic was worse.
 \end{itemize}
