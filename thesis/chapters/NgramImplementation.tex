@@ -46,52 +46,54 @@ The second, more advanced implementation, is the bigram sorting strategy. As an 
 \subsection{Data Preparation}
 Before implementing the sorting strategies, I needed to train the n-gram models. The first step was to get the dataset. For this I retrieved the Pharo source code which was collected by \cite{Zait20a} for their research on characterising Pharo code. The data came from 50 projects, which consisted of 824 packages, 13,935 classes, and 151,717 methods. In particular, I used the dataset where the source code was already split into tokens and respective token types for each method. Among the regular alphabetic tokens, the delimiters and non-alphabetic tokens were included as well. For example, a comment such as '"Here is a comment for this method"' or a delimiter '.' would be considered separate tokens, and their respective token types would be 'COM' and 'DOT'.
 
-Due to a large number of tokens in the dataset, I needed to be mindful of potential time constraints, as the lookup of n-gram probabilities used for sorting had to be fast enough to not make the developer pause and wait for it. Throughout the course of the experiment, I came up with various ways to additionally reduce the dataset. Each of those attempts will be described in the following subsection.
+Due to a large number of tokens in the dataset, I needed to be mindful of potential time constraints, as the lookup of n-gram probabilities used for sorting had to be fast enough to not make the developer pause and wait for it. Throughout the course of the experiment, I came up with various ways to additionally reduce the dataset. Each of those attempts will be described in Section \ref{sec:ProposedSolution-Engineering}.
 
-\subsection{Engineering Details}
-Before training our models, we took some data preparation steps, additionally cleaning the data, such as deleting some rows with token and token type mismatch, eliminating double tabs and replacing them with placeholders, and splitting token and token types into separate columns. After that, when recording token frequencies for the unigram model, we decided we would write the results to file, for faster lookup for the sorting. However, even with that approach, we faced a problem: as the initial number of tokens was around 150k, the lookup was slow enough to be noticeable and break the developer's flow when typing. 
-
-Our approach to improve the time efficiency was to set a certain threshold for the number of occurences, and to cut off all the tokens with frequencies below it. We put the threshold equal to 10, meaning if the token occured less than 10 times throughout the whole history, it was irrelevant enough to be discarded. This way, we were able to cut off most of the miscellaneous, rarely encountered tokens, and shortened our dataset from 150k to just 16k entries. This made the frequencies lookup during completion sorting very fast and, as a result, it was now possible to type and use completion information without any delays.
-
-For comparison, below are the results for the unigram sorter before the cut off (150k tokens; Fig. \ref{fig:sorterSlow}) and after (16k tokens; Fig. \ref{fig:sorterFast}).
+\subsection{N-gram Library Extension}
+The bigram model trained on source code data was implemented with the help of the NgramModel library\footnote{\url{https://github.com/pharo-ai/NgramModel}} available in Pharo. To prepare the model, I create a bigram model, train it on the source code tokens, cut off all the sequences with counts less than 50, and return the result (see Figure \ref{fig:bigramModel}). Afterwards, the model is written to file (and then retrieved from file when I actually use it for the sorter -- this was done for speed purposes, described in detail in section \ref{sec:ProposedSolution-Engineering}).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/sorterSlow.png}
-    \caption{It takes 2k ms for completion to be called pre-cut off}
+    \includegraphics[width=0.9\linewidth]{images/bigramModel.png}
+    \caption{Here is how the bigram model for sorting is created and trained}
+    \label{fig:bigramModel}
+\end{figure}
+
+When I first started using the NgramModel library, the functionality to reduce the number of n-gram sequences based on frequencies, or the functionality to read and write the model to file were not present. In the process of using this library for creating the bigram sorter, I extended it with the methods needed, as it might be useful for others to have this in place, too. Thus, through 4 pull requests I:
+\begin{itemize}
+    \item added the functionality to filter the table of ngrams (i.e. to cut off ngram sequences with counts below a certain threshold)
+    \item added writing to and reading n-gram models from file
+    \item improved test coverage by writing tests for some additional examples
+\end{itemize}
+
+\section{Engineering Details}
+\label{sec:ProposedSolution-Engineering}
+Before training the models, I additionally cleaned the data by deleting some rows with token and token type mismatch, eliminating double tabs and replacing them with placeholders, and splitting token and token types into separate columns.
+
+After that, when recording token frequencies for the unigram model, I recorded the results to file, for faster lookup for the sorting. However, even with that approach, there was a problem: as the initial number of tokens was around 150k, the lookup was slow enough to be noticeable and break the developer's flow when typing (see Figure \ref{fig:sorterSlow} -- results would be read from file when the completion is called).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/unigramTimeToRunSlow.png}
+    \caption{It takes more than 3 minutes to read the results from file on repeat 100 times}
     \label{fig:sorterSlow}
 \end{figure}
 
+The approach to improve the time efficiency was to set a certain threshold for the number of occurences, and to cut off all the tokens with frequencies below it. I put the threshold equal to 10, meaning if the token occured less than 10 times throughout the whole history, it was irrelevant enough to be discarded. This way, I was able to cut off most of the miscellaneous, rarely encountered tokens, and shortened the dataset from 150k to just 16k entries. This made the frequencies lookup during completion sorting very fast and, as a result, it was now possible to type and use completion information without any delays (see the improvement in Figure \ref{fig:sorterFast}).
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/sorterFast.png}
-    \caption{It takes only 160 ms after cut off}
+    \includegraphics[width=0.9\linewidth]{images/unigramTimeToRunFast.png}
+    \caption{After the cut off, it takes only 5 seconds to run it 100 times}
     \label{fig:sorterFast}
 \end{figure}
 
-The one-time tokens, such as custom strings and comments, were not as relevant to us during implementing the unigram sorting strategy, however when we moved on to implementing the bigram sorter, the bigram model became "too heavy" due to many combinations of such tokens, and needed to be additionally reduced. Our solution was to go back to the data processing step and replace those "one-time" tokens with placeholders. In particular, we added placeholders for strings, comments, symbols, characters, arrays and numbers (such as all strings being written as <str> and all numbers as <num>). This allowed us to greatly reduce both the number of total tokens and subsequent ngram sequences, which helped both the bigram and the unigram model, as well as the lookup speed.
+The one-time tokens, such as custom strings and comments, did not make a big difference during the implementation of the unigram sorting strategy, however when I moved on to implementing the bigram sorter, the model became "too heavy" due to many combinations of such tokens, and needed to be additionally reduced.
 
-\subsection{N-gram Library Extension}
-The bigram model trained on source code data was implemented with the help of the NgramModel library \footnote{\url{https://github.com/pharo-ai/NgramModel}}. In the process of working on implementing the model, we extended the existing library with the following functionality:
-\begin{itemize}
-    \item functionality to filter the table of ngrams (cut off ngram sequences with counts below a certain threshold)
-    \item adding writing to and reading ngram models from file
-\end{itemize}
+The solution was to go back to the data processing step and replace those "one-time" tokens with placeholders. In particular, I added placeholders for strings, comments, symbols, characters, arrays and numbers (such as all strings being written as <str> and all numbers as <num>). This greatly reduced both the number of total tokens and the subsequent ngram sequences, which helped both the bigram and the unigram model, as well as the lookup speed (for example, for the unigram model even without the threshold cut-off, with the placeholder replacement the number of tokens was reduced from 150k to just 85k, and for the bigram model the vocabulary size also got reduced in half).
 
-\section{Summary}
-\label{sec:ProposedSolution-Summary}
-The unigram-based sorter is available in the Pharo IDE as the FrequencyCompletionSorter, and the bigram-based as the BigramCompltionSorter -- i.e. they can already be used by enabling the respective sorting option in the Settings.
-
-A short summary of the implementation, along with data preparation and engineering details:
-\begin{itemize}
-    \item the data used to train the models came from 50 projects implemented in Pharo; in the dataset the source code was already split into tokens and token types
-    \item in the data, delimiters and non-alphabetic tokens, as well as comments, were all considered to be separate tokens
-    \item for unigram sorting, individual token frequencies were extracted; the sorting of completion candidates was based on the number of occurences of each token by itself
-    \item for bigram sorting, completion candidates were added to the previous token to form sequences of bigrams, whose probability was later calculated and recorded to file; the sorting was based on the sequence probability but it was only applied to individually displayed completion candidates
-    \item both sorting strategies can be enabled to be used in the Pharo IDE
-    \item different approaches were taken to reduce the sizes of models and speed up lookup and sorting time; among them: cleaning up tokens and sequences with occurences below a certain threshold, and replacing irrelevant "one-time" tokens (such as specific strings, numbers, characters, and so on) with general placeholders (such as <str>, <num>, etc.)
-    \item in the process of working on the bigram sorting strategy, the NgramModel Pharo library that was used for this approach was addiitionally extended with new functionality
-\end{itemize}
+\section{Using the N-gram Sorters}
+\label{sec:ProposedSolution-Usage}
+It is worth noting that both the n-gram sorters can actually be used in the Pharo IDE by loading the CompletionSorting library\footnote{\url{https://github.com/myroslavarm/CompletionSorting}}, which contains the implementation of this experiment. The unigram-based sorter is available as the FrequencyCompletionSorter, and the bigram-based as the BigramCompltionSorter -- they can be used by enabling the respective sorting option in the Settings (Figure \ref{fig:settings}).
 
 \begin{figure}[H]
     \centering
@@ -99,3 +101,16 @@ A short summary of the implementation, along with data preparation and engineeri
     \caption{The Settings window in the Pharo IDE}
     \label{fig:settings}
 \end{figure}
+
+The unigram sorter is quite fast and accurate (we go over the quality of the performance in Chapter \ref{chap:Evaluation}. Evaluation). However, the bigram sorter is too slow for comfortable usage. Re-engineering the implementation to be faster would have required much more time than I had, and as it was not the priority for this exact research, making it fully usable is left for future work.
+
+\section{Summary}
+\label{sec:ProposedSolution-Summary}
+\begin{itemize}
+    \item The data used to train the models came from 50 projects implemented in Pharo; in the dataset the source code was already split into tokens and token types. In the data, delimiters and non-alphabetic tokens, as well as comments, were all considered to be separate tokens.
+    \item For unigram sorting, individual token frequencies were extracted and the sorting of completions was based on those frequencies.
+    \item For bigram sorting, completion candidates were added to the previous token to form sequences of bigrams, whose probability was later calculated and recorded to file; the sorting was based on the sequence probability but it was only applied to individually displayed completion candidates.
+    \item Different approaches were taken to reduce the sizes of models and speed up lookup and sorting time; among them: cleaning up tokens with occurences below a certain threshold, and replacing "one-time" tokens (such as specific strings, numbers, and so on) with general placeholders (such as <str>, <num>).
+    \item In the process of working on the bigram sorting strategy, the NgramModel Pharo library that was used for this approach was addiitionally extended with new functionality, such as reading/writing to file and reducing the number of sequences with counts below a certain threshold.
+    \item Finally, both sorting strategies can be enabled to be used in the Pharo IDE, however the bigram sorter remains too slow for comfortable day-to-day usage.
+\end{itemize}
