@@ -1,67 +1,63 @@
 \chapter{N-gram Background}
 \label{chap:NgramBackground}
 
-In this chapter\insertion{,} we go over the theoretical background for the N-grams models, the challenges in their \remove{successful} implementation\remove{, as well as how they can be evaluated}.
+In this chapter, we go over the theoretical background for the N-grams models and the challenges in their implementation.
 
 \section{N-gram Language Models}
 \label{sec:NgramBackground-LanguageModels}
-\insertion{Predicting next word in a sequence is a central problem for many areas of} Natural Language Processing (NLP) \remove{being able to predict upcoming words or assign probabilities to sequences of words, like phrases and sentences, is one of the essential things in at least several areas, such as}\insertion{, including} speech recognition, spelling correction, spam filtering, machine translation\insertion{,} and so on. \remove{Thus, }\notclear{by assigning probabilities to words or sequences of words you can improve your accuracy, by suggesting things that are more likely to appear in a given context.} \oz{I don't think this last sentence has any sense}
+Predicting the next word in a sequence is a central problem for many areas of Natural Language Processing (NLP), including speech recognition, spelling correction, spam filtering, machine translation, and so on.
 
-Models that assign \remove{such} probabilities to sentences or sequences of words\insertion{, and can be used to find the most likely continuation of a sequence,} are called language models (\cite{Jura09a}). Among them, is the n-gram language model, which assigns probabilities to sequences out of \textit{n} words, called the n-grams. \remove{Just} one word \replace{will be}{is} a unigram, \insertion{pairs of words} \remove{2-gram} are referred to as \insertion{2-grams or} bigrams, 3-grams \replace{are referred to as}{or} trigrams \insertion{are sequences of three words}, and so on. An example of \remove{a} bigram\insertion{s} might be "he ate", "ate the", "the whole" and "whole pizza", whereas \remove{a} trigram\insertion{s} would look like "he ate the", "ate the whole", and "the whole pizza". 
+Models that assign probabilities to sentences or sequences of words, and can be used to find the most likely continuation of a sequence, are called language models (\cite{Jura09a}). Among them, is the n-gram language model, which assigns probabilities to sequences out of \textit{n} words, called the n-grams. A one word sequence is a unigram, pairs of words are referred to as 2-grams or bigrams, 3-grams or trigrams are sequences of three words, and so on. Examples of bigrams might be "he ate", "ate the", "the whole" and "whole pizza", whereas trigrams would look like "he ate the", "ate the whole", and "the whole pizza". 
 
-\remove{The idea of an }n-gram language model\insertion{s} \remove{could therefore be phrased as the following: to} estimate the likelihood of a word in a sequence, based on the "history", which is the previous \textit{(n-1)} words. \wrong{From this point, we will use the term n-gram to mean either the n-gram language model or the sequence of n words such model uses.} \oz{So you're saying that "from this point we will be inconsistent and use the same term to reference two different concepts". I strongly suggest that you use "n-gram" for a group of n words and "n-gram model" for a language model}
+N-gram language models estimate the likelihood of a word in a sequence, based on the "history", which is the previous \textit{(n-1)} words.
 
 \section{N-grams}
 \label{sec:NgramBackground-Ngrams}
-To compute the \insertion{conditional} probability of a word \textit{w} based on history \textit{h}, we use the following formula:\oz{This is not a formula and it doesn't compute anything :)}
+To describe the conditional probability of a word \textit{w} based on history \textit{h}, we use the following notation:
 \begin{equation}
     P(w|h)
 \end{equation}
 
-\replace{To put it into}{Here is} a more concrete example, if we have a sentence "he ate the whole pizza", and want to compute the probability of the word "pizza" given that the previous words are "he ate the whole", we can \replace{simply do:}{express it as a conditional probability}
+Here is a more concrete example: if we have a sentence "he ate the whole pizza", and want to compute the probability of the word "pizza" given that the previous words are "he ate the whole", we can express it as a conditional probability:
 \begin{equation}
     P(\text{pizza}|\text{he ate the whole})
 \end{equation}
 
-\remove{In order }to estimate it, we need to compute the number of occur\insertion{r}ences of "he ate the whole", as well the number occur\insertion{r}ences of the sentence "he ate the whole pizza", and divide the latter by the former:
+To estimate it, we need to compute the number of occurrences of "he ate the whole", as well the number occurrences of the sentence "he ate the whole pizza", and divide the latter by the former:
 \begin{equation}
     P(\text{pizza}|\text{he ate the whole})=\frac{C(\text{he ate the whole pizza})}{C(\text{he ate the whole})}
 \end{equation}
 
-However, in large \remove{enough} data corpora, it can be a challenge to estimate such \notclear{large sequences} \oz{Where did a large sequence come from? You defined "history" as a sequence of n-1 words. So sequence can not be large unless n is large.You should make it clear that in this Section, "history" can include all previous words in a text and it is the specificity of n-gram models that they restrict history to n-1 previous words.}. \remove{Hence,} the idea behind the n-gram model, is that we \badstyle{don't} need a large history, but can approximate it using just the last few words (\cite{Jura09a}). This can be done \badstyle{as per the Markov assumption, which means} we can reduce our conditional probabilities to be approximately equal: \oz{What is "Markov assumption"? Why is it approximately equal? Are you sure? I don't believe you}
+It is worth noting that history \textit{h} can include all previous words in a text and \textit{n} can be quite large, too, so in a sizeable data corpora it can be a challenge to estimate such big sequences. However, the idea behind the n-gram model is that we do not necessarily need a large history and can restrict it to just the \textit{n-1} previous words. This is done by using the Markov property, which states that the probability of future states depends only on the present state, and not on the sequence of events that preceded it. Thus, we can generalise the bigram (which looks one word into the past) to the trigram, and thus to the n-gram (\cite{Jura09a}). This means we can reduce our conditional probabilities as follows:
 \begin{equation}
     P(\text{pizza}|\text{he ate the whole}) \sim P(\text{pizza}|\text{whole})
 \end{equation}
 
-\notclear{\remove{In general,} n-gram probabilities can be estimated by counting the occur\insertion{r}ences in the corpus and normalising them (as per the maximum likelihood estimate, or MLE for short).}\oz{This makes no sense}
+One of the most straightforward ways to estimate the probability of n-grams is using maximum likelihood estimation, or MLE. For instance, to compute a probability of a word \textit{w} given previous word \textit{h}, one can determine the count of the bigram C(hw) and normalize it by the sum of all the bigrams that also start with \textit{h}. An example of MLE is estimating relative frequencies of a corpus. The idea is that we estimate the n-gram probability by dividing the number of occurrences (frequency) of a sequence by the total number of sequences in the dataset. \notclear{need help with adding MLE and relative frequency explanations?} \mr{HELP !!!}
 
-\notclear{need help with adding MLE and relative frequency explanations?}
+\section{Challenges}
+\label{sec:NgramBackground-Challenges}
+A notable problem with the MLE approach is sparse data in a corpus. There might be not enough observations to estimate probabilities well simply by counting observed data, because depending on the existing vocabulary, common words and words that are barely used can both have a count of 1. Or even words that are likely to appear in real life, can somehow be absent from the vocabulary, and the probability of encountering them will therefore be calculated as 0.
 
-\section{Evaluating Models}
-\label{sec:NgramBackground-EvaluatingModels}
-\remove{Now, evaluation is a really important step to take after developing and testing a model. One wants to be able to measure the performance and be able to say if it is an improvement on the current state, and by how much. Essentially, there are two ways of evaluation: extrinsic and intrinsic. Extrinsic means actually using the results of the model in an application and measuring how it works. The intrinsic evaluation, however, can measure the results without testing them out in the application, but simply by running the model on the so called test data. It is important to note, that the test data shouldn't be the same as the data the model was initially trained on, to not skew the accuracy measurements.}
+This, in turn, can be quite a problem even for the whole sequence: seeing as the joint probability of a sequence is calculated as a product of all conditional probabilities, even if one multiplier is 0, the the product (i.e. the probability of the sequence) will also be 0. This can significantly hurt the performance of a model.
 
-\remove{As raw probability is not used for evaluation language models, when using the intrinsic evaluation something called perplexity is used. Perplexity is the inverse probability of a test set, normalised by the total number of words.}
-
-\oz{This doesn't seem to fit into your thesis. Do you use perplexity metric? Evaluation has nothing to do with the theory of n-gram models. Did you take this from Hindle?}
+To solve this problem, smoothing is used.
 
 \section{Smoothing}
 \label{sec:NgramBackground-Smoothing}
-\badstyle{There is\remove{, however,} the problem of incorrectly estimating probabilities of sequences, if they are not known to us} (i.e. \badstyle{weren't} in the training set). Those might be perfectly valid sequences that \notclear{will inadvertently have the probability of 0}. \oz{Why? (it is not clear because you forgot to explain that the joint probability of a sequence is calculated as a product of all conditional probabilities; this is why when one multiplier is 0, the joint probability - the product - will also be 0)} Not only can this hurt the performance of an application, but it can also lead \notclear{to division by 0}. \oz{How can it lead to the division by 0?}
+If a word is unknown, we can replace it with the unknown word token <UNK> and count it as any other word in the dataset. However, if the word we are dealing with is generally known (does exist in the vocabulary) but appears in an unknown context, i.e. after a word they previously never appeared next to, we can use smoothing, which means we redistribute the general probability to not have any sequences with zero probability. \oz{This explanation is not clear} \mr{did i fix it?}
 
-So if the word is \remove{entirely} unknown, we can \replace{convert}{replace} it \replace{to}{with} the unknown word token <UNK> and count it as any other word in the dataset. However, if the word we are dealing with is generally known (does exist in the vocabulary) but appears in an unknown context, i.e. after \remove{or before} \oz{in this work, you don't do the lookahead - your history consists of previous words, not the next words} a word they never appeared \replace{before}{earlier}, we can use a procedure called smoothing, which means we redist\insertion{r}ibute the general probability \remove{a little bit}, to not have any sequences with probability equal to 0. \oz{This explanation is not clear}
-
-There are several smoothing algorithms, the simplest of which is Laplace smoothing, which we will describe as an example. In this algorithm, \replace{one simply needs to}{we} add 1 to all the counts, before normalising them (so all the counts will be increased by one, and there will be no 0 counts, and no 0 probabilities). \oz{This is not correct. If we simply add 1 to the nominator, the probabilities will not sum up to 1. Laplace smoothing also adds $|V|$ (the size of a vocabulary = number of unique words in it) to denominator. Read this: \url{https://en.wikipedia.org/wiki/Additive_smoothing}} Laplace smoothing \badstyle{doesn't} \wrong{perform well enough to be used in practice}. \oz{Wrong! It is used a lot} A more useful algorithm based on a similar idea, would be add-k smoothing, which adds a fractional count k (for example, 0.1, 0.5, etc.) to the count, instead of 1. \oz{If I'm not mistaking, there is a restriction that k > 0}
+There are several smoothing algorithms, the simplest of which is Laplace smoothing. In this algorithm, we add 1 to all the counts (so all the counts will be increased by one, and there will be no 0 counts), and then add $|V|$ (the size of a vocabulary = number of unique words in it) to the denominator, to take into account the extra observations. So the smoothed MLE of the unigram probability of a word \textit{w} will look the following:
+\begin{equation}
+    P(w)=\frac{c+1}{N+V}
+\end{equation}
+where \textit{c} is the count of the word \textit{w} and \textit{N} is the total number of words.
 
 \section{Summary}
 \label{sec:NgramBackground-Summary}
-\remove{In short:}
-
-\oz{Capital letters}
 \begin{itemize}
-    \item language models assign probabilities to sentences and sequences of words, and \replace{thus predict more likely words}{can be used to predict next word in a sequence}
-    \item n-gram language models \replace{assign probabilities to sequences of \textit{n} words}{calculate conditional probabilities of words in a corpus given a limited history of n-1 previous words}
-    \item \replace{being a Markov model, the probability of an n-gram model can be approximated to depend just on the several last words, instead of the whole history}{n-gram models belong to the family of Markov models --- they make a restrictive assumption that every word in a sequence depends only on n-1 previous words, and any words beyond that window have little effect on probability and can be ignored}
-    \item \remove{n-gram models can be evaluated either extrinsically, by being embedded and tested out in an application, or intrinsically, by testing them on test data and using perplexity}
-    \item smoothing is needed in case words appear in an unknown context; that way probability is redistributed among all the sequences \notclear{to prevent skewing of data} \oz{How can it skew the data?}
+    \item Language models assign probabilities to sentences and sequences of words, and can be used to predict next word in a sequence.
+    \item N-gram language models calculate conditional probabilities of words in a corpus given a limited history of \textit{n-1} previous words.
+    \item N-gram models belong to the family of Markov models -- they make a restrictive assumption that every word in a sequence depends only on \textit{n-1} previous words, and any words beyond that window have little effect on probability and can be ignored.
+    \item Smoothing is needed in case words appear in an unknown context or are simply not in the vocabulary; that way probability is redistributed among all the sequences to prevent skewing of data, i.e. when the joint probability of a whole sequence is zero only because the count (and probability) for one single word in the sequence was also zero.
 \end{itemize}
