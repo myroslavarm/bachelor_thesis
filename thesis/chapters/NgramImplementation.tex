@@ -8,38 +8,38 @@ This chapter contains a detailed description of the final solution: data prepara
 The objective of this implementation is the following: suggest the most likely tokens at every step of the completion process. The main idea is to leave the existing, AST-based code completion engine in place, and just enhance the sorting strategy. For this, I implemented two separate sorters based on n-gram models. That means that after the list of completion candidates is proposed, it gets sorted based on each n-gram's probability, so that the most relevant completions are shown first.
 
 \subsection{Unigram Sorting}
-The first implementation, unigram-based sorting, is based on the 1-gram analysis, which means that we only take into consideration the actual token being completed. The implementation of the unigram model itself comes down to calculating individual token frequencies, i.e. the number of occurrences of each token in the source code. Then the completion candidates are sorted according to each one's frequency. In Figures \ref{fig:unigramCode1}, \ref{fig:unigramCode2} and \ref{fig:unigramCode3} you can see the frequencies data being passed to the sorter, and then the completions being sorted based on that information:
+The first implementation, unigram-based sorting, is based on the 1-gram analysis, which means that we only take into consideration the actual token being completed. The implementation of the unigram model itself comes down to calculating individual token frequencies, i.e. the number of occurrences of each token in the source code. Then the completion candidates are sorted according to each one's frequency. In Listings \ref{lst:unigramCode1}, \ref{lst:unigramCode2} and \ref{lst:unigramCode3}  you can see the frequencies data being passed to the sorter, and then the completions being sorted based on that information:
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/unigramCode1.png}
-    \caption{The unigram sorter implementation: passing the frequencies to the sorter}
-    \label{fig:unigramCode1}
-\end{figure}
+\begin{lstlisting}[caption={The unigram sorter implementation: passing the frequencies to the sorter}, label={lst:unigramCode1}]
+    FrequencyCompletionSorter >> initialize
+        sorter := FrequencySorter new.
+        sorter frequencies: Unigram uniqueInstance frequencies
+\end{lstlisting}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/unigramCode3.png}
-    \caption{The sorter implementation: sorting the candidates according to their frequencies}
-    \label{fig:unigramCode2}
-\end{figure}
+\begin{lstlisting}[caption={The sorter implementation: sorting the candidates according to their frequencies}, label={lst:unigramCode2}]
+    FrequencySorter >> sort: anOrderedCollection
+        ^ anOrderedCollection sort: [ :a :b |
+            (frequencies at: a contents ifAbsent: 0) >
+                (frequencies at: b contents ifAbsent: 0) ]
+\end{lstlisting}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/unigramCode2.png}
-    \caption{The unigram sorter implementation: returning the results sorted in the code above}
-    \label{fig:unigramCode3}
-\end{figure}
+\begin{lstlisting}[caption={The unigram sorter implementation: returning the results sorted in the code above}, label={lst:unigramCode3}]
+    FrequencyCompletionSorter >> sortCompletionList: anOrderedCollection
+        ^ sorter sort: anOrderedCollection
+\end{lstlisting}
 
 \subsection{Bigram Sorting}
-The second, more advanced implementation, is the bigram sorting strategy. As an n-gram model where \textit{n=2}, it relies on both the token currently being completed and the history -- in this case, one token before the current one. I then get the previous token from the part of code where the completion is being called. After that, once the history word and each completion candidate are assembled together into respective pairs of tokens, I calculate the probability of each of the ngram sequences. Then the joint sequence probabilities are used for sorting each completion candidate (second word of the sequence). Figure \ref{fig:bigramCode} shows how the sorting method looks in the end:
+The second, more advanced implementation, is the bigram sorting strategy. As an n-gram model where \textit{n=2}, it relies on both the token currently being completed and the history -- in this case, one token before the current one. I then get the previous token from the part of code where the completion is being called. After that, once the history word and each completion candidate are assembled together into respective pairs of tokens, I calculate the probability of each of the ngram sequences. Then the joint sequence probabilities are used for sorting each completion candidate (second word of the sequence). Below you can see how the sorting method looks in the end:
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/bigramCode.png}
-    \caption{The bigram sorter implementation: receives the list of completions, gets the word before from context, trains the model, and sorts the completions based on sequence probabilities}
-    \label{fig:bigramCode}
-\end{figure}
+\begin{lstlisting}[caption={The bigram sorter implementation: receives the list of completions, gets the word before from context, trains the model, and sorts the completions based on sequence probabilities}, label={lst:bigramCode}]
+    BigramCompletionSorter >> sortCompletionList: anOrderedCollection
+        | probabilities |
+        probabilities := bigram probabilitiesFromModel: model
+            history: self getWordBefore
+            andCollection: anOrderedCollection.
+        sorter probabilities: probabilities.
+        ^ sorter sort: anOrderedCollection
+\end{lstlisting}
 
 \section{Implementation Details}
 \label{sec:ProposedSolution-Implementation}
@@ -49,14 +49,16 @@ Before implementing the sorting strategies, I needed to train the n-gram models.
 Due to a large number of tokens in the dataset, I needed to be mindful of potential time constraints, as the lookup of n-gram probabilities used for sorting had to be fast enough to not make the developer pause and wait for it. Throughout the course of the experiment, I came up with various ways to additionally reduce the dataset. Each of those attempts will be described in Section \ref{sec:ProposedSolution-Engineering}.
 
 \subsection{N-gram Library Extension}
-The bigram model trained on source code data was implemented with the help of the NgramModel library\footnote{\url{https://github.com/pharo-ai/NgramModel}} available in Pharo. To prepare the model, I create a bigram model, train it on the source code tokens, cut off all the sequences with counts less than 50, and return the result (see Figure \ref{fig:bigramModel}). Afterwards, the model is written to file (and then retrieved from file when I actually use it for the sorter -- this was done for speed purposes, described in detail in section \ref{sec:ProposedSolution-Engineering}).
+The bigram model trained on source code data was implemented with the help of the NgramModel library\footnote{\url{https://github.com/pharo-ai/NgramModel}} available in Pharo. To prepare the model, I create a bigram model, train it on the source code tokens, cut off all the sequences with counts less than 50, and return the result (see Listing \ref{lst:bigramModel}). Afterwards, the model is written to file (and then retrieved from file when I actually use it for the sorter -- this was done for speed purposes, described in detail in section \ref{sec:ProposedSolution-Engineering}).
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/bigramModel.png}
-    \caption{Here is how the bigram model for sorting is created and trained}
-    \label{fig:bigramModel}
-\end{figure}
+\begin{lstlisting}[label={lst:bigramModel}, caption={Here is how the bigram model for sorting is created and trained}]
+    BigramTableCreator >> model
+        | model |
+        model := NgramModel order: 2.
+        model trainOn: self processedTokens.
+        model removeNgramsWithCountsLessThan: 50.
+        ^ model
+\end{lstlisting}
 
 When I first started using the NgramModel library, the functionality to reduce the number of n-gram sequences based on frequencies, or the functionality to read and write the model to file were not present. In the process of using this library for creating the bigram sorter, I extended it with the methods needed, as it might be useful for others to have this in place, too. Thus, through 4 pull requests I:
 \begin{itemize}
@@ -73,7 +75,7 @@ After that, when recording token frequencies for the unigram model, I recorded t
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/unigramTimeToRunSlow.png}
+    \includegraphics[width=0.7\linewidth]{images/unigramTimeToRunSlow.png}
     \caption{It takes more than 3 minutes to read the results from file on repeat 100 times}
     \label{fig:sorterSlow}
 \end{figure}
@@ -82,7 +84,7 @@ The approach to improve the time efficiency was to set a certain threshold for t
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/unigramTimeToRunFast.png}
+    \includegraphics[width=0.7\linewidth]{images/unigramTimeToRunFast.png}
     \caption{After the cut off, it takes only 5 seconds to run it 100 times}
     \label{fig:sorterFast}
 \end{figure}
