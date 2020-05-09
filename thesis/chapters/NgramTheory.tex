@@ -1,18 +1,14 @@
 \chapter{N-gram Background}
 \label{chap:NgramBackground}
 
-In this chapter, we go over the theoretical background for the N-grams models and the challenges in their implementation.
+In this chapter, we go over the theoretical background for the n-gram models and the challenges in their implementation.
 
 \section{N-gram Language Models}
 \label{sec:NgramBackground-LanguageModels}
 Predicting the next word in a sequence is a central problem for many areas of Natural Language Processing (NLP), including speech recognition, spelling correction, spam filtering, machine translation, and so on.
 
-Models that assign probabilities to sentences or sequences of words, and can be used to find the most likely continuation of a sequence, are called language models (\cite{Jura09a}). Among them, is the n-gram language model, which assigns probabilities to sequences out of \textit{n} words, called the n-grams. A one word sequence is a unigram, pairs of words are referred to as 2-grams or bigrams, 3-grams or trigrams are sequences of three words, and so on. Examples of bigrams might be "he ate", "ate the", "the whole" and "whole pizza", whereas trigrams would look like "he ate the", "ate the whole", and "the whole pizza". 
+Models that assign probabilities to sentences or sequences of words, and can be used to find the most likely continuation of a sequence, are called language models (\cite{Jura09a}). Among them, is the n-gram language model, which assigns probabilities to sequences out of \textit{n} words, called the n-grams. A one word sequence is a unigram, pairs of words are referred to as 2-grams or bigrams, 3-grams or trigrams are sequences of three words, and so on. Examples of bigrams might be "he ate", "ate the", "the whole" and "whole pizza", whereas trigrams would look like "he ate the", "ate the whole", and "the whole pizza".
 
-N-gram language models estimate the likelihood of a word in a sequence, based on the "history", which is the previous \textit{(n-1)} words.
-
-\section{N-grams}
-\label{sec:NgramBackground-Ngrams}
 To describe the conditional probability of a word \textit{w} based on history \textit{h}, we use the following notation:
 \begin{equation}
     P(w|h)
@@ -23,31 +19,37 @@ Here is a more concrete example: if we have a sentence "he ate the whole pizza",
     P(\text{pizza}|\text{he ate the whole})
 \end{equation}
 
-To estimate it, we need to compute the number of occurrences of "he ate the whole", as well the number occurrences of the sentence "he ate the whole pizza", and divide the latter by the former:
+To estimate this probability, we can use relative frequency: we need to compute the number of occurrences of "he ate the whole", as well the number of occurrences of the sentence "he ate the whole pizza", and divide the latter by the former:
 \begin{equation}
     P(\text{pizza}|\text{he ate the whole})=\frac{C(\text{he ate the whole pizza})}{C(\text{he ate the whole})}
 \end{equation}
 
-It is worth noting that history \textit{h} can include all previous words in a text and \textit{n} can be quite large, too, so in a sizeable data corpora it can be a challenge to estimate such big sequences. However, the idea behind the n-gram model is that we do not necessarily need a large history and can restrict it to just the \textit{n-1} previous words. This is done by using the Markov property, which states that the probability of future states depends only on the present state, and not on the sequence of events that preceded it. Thus, we can generalise the bigram (which looks one word into the past) to the trigram, and thus to the n-gram (\cite{Jura09a}). This means we can reduce our conditional probabilities as follows:
+To compute the probability of a whole sequence, not just one word, we can use the chain rule of probability:
+\begin{equation}
+    P(w_1w_2...w_n) = P(w_1)P(w_2|w_1)P(w_3|w_1w_2)...P(w_n|w_1w_2w_3...w_{n-1})\label{eq:1}
+\end{equation}
+which means that the probability of the first word occurring is just its own probability, of the second word is its probability of occurring given that the first word occured, and so on, and the joint probability of the whole sequence is the product of each words' probability.
+
+It is worth noting that \textit{n} can be quite large, and so in a sizeable data corpora it can be a challenge to estimate the probabilities of really big sequences. However, there is an assumption that to compute the probability of a word inside the sequence, the whole history is not needed, and we can approximate the probability only relying on the few history words (\textit{n-1}) closest to the word whose probability we are estimating. This is called a Markov assumption, and it is believed to hold true for n-grams. In other words, if we consider a bigram model, this means that we can reduce our conditional probabilities as follows:
 \begin{equation}
     P(\text{pizza}|\text{he ate the whole}) \sim P(\text{pizza}|\text{whole})
 \end{equation}
+where in the case of a bigram model we only consider one previous word, in the case of a trigram two previous words, and so on.
 
-One of the most straightforward ways to estimate the probability of n-grams is using maximum likelihood estimation, or MLE. For instance, to compute a probability of a word \textit{w} given previous word \textit{h}, one can determine the count of the bigram C(hw) and normalize it by the sum of all the bigrams that also start with \textit{h}. An example of MLE is estimating relative frequencies of a corpus. The idea is that we estimate the n-gram probability by dividing the number of occurrences (frequency) of a sequence by the total number of sequences in the dataset. \notclear{need help with adding MLE and relative frequency explanations?} \mr{HELP !!!}
+From this, the joint probability of a sequence (see Equation \ref{eq:1}) can be approximated the following way:
+\begin{equation}
+    P(w_1^n) \approx \prod_{x=1}^n P(w_x|w_{x-1})
+\end{equation}
 
-\section{Challenges}
-\label{sec:NgramBackground-Challenges}
-A notable problem with the MLE approach is sparse data in a corpus. There might be not enough observations to estimate probabilities well simply by counting observed data, because depending on the existing vocabulary, common words and words that are barely used can both have a count of 1. Or even words that are likely to appear in real life, can somehow be absent from the vocabulary, and the probability of encountering them will therefore be calculated as 0.
-
-This, in turn, can be quite a problem even for the whole sequence: seeing as the joint probability of a sequence is calculated as a product of all conditional probabilities, even if one multiplier is 0, the the product (i.e. the probability of the sequence) will also be 0. This can significantly hurt the performance of a model.
-
-To solve this problem, smoothing is used.
-
-\section{Smoothing}
+\section{Unknown Words and Smoothing}
 \label{sec:NgramBackground-Smoothing}
-If a word is unknown, we can replace it with the unknown word token <UNK> and count it as any other word in the dataset. However, if the word we are dealing with is generally known (does exist in the vocabulary) but appears in an unknown context, i.e. after a word they previously never appeared next to, we can use smoothing, which means we redistribute the general probability to not have any sequences with zero probability. \oz{This explanation is not clear} \mr{did i fix it?}
+A notable problem for using n-gram models is data sparsity. It can happen that the words that we encounter in the test data were not present in the training data, and so are unknown to our model. In that case, the probability of them occurring will be zero. In that case, the joint probability of the whole sequence containing such a word will also be zero, which can lead to the model discarding perfectly valid and commonly encountered sequences, and might hurt the model performance.
 
-There are several smoothing algorithms, the simplest of which is Laplace smoothing. In this algorithm, we add 1 to all the counts (so all the counts will be increased by one, and there will be no 0 counts), and then add $|V|$ (the size of a vocabulary = number of unique words in it) to the denominator, to take into account the extra observations. So the smoothed MLE of the unigram probability of a word \textit{w} will look the following:
+One way of dealing with this is to replace, for example, the bottom n\% of the training data with the unknown word token <UNK>, and then replace every unknown word in the test data with <UNK> as well, turning it into a known word with a probability above zero.
+
+An alternative solution to the problem of unknown words is smoothing, which involves redistributing the general probabilities of all the words in the dataset, i.e. giving a bit of probability of more frequently encountered words to the unknown ones.
+
+There are several smoothing algorithms, the simplest of which is Laplace smoothing. In this algorithm, we add one to all the counts (so all the counts will be increased by one, and there will be no zero counts), and then add $|V|$ (the size of a vocabulary, i.e. number of unique words in it) to the denominator, to take into account the extra observations. So the smoothed unigram probability of a word \textit{w} will look the following:
 \begin{equation}
     P(w)=\frac{c+1}{N+V}
 \end{equation}
@@ -56,8 +58,10 @@ where \textit{c} is the count of the word \textit{w} and \textit{N} is the total
 \section{Summary}
 \label{sec:NgramBackground-Summary}
 \begin{itemize}
-    \item Language models assign probabilities to sentences and sequences of words, and can be used to predict next word in a sequence.
+    \item Language models assign probabilities to sentences and sequences of words, and can be used to predict the next word in a sequence.
     \item N-gram language models calculate conditional probabilities of words in a corpus given a limited history of \textit{n-1} previous words.
+    \item The joint probability of a sequence is a product of each words' probability.
     \item N-gram models belong to the family of Markov models -- they make a restrictive assumption that every word in a sequence depends only on \textit{n-1} previous words, and any words beyond that window have little effect on probability and can be ignored.
-    \item Smoothing is needed in case words appear in an unknown context or are simply not in the vocabulary; that way probability is redistributed among all the sequences to prevent skewing of data, i.e. when the joint probability of a whole sequence is zero only because the count (and probability) for one single word in the sequence was also zero.
+    \item Occassionally there are words that are not in the vocabulary, which means their probability of occurence will be zero, and will bring the joint probability of a sequence to zero also and might hurt the performance of the model.
+    \item To solve this problem, the process of smoothing is used. That way probability is redistributed among all the words, with a little bit taken off more frequent words and given to the unknown ones.
 \end{itemize}
