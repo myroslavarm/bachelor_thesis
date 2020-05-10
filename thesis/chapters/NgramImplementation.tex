@@ -7,6 +7,8 @@ This chapter contains a detailed description of the final solution: data prepara
 \label{sec:ProposedSolution-Overview}
 The objective of this implementation is the following: suggest the most likely tokens at every step of the completion process. The main idea is to leave the existing, AST-based code completion engine in place, and just enhance the sorting strategy. For this, I implemented two separate sorters based on n-gram models. That means that after the list of completion candidates is proposed, it gets sorted based on each n-gram's probability, so that the most relevant completions are shown first.
 
+The n-gram models implemented were the unigram and the bigram. N-gram models of a higher order, such as 3- and 4-gram models, were not considered due their computational complexity: the frequency table increases exponentially with every new order of \textit{n} which makes the calculation of probabilities too slow for the task, where results must be updated at every keystroke.
+
 \subsection{Unigram Sorting}
 The first implementation, unigram-based sorting, is based on the 1-gram analysis, which means that we only take into consideration the actual token being completed. The implementation of the unigram model itself comes down to calculating individual token frequencies, i.e. the number of occurrences of each token in the source code. Then the completion candidates are sorted according to each one's frequency. In Listings \ref{lst:unigramCode1}, \ref{lst:unigramCode2} and \ref{lst:unigramCode3}  you can see the frequencies data being passed to the sorter, and then the completions being sorted based on that information:
 
@@ -95,7 +97,9 @@ The solution was to go back to the data processing step and replace those "one-t
 
 \section{Using the N-gram Sorters}
 \label{sec:ProposedSolution-Usage}
-It is worth noting that both the n-gram sorters can actually be used in the Pharo IDE by loading the CompletionSorting library\footnote{\url{https://github.com/myroslavarm/CompletionSorting}}, which contains the implementation of this experiment. The unigram-based sorter is available as the FrequencyCompletionSorter, and the bigram-based as the BigramCompltionSorter -- they can be used by enabling the respective sorting option in the Settings (Figure \ref{fig:settings}).
+It is worth noting that both the n-gram sorters can actually be used in the Pharo IDE by loading the CompletionSorting library\footnote{\url{https://github.com/myroslavarm/CompletionSorting}}, which contains the implementation of this experiment. The unigram-based sorter is available as the FrequencyCompletionSorter, and the bigram-based as the BigramCompltionSorter -- they can be used by enabling the respective sorting option in the Settings (Figure \ref{fig:settings}, below).
+
+The unigram sorter is quite fast and accurate (we go over the quality of the performance in Chapter \ref{chap:Evaluation}). However, the bigram sorter is too slow for comfortable usage, and re-engineering the implementation to be faster is left for future work.
 
 \begin{figure}[H]
     \centering
@@ -103,8 +107,6 @@ It is worth noting that both the n-gram sorters can actually be used in the Phar
     \caption{The Settings window in the Pharo IDE}
     \label{fig:settings}
 \end{figure}
-
-The unigram sorter is quite fast and accurate (we go over the quality of the performance in Chapter \ref{chap:Evaluation}. Evaluation). However, the bigram sorter is too slow for comfortable usage. Re-engineering the implementation to be faster would have required much more time than I had, and as it was not the priority for this exact research, making it fully usable is left for future work.
 
 \section{Summary}
 \label{sec:ProposedSolution-Summary}
