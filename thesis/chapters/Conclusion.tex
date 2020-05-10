@@ -1,6 +1,17 @@
 \chapter{Conclusion}
 \label{chap:Conclusion}
-\remove{In conclusion, the goal of the project has been reached: }
-\insertion{In this work, we propose a machine learning-based technique for improving} the completion \insertion{engine} in the Pharo IDE \remove{has indeed improved} \remove{through} using the N-gram language models \replace{for the task of}{to} sort\remove{ing} the results. However, contrary to the intuition, \badstyle{not only has the bigram approach performed worse than the unigram, it also doesn't seem to have performed better than \remove{even} the alphabetic sorter}. \remove{This yields more questions about the exact challenges of implementing this approach that haven't been met, and can be a good basis for future work in this topic.}
+\section{Discoveries}
+\label{sec:Conclusion-Discoveries}
+In this work, I proposed a machine learning-based technique for improving the completion engine in the Pharo IDE. The exact implementation used the n-gram language models to sort the completion candidates that are suggested to the user during coding. Specifically, two sorting strategies were implemented: the first one was based on the unigram model, and the second one on the bigram model. N-gram models of a higher order, such as 3- and 4-gram models, were not considered due the difficulty of implementation: the size of the data increases dramatically with every new order of \textit{n}, and making it fast enough to be usable would have been a really time-consuming task beyond the scope of this project.
 
-\oz{Write a better conclusion (see Contributions)}
+Concluding this work, the answers to the research questions originally stated in Section \ref{sec:Introduction-Approach} go as follows:
+\begin{RQ}
+    \item \textbf{Can we improve the accuracy of code completion in the Pharo IDE by sorting candidate completions with n-gram language models?} As a result of the evaluation performed, the unigram based sorter has been shown to have a significantly better result than the default sorter in the Pharo IDE. The implementation is also fast enough for comfortable developer usage, and is available by loading the \href{https://github.com/myroslavarm/CompletionSorting}{CompletionSorting} library.
+    \item \textbf{How can we effectively evaluate the results of code completion enhanced by different sorting strategies?} Even with an evident resources limitation, it has been possible to come up with an approach which adequately measures the performance of the sorters. In particular, for the quantitative evaluation, inspired by \cite{Robb08a}, I was able to simulate the completion process as it would happen naturally, by generating source code sequence at various stages of typing, and comparing the results proposed to the ones in the codebase. The qualitative approach is of interest from the standpoint of being able to compare the suggestions each sorting strategy proposes first-hand.
+\end{RQ}
+
+\section{Directions of Future Work}
+\label{sec:Conclusion-FutureWork}
+\subsection{Enhancing the Bigram Sorter}
+
+\subsection{Conducting a More Extensive Evaluation}
