@@ -1,10 +1,10 @@
 0. **Abstract**
 
-   *to fix*
+   *fixed*
 
 1. **Introduction**
 
-   *to fix*; existing sections:
+   *fixed*; existing sections:
 
    - 1.1 Context
    - 1.2 Problem
@@ -34,7 +34,7 @@
 
 4. **N-gram Background**
 
-   *to fix*; existing sections:
+   *done*; existing sections:
 
    - 4.1 N-gram Language Models
    - 4.2 N-grams
@@ -44,7 +44,7 @@
 
 5. **Proposed solution**
 
-   *to fix*; existing sections:
+   *done*; existing sections:
 
    - 5.1 Background
    - 5.2 Solution Overview
@@ -54,7 +54,7 @@
 
 6. **Evaluation**
 
-   *to fix*; existing sections:
+   *done*; existing sections:
 
    - 6.1 Evaluation Overview
    - 6.2 Challenges in Evaluating Completion
@@ -68,4 +68,7 @@
 
 7. **Conclusion**
 
-   *write / to fix*
+   *fixed*; existing sections:
+   
+   - 7.1 Discoveries
+   - 7.2 Directions of Future Work

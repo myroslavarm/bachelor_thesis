@@ -3,14 +3,14 @@ my bachelor thesis for UCU
 
 Thesis writing progress:
 
-- [ ] abstract (to fix)
-- [ ] introduction (to fix)
+- [ ] abstract (fixed -- needs a review and a final pass for typos)
+- [ ] introduction (fixed -- needs a review and a final pass for typos)
 - [x] related works (fixed -- needs final pass for typos)
 - [x] pharo completion (fixed -- needs final pass for typos)
-- [ ] n-gram theory (to fix)
-- [ ] n-gram implementation (needs code snippets)
-- [ ] evaluation (to fix)
-- [ ] conclusion (to write)
+- [x] n-gram theory (fixed -- needs final pass for typos)
+- [x] n-gram implementation (fixed -- needs final pass for typos)
+- [x] evaluation (fixed -- needs final pass for typos)
+- [ ] conclusion (1/2 done -- needs a review and a final pass for typos)
 
 
 Важливі дати:
