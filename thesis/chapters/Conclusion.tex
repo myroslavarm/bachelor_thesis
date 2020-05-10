@@ -4,9 +4,9 @@
 \label{sec:Conclusion-Discoveries}
 In this work, I proposed a machine learning-based technique for improving the completion engine in the Pharo IDE. The exact implementation used the n-gram language models to sort the completion candidates that are suggested to the user as they type. I implemented two sorting strategies: one based on the unigram model and another one on the bigram model.
 
-Concluding this work, the answers to the research questions originally stated in Section \ref{sec:Introduction-Approach} go as follows:
+Concluding this work, the answers to the research questions initially stated in Section \ref{sec:Introduction-Approach} go as follows:
 \begin{RQ}
-    \item \textbf{Can we improve the accuracy of code completion in the Pharo IDE by sorting candidate completions with n-gram language models?} As a result of the evaluation performed, the unigram based sorter has been shown to have a significantly better result than the default sorter in the Pharo IDE. The implementation is also fast enough for comfortable developer usage, and is available by loading the CompletionSorting library available at \url{https://github.com/myroslavarm/CompletionSorting}.
+    \item \textbf{Can we improve the accuracy of code completion in the Pharo IDE by sorting candidate completions with n-gram language models?} As a result of the evaluation performed, the unigram based sorter has been shown to have a significantly better result than the default sorter in the Pharo IDE. The implementation is also fast enough for comfortable developer usage and is available by loading the CompletionSorting library available at \url{https://github.com/myroslavarm/CompletionSorting}.
     \item \textbf{How can we effectively evaluate the results of code completion enhanced by different sorting strategies?} For the quantitative evaluation, inspired by \cite{Robb08a}, I simulated the completion process as it would happen naturally, by generating source code sequence at various stages of typing, and comparing the results proposed to the ones in the codebase.
     
     The qualitative approach allowed me to experimentally test the suggestions each sorting strategy proposes by using the tool as it would be normally used by a developer, and compare the results first-hand.
@@ -19,8 +19,8 @@ As can be seen in Chapter \ref{chap:Evaluation}, the bigram sorter did not perfo
 
 Hence, for future work, it would be useful to see what went wrong exactly with the implementation. It could be that there is a mismatch between the way training and test data parse and tokenise code. Or it could be a matter of managing the delimiters incorrectly, as punctuation in source code has a significant influence on the contextual meaning of any part of code. It could also be an issue with the NgramModel library, which, as you might remember, was only used for training the bigram model, and the unigram model was implemented in a different way.
 
-In any case, this would be a nice idea for the continuation of this project: analyse the issues of the existing bigram implementation and try to fix them and improve the performance of the bigram-based sorter. 
+In any case, this would be a good idea for the continuation of this project: analyse the issues of the existing bigram implementation and try to fix them and improve the performance of the bigram-based sorter. 
 \subsection{Conducting a More Extensive Evaluation}
-For the quantitative evaluation, it would be useful to more precisely evaluate the results. Meaning that instead of an average accuracy, perhaps a more sophisticated formula could be used, which makes a note of the exact positions and prefix lengths, and rank completions giving more relevant results for shorter prefixes higher (this is the idea that was used by \cite{Robb08a} in their evaluation).
+For the quantitative evaluation, it would be useful to evaluate the results more precisely. Meaning that instead of an average accuracy, perhaps a more sophisticated formula could be used. For instance, the idea by \cite{Robb08a} involves making a note of the exact positions and prefix lengths and ranking completions, which give more relevant results for shorter prefixes, higher.
 
 For the qualitative one, a more extensive case study with multiple participants trying the actual completion in the IDE and reporting their feedback would be a good next step towards a more thorough evaluation of the results.
