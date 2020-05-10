@@ -1,13 +1,17 @@
 \chapter{Conclusion}
 \label{chap:Conclusion}
+In this work, I proposed a machine learning-based technique for improving the completion engine in the Pharo IDE. The exact implementation uses the n-gram language models to sort the completion candidates that are suggested to the user as they type. Specifically, I implemented two sorting strategies: one based on the unigram model and another on the bigram model.
+
+Based on the evaluations conducted and the actual usage of the implemented sorters in the Pharo IDE, one of the implementations, the unigram sorter, has been shown to be: (1) fast, which means that it can be comfortably used by Pharo developers when coding, and (2) effective, which means it gives significantly better, or more relevant, results than the default Pharo IDE sorter.
+
+Therefore, we can conclude that the main goal, improving the Pharo code completion with the help of an n-gram based sorting implementation, has been achieved.
+
 \section{Discoveries}
 \label{sec:Conclusion-Discoveries}
-In this work, I proposed a machine learning-based technique for improving the completion engine in the Pharo IDE. The exact implementation used the n-gram language models to sort the completion candidates that are suggested to the user as they type. I implemented two sorting strategies: one based on the unigram model and another one on the bigram model.
-
-Concluding this work, the answers to the research questions initially stated in Section \ref{sec:Introduction-Approach} go as follows:
+Through completing this work, I am now able to answer the research questions initially stated in Section \ref{sec:Introduction-Approach}:
 \begin{RQ}
     \item \textbf{Can we improve the accuracy of code completion in the Pharo IDE by sorting candidate completions with n-gram language models?} As a result of the evaluation performed, the unigram based sorter has been shown to have a significantly better result than the default sorter in the Pharo IDE. The implementation is also fast enough for comfortable developer usage and is available by loading the CompletionSorting library available at \url{https://github.com/myroslavarm/CompletionSorting}.
-    \item \textbf{How can we effectively evaluate the results of code completion enhanced by different sorting strategies?} For the quantitative evaluation, inspired by \cite{Robb08a}, I simulated the completion process as it would happen naturally, by generating source code sequence at various stages of typing, and comparing the results proposed to the ones in the codebase.
+    \item \textbf{How can we effectively evaluate the results of code completion enhanced by different sorting strategies?} For the quantitative evaluation, inspired by \cite{Robb08a}, I simulated the completion process as it would happen naturally, by generating source code sequences at various stages of typing, and comparing the results proposed to the ones in the codebase.
     
     The qualitative approach allowed me to experimentally test the suggestions each sorting strategy proposes by using the tool as it would be normally used by a developer, and compare the results first-hand.
 \end{RQ}
@@ -15,12 +19,12 @@ Concluding this work, the answers to the research questions initially stated in 
 \section{Directions of Future Work}
 \label{sec:Conclusion-FutureWork}
 \subsection{Enhancing the Bigram Sorter}
-As can be seen in Chapter \ref{chap:Evaluation}, the bigram sorter did not perform as well as expected. Contrary to the intuition that the higher order of n-gram should work better, the bigram performed much worse than the unigram. But it also seemed to give less relevant suggestions than the alphabetic sorter.
+As can be seen in Chapter \ref{chap:Evaluation}, the bigram sorter did not perform as well as expected. Contrary to the intuition that the higher order of n-gram should work better, the bigram performed much worse than the unigram. Additionally, it also seemed to give less relevant suggestions than the alphabetic sorter.
 
-Hence, for future work, it would be useful to see what went wrong exactly with the implementation. It could be that there is a mismatch between the way training and test data parse and tokenise code. Or it could be a matter of managing the delimiters incorrectly, as punctuation in source code has a significant influence on the contextual meaning of any part of code. It could also be an issue with the NgramModel library, which, as you might remember, was only used for training the bigram model, and the unigram model was implemented in a different way.
+Hence, for future work, it would be useful to see what exactly went wrong with the implementation. It could be that there is a mismatch between how source code is parsed and tokenised in the training and test data. Or it could be a matter of managing the delimiters incorrectly, as punctuation in source code has a significant influence on the contextual meaning of any part of code. It could also be an issue with the NgramModel library, which was only used for training the bigram model, whereas the unigram model was implemented using a different approach.
 
 In any case, this would be a good idea for the continuation of this project: analyse the issues of the existing bigram implementation and try to fix them and improve the performance of the bigram-based sorter. 
 \subsection{Conducting a More Extensive Evaluation}
 For the quantitative evaluation, it would be useful to evaluate the results more precisely. Meaning that instead of an average accuracy, perhaps a more sophisticated formula could be used. For instance, the idea by \cite{Robb08a} involves making a note of the exact positions and prefix lengths and ranking completions, which give more relevant results for shorter prefixes, higher.
 
-For the qualitative one, a more extensive case study with multiple participants trying the actual completion in the IDE and reporting their feedback would be a good next step towards a more thorough evaluation of the results.
+For the qualitative approach, a more extensive case study with multiple participants testing the actual completion in the IDE and reporting their feedback would be a good next step towards a more thorough evaluation of the results.

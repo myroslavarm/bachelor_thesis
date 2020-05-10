@@ -229,15 +229,15 @@ oneside,]{BachelorMasterThesis} % The class file specifying the document structu
 
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-Code completion is one of the essential features of any IDE that significantly improves the developer experience and productivity. Good code completion can both speed up the development process, as well as aid the developer in API exploration. On the other hand, having a slow or inaccurate completion can be very cumbersome. Thus, it is important to find a way to make it as effective as possible.
+Code completion is one of the essential features of any IDE and it significantly improves the developer experience and productivity. Good code completion can both speed up the development process, as well as aid the developer in API exploration. On the other hand, having a slow or inaccurate completion can be very cumbersome. Thus, it is important to find a way to make it as effective as possible.
 
 The current implementation of code completion in the Pharo IDE is based on the abstract syntax tree (AST) of source code. The AST allows us to learn the semantic role and the kind of tokens (e.g. class name, method name, literal, et cetera) and to suggest contextually relevant completions. However, the current implementation has no efficient way to sort the completion candidates, which means that sometimes the user must scroll through a long list of proposed completions to find the one that they need.
 
-In this work, I study how code completion can be improved by sorting proposed completions in such a way that most frequently used tokens appear first. To that end, I implement a sorting plugin based on the n-gram language model.
+In this work, I study how code completion can be improved by sorting completions in such a way that most frequently used tokens appear first. To that end, I implement a sorting plugin based on the n-gram language model.
 
-I use quantitative and qualitative evaluation techniques to compare the performance of the unigram, bigram, and alphabetic sorters. As a result of the evaluation, the unigram sorter had the best performance.
+I use quantitative and qualitative evaluation techniques to compare the performance of the n-gram (unigram and bigram) and alphabetic sorters. As a result of the evaluation, the unigram sorter was shown to have the best performance.
 
-The plugin with the n-gram based sorting strategies is open source and is available at \url{https://github.com/myroslavarm/CompletionSorting}.
+The sorting strategies implemented are part of a Pharo IDE plugin. It is open source and is available at \url{https://github.com/myroslavarm/CompletionSorting}.
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
@@ -246,9 +246,9 @@ The plugin with the n-gram based sorting strategies is open source and is availa
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-I want to express my endless gratitude to Oleksandr Zaitsev and Dr. Marcus Denker from the RMoD team at INRIA Lille for supervising this work, providing me with valuable feedback, and patiently answering my questions. I also want to thank Dr. Stéphane Ducasse for helping me arrange my internship at INRIA and my stay in Lille, as well as introducing me to Pharo during my first year of university and motivating me to participate in open source development and become a part of the Pharo community. I am also grateful to INRIA Lille and the European Smalltalk User Group (ESUG) for the opportunity and for financing this internship.
+I want to express my endless gratitude to Oleksandr Zaitsev and Dr. Marcus Denker from the RMoD team at INRIA Lille for supervising this work, providing me with valuable feedback, and patiently answering my questions. I also want to thank Dr. Stéphane Ducasse for helping me arrange my internship at INRIA and my stay in Lille, as well as introducing me to Pharo during my first year of university and motivating me to participate in open source development. I am also grateful to INRIA Lille and the European Smalltalk User Group (ESUG) for financing this internship.
 
-I would also like to thank Dr. Yuriy Tymchuk for helping me make my first steps in Pharo during Google Summer of Code (GSoC) 2017, Julien Delplanque and Guillermo Polito from the RMoD team at INRIA Lille for giving me advice and assisting me throughout various stages of my work on code completion, Dr. Oles Hodych for providing me with recommendations for writing a thesis and various \LaTeX\  tips, as well as my mum and dad for supporting me throughout my Bachelor journey, my best friends Martin and Ryan for motivating me and keeping me grounded, and Conan O'Brien and Tina Fey for providing endless comedic relief when it was most needed -- such as writing this thesis in social isolation during the COVID-19 quarantine in a student room in Lille, France.
+I would also like to thank Dr. Yuriy Tymchuk for helping me make my first steps in Pharo during Google Summer of Code (GSoC) 2017, Julien Delplanque and Dr. Guillermo Polito from the RMoD team at INRIA Lille for giving me advice and assisting me throughout various stages of my work on code completion, and Dr. Oles Hodych for providing me with recommendations for writing a thesis and with various \LaTeX\  tips. I am also grateful to my mum and dad for supporting me throughout my Bachelor journey, to my best friends Martin and Ryan for motivating me and keeping me grounded, and to Conan O'Brien and Tina Fey for providing endless comedic relief when it was most needed -- such as writing this thesis in social isolation during the COVID-19 quarantine in a student room in Lille, France.
 
 Finally, I want to thank the Ukrainian Catholic University and the Faculty of Applied Sciences for their continued support throughout my studies and this internship, particularly Oles Dobosevych and Dr. Yaroslav Prytula for their patience, kindness, and belief in me. It has really been an honour to be a part of this program.
 \end{acknowledgements}

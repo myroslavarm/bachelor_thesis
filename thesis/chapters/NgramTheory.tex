@@ -28,9 +28,9 @@ To compute the probability of a whole sequence, not just one word, we can use th
 \begin{equation}
     P(w_1w_2...w_n) = P(w_1)P(w_2|w_1)P(w_3|w_1w_2)...P(w_n|w_1w_2w_3...w_{n-1})\label{eq:1}
 \end{equation}
-which means that the probability of the first word occurring is just its own probability, of the second word, is its probability of occurring given that the first word occurred, et cetera, and the joint probability of the whole sequence is the product of each words' probability.
+which means that the probability of the first word occurring is just its own probability, then the probability of the second word is its probability of occurring given that the first word occurred, et cetera; then the joint probability of the whole sequence is the product of each words' probability.
 
-It is worth noting that \textit{n} can be quite large, and so in a sizeable data corpora it can be a challenge to estimate the probabilities of large sequences. However, there is an assumption that to compute the probability of a word inside the sequence, the whole history is not needed, and we can approximate the probability only relying on the few history words (\textit{n-1}) closest to the word whose probability we are estimating. This is called a Markov assumption, and it is believed to hold true for n-grams. In other words, if we consider a bigram model, this means that we can reduce our conditional probabilities as follows:
+It is worth noting that \textit{n} can be quite large, and so in a sizeable data corpora it can be a challenge to estimate the probabilities of large sequences. However, there is an assumption that to compute the probability of a word inside the sequence, the whole history is not needed, and we can approximate the probability only relying on the few history words (\textit{n-1}) that are the closest to the word whose probability we are estimating. This is called a Markov assumption, and it is believed to hold true for n-grams. In other words, if we consider a bigram model, this means that we can reduce our conditional probabilities as follows:
 \begin{equation}
     P(\text{pizza}|\text{he ate the whole}) \sim P(\text{pizza}|\text{whole})
 \end{equation}
@@ -43,7 +43,7 @@ From this, the joint probability of a sequence (see Equation \ref{eq:1}) can be 
 
 \section{Unknown Words and Smoothing}
 \label{sec:NgramBackground-Smoothing}
-A notable problem for using n-gram models is data sparsity. It can happen that the words that we encounter in the test data were not present in the training data, and so are unknown to our model. In that case, the probability of them occurring will be zero. In that case, the joint probability of the whole sequence containing such a word will also be zero, which can lead to the model discarding perfectly valid and commonly encountered sequences, and might hurt the model performance.
+A notable problem for using n-gram models is data sparsity. It can happen that the words that we encounter in the test data were not present in the training data, and so are unknown to our model. Thus, the probability of them occurring would be zero. In that case, the joint probability of the whole sequence containing such a word would also be zero, which can lead to the model discarding perfectly valid and commonly encountered sequences, and might hurt the model performance.
 
 One way of dealing with this is to replace, for example, the bottom n\% of the training data with the unknown word token <UNK>, and then replace every unknown word in the test data with <UNK> as well, turning it into a known word with a probability above zero.
 
@@ -62,6 +62,6 @@ where \textit{c} is the count of the word \textit{w} and \textit{N} is the total
     \item N-gram language models calculate conditional probabilities of words in a corpus given a limited history of \textit{n-1} previous words.
     \item The joint probability of a sequence is a product of each words' probability.
     \item N-gram models belong to the family of Markov models -- they make a restrictive assumption that every word in a sequence depends only on \textit{n-1} previous words, and any words beyond that window have little effect on the probability and can be ignored.
-    \item Occasionally there are words that are not in the vocabulary, which means their probability of occurrence will be zero, and will bring the joint probability of a sequence to zero also and might hurt the performance of the model.
+    \item Occasionally, there are words that are not in the vocabulary, which means their probability of occurrence will be zero, and will bring the joint probability of a sequence to zero also, ultimately hurting the performance of the model that can end up discarding perfectly valid sequences.
     \item To solve this problem, the process of smoothing is used. That way probability is redistributed among all the words, with a little bit taken off more frequent words and given to the unknown ones.
 \end{itemize}

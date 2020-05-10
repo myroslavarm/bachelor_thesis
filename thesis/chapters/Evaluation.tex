@@ -19,9 +19,9 @@ Conventionally, a proper qualitative evaluation\footnote{\cite{Kapl05a} describe
 
 \section{Challenges in Evaluating Completion}
 \label{sec:Evaluation-Challenges}
-Coming up with a way to most accurately evaluate code completion is not trivial. One needs to have an idea of how to best reproduce the process and what the metrics should be, as well as have access to the resources needed. Mainly, here are the main challenges that need to be considered:
+Coming up with a way to most accurately evaluate code completion is not trivial. One needs to have an idea of how to best reproduce the process and what the metrics should be, as well as have access to the resources needed. Mainly, here are the main challenges that need to be considered when conducting an evaluation:
 \begin{enumerate}
-    \item Resources limitation. For benchmarking, there needs to be a large enough dataset to be able to evaluate the performance of the completion tool properly. It requires time to gather the data if it is not already available. If it already is and it is too big, then monetary and physical resources come into play: one might then need better and faster hardware, more machines, et cetera. Finally, one needs time and people to develop a suitable evaluation tool and set everything up well. For a qualitative evaluation, involving multiple people and managing time and money right are a concern, too. 
+    \item Resources limitation. For benchmarking, there needs to be a large enough dataset to be able to evaluate the performance of the completion tool properly. It requires time to gather the data if it is not already available. If it already is and it is too big, then monetary and physical resources come into play: one might then need better and faster hardware, more machines, et cetera. Finally, one needs time and people to develop a suitable evaluation tool and set everything up well. For a qualitative evaluation, involving multiple people and managing time and money right is a concern, too. 
     \item Finding appropriate metrics. Ultimately, the goal of the evaluation is to be able to say whether the completion performs well or badly, and just \textit{how} well or \textit{how} badly. Choosing metrics which will adequately represent the quality of the performance takes a lot of careful analysis and research. Getting this part right considerably influences the validity of the end result of the evaluation.
     \item Reproducibility. Less a problem for a qualitative approach, where the idea is to let people use the tool as is and report the results, for the quantitative evaluation it is important to come up with a way to make code completion testable, or reproducible. This brings us back to the resources, as a suitable dataset is needed.
 \end{enumerate}
@@ -37,7 +37,7 @@ The quantitative evaluation approach performed for this project is based on the 
 
 The idea with this approach is to recreate the coding process as it would happen naturally, i.e. a gradual appearance of new code as if it is being entered at the moment, and test the completion during that. Just as if a developer is typing and invoking a code completion engine at every step, with this approach the completion gets triggered for every token with the cursor between the 2nd and the 8th position (the range is taken from the \cite{Robb08a} paper). We can then compare whether the result suggested at that step matches the one that followed in real history.
 
-For evaluation several Pharo classes were chosen at random, each containing multiple methods. For each of them, I repeat this process of calling the completion at each step and perform the following:
+For evaluation, several Pharo classes were chosen at random, each containing multiple methods. For each of them, I repeat this process of calling the completion at each step and perform the following:
 \begin{itemize}
     \item check whether the correct completion is present in the list of suggestions
     \item if it is, the results are only considered successful if the correct completion is also present in the top-10 suggestions
@@ -69,7 +69,7 @@ From the results, we can see that the unigram sorter performs better than the al
 \section{Qualitative Evaluation}
 \label{sec:Evaluation-Qualitative}
 \subsection{Experiment}
-For this evaluation approach, 10 examples were manually preselected. The main idea for each of the examples was to test a completion case which would be commonly encountered by a user while coding in the Pharo IDE. These examples include completion of message sends, method names, variable names, expressions inside a block, expressions in parentheses, multiple message sends, and so on. To emphasise: each of those examples is of interest because they are indicative of a common coding process in Pharo, and that is the sole reason they were chosen: none of the examples were chosen with any bias towards the sorting strategies. 
+For this evaluation approach, 10 examples were manually preselected. The main idea for each of the examples was to test a completion case which would be commonly encountered by a developer while coding in the Pharo IDE. These examples include completion of message sends, method names, variable names, expressions inside a block, expressions in parentheses, multiple message sends, and so on. To emphasise: each of those examples is of interest because they are indicative of a common coding process in Pharo, and that is the sole reason they were chosen: none of the examples were chosen with any bias towards the sorting strategies. 
 
 \subsection{Results}
 Note: if the \textit{completion suggestion} and \textit{position} columns contain '-' for any sorting strategy, it means that the completion suggestions expected for that code example were not in any of the top 10 positions of the suggestions list.
@@ -140,7 +140,7 @@ Here, as \textit{rejectInvalidTokens}, \textit{replaceWithPlaceholders} and \tex
 \caption{Qualitative evaluation: completing a message send after self, with awareness of local context}
 \label{table:qual3}
 \end{table}
-Table~\ref{table:qual3}: it seems that the unigram approach fell short, whereas the bigram approach, trained on prioriting local method names after \textit{self}, has performed quite well. In the alphabetic approach, the other two method suggestions seem to be buried below the first 10, whereas \textit{readFile} gets a better position.
+Table~\ref{table:qual3}: it seems that the unigram approach fell short, whereas the bigram approach, trained on prioritising local method names after \textit{self}, has performed quite well. In the alphabetic approach, the other two method suggestions seem to be buried below the first 10, whereas \textit{readFile} gets a better position.
 
 \item [Example 4:] \hfill
 \begin{lstlisting}
@@ -187,7 +187,7 @@ In the Table~\ref{table:qual5} we can see that the best positions are for the un
 \begin{lstlisting}
     in
 \end{lstlisting}
-In the Pharo IDE it is possible to get completion suggestions even when creating a new method, by typing in the desired method name in the code editor on the instance side. If it is a common method that users often create in their classes, having a completion suggestion is useful. As this is the case with the method \textit{initialize}, we would like to get the name suggested to us after typing in \textit{in}, as illustrated above.
+In the Pharo IDE it is possible to get completion suggestions even when creating a new method, by typing the desired method name in the System Browser code editor on the instance side. If it is a common method that users often create in their classes, having a completion suggestion is useful. As this is the case with the method \textit{initialize}, we would like to get the name suggested to us after typing in \textit{in}, as illustrated above.
 \begin{table}[H]
     \centering
     \begin{tabular}{llr}
@@ -298,7 +298,7 @@ In the Table~\ref{table:qual10} below we see that the unigram sorter got the bes
 \end{table}
 \end{description}
 
-To briefly sum up the results of the manual qualitative evaluation, the unigram sorter is still the best one out of the three, the same as in the quantitative evaluation. However, as seen in these examples, the bigram sorter is not very far behind, also more often than not prioritising the desired completions, which disagrees with the quantitative evaluation. So, while based on raw data, the bigram sorter is the worst of the three \textit{on average}, from the manual evaluation it seems that it gives perfectly adequate results even for more 'tricky' examples.
+To briefly sum up the results of the manual qualitative evaluation, the unigram sorter still seems to be the best one out of the three, the same as in the quantitative evaluation. However, as seen in these examples, the bigram sorter is not very far behind, also more often than not prioritising the desired completions, which disagrees with the quantitative evaluation. So, while based on raw data the bigram sorter is the worst of the three \textit{on average}, from the manual evaluation it seems that it gives perfectly adequate results for examples that would be commonly encountered in Pharo. Thus, as part of the future work, it would be useful to investigate what exactly are the cases decreasing the bigram sorter's average accuracy, or, in other words, to find out what is the issue and what can be done to fix it.
 
 \section{Summary}
 \label{sec:Evaluation-Summary}
@@ -306,5 +306,6 @@ To briefly sum up the results of the manual qualitative evaluation, the unigram 
     \item Quantitative evaluation involves benchmarking the model and calculating performance scores. In contrast, the qualitative approach involves conducting the evaluation via letting people test the tool, observing the human-computer interaction, recording feedback interviews, and so on.
     \item There are certain challenges in evaluating code completion, which can be divided into three main categories: resources limitation, finding appropriate metrics, and reproducibility.
     \item Based on the evaluation tool that I created and used to evaluate average success rate (i.e. out of all the attempts to complete the history, how many of them had the expected match in the first 10 results) for each sorting strategy, the unigram sorter performed better than the alphabetic sorter but, surprisingly, the bigram one performed worse.
-    \item For the qualitative evaluation, 10 completion cases were preselected for their common occurrence when coding in the Pharo IDE, with no bias towards any sorting strategy. The examples were tested in the real environment, and the positions of the desired completion suggestions were recorded for each of them. Based on this, the unigram approach was once again the best, but on the cases tested, the bigram approach did not seem to perform so badly.
+    \item For the qualitative evaluation, 10 completion cases were preselected for their common occurrence when coding in the Pharo IDE, with no bias towards any sorting strategy. The examples were tested in the real environment, and the positions of the desired completion suggestions were recorded for each of them. Using this evaluation, the unigram approach was once again the best, but on the cases tested, the bigram approach did not seem to perform so badly.
+    \item Based on this, as part of future work, I plan to investigate the potential issues with the bigram implementation and try to enhance its performance.
 \end{itemize}
